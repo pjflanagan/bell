@@ -3,6 +3,12 @@
 
 Bell is a simple script for describing and making API calls. 
 
+## TODO:
+
+1. VSCode Plugin for Syntax highlighting (I won't want to do this if I can't make it look good)
+2. Command Line Tool (make it work in the first place, after that I can try and make it look good)
+3. VSCode Plugin expansion for GUI (all I probably need is a run button)
+
 ## Advantages
 
 - Bell files are easy to read: unlike Postman which buries important information in various menus
@@ -16,3 +22,8 @@ The project is divided into three parts
 - New file type with documentation
 - Command Line Tool for executing Bell files
 - VSCode plugin with syntax highlighting, error flags, and simple GUI
+
+### VSCode Plugins
+
+- https://code.visualstudio.com/api/language-extensions/syntax-highlight-guide
+- https://code.visualstudio.com/api/references/contribution-points
