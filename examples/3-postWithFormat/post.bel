@@ -1,0 +1,22 @@
+
+@import requestBody from "./request.json"
+
+# Bell can be a good place to store TS files that
+# match the format of the request and response.
+# But you can also import them from wherever
+@import { EndpointRequestBody, EndpointResponseBody } from "./format.ts"
+
+# Bell can validate that the request in your json file matches the expected
+# this can be useful for testing
+@validate requestBody as EndpointRequestBody
+
+@url /post
+@body requestBody
+POST
+
+# Bell can validate the response matches the body, this can be useful
+# for monitoring API changes and staying up to date
+@validate response.body as EndpointResponseBody
+
+# Bell can also run expect for testing
+@expect response.body.status === "Valid"

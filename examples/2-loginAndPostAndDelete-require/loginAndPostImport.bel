@@ -1,0 +1,9 @@
+
+# first run the login
+@req ./login.bel
+
+# post requires token, set in login
+@req ./post.bel
+
+# delete requires token and id
+@req ./delete.bel

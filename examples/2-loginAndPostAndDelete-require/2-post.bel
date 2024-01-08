@@ -1,0 +1,19 @@
+
+# at the beginning say that we require token to be defined
+# notice that we could use @import instead, however import runs
+# the file associated with the import, @require simply ensures that 
+# this variable has been set by the time this file is run
+@require token
+
+@url localhost:4000/post
+
+@header
+{
+  Authorization: `Bearer: ${token}`
+} 
+
+@body {
+  test: <input: Write a post>
+}
+
+POST

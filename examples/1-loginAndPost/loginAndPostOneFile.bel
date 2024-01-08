@@ -1,0 +1,42 @@
+
+@url localhost:4000/login
+
+@body
+{
+  "username": "testuser",
+  "password": "testpass"
+}
+
+POST
+
+# because there are more commands afterward
+# the login POST request will not be logged
+
+# save a variable using the response
+token = response.body.token
+
+# start a new request
+@url localhost:4000/post
+
+# use the token in the header
+@header
+{
+  Authorization: `Bearer: ${token}`
+} 
+
+# use the <input: Prompt> bracket to prompt the user and wait for input
+@body
+{
+  message: <input: Write a post>
+}
+
+POST
+
+# response is set to the latest response
+@log response.body.status
+
+# this is the same as the above the command
+@log response[1].body.status
+
+# you can still access the first response
+@log response[0].body.token

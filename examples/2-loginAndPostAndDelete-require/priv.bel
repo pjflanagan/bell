@@ -1,0 +1,8 @@
+
+username = "testuser"
+password = "secret"
+
+export {
+  username,
+  password  
+}

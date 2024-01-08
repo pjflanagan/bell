@@ -1,0 +1,21 @@
+
+# import variables from another bell file
+@import { username, password } from './priv';
+
+# define the route
+@url localhost:4000/login
+
+# username: define username in a "./priv.bell" file, DO NOT commit to git
+# password: see username error
+@body
+{
+  username: username,
+  password: password
+}
+
+# send the request
+POST
+
+# extract data from the response and define it
+token = response.token
+@export token

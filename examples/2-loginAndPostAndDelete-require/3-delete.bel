@@ -1,0 +1,12 @@
+
+@require token
+@require id
+
+@url localhost:4000/post/<id>
+
+@header
+{
+  Authorization: `Bearer: ${token}`
+} 
+
+DELETE

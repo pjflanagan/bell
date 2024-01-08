@@ -1,0 +1,33 @@
+
+# define a variable using
+id = 123456
+
+# setup a request by defining a url
+# anything in <> will be replaced with a variable
+@url localhost:4000/post/<id>
+
+# write the HTTP method to send the request
+GET
+
+# if the request is the last line of the file,
+# then Bell will log the response (writing: "@log message" is unnecessary)
+# bell will not log a response if you do anything after
+
+# response is a reserved word
+# to log one part of the response, reach into the response to get the contents
+@log response.body.message
+@log response.headers
+@log response.status
+
+# or you can log a variable
+@log id
+
+# or it can be written to a file
+@write ./out.json
+
+# you can write just one property or variable to a file
+@write ./out.json response.body.message
+
+# you can also write to a formatted file name
+# the wildcard will be replaced with a number
+@write ./out-*.json 
