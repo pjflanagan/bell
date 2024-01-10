@@ -1,0 +1,28 @@
+
+@import { preprodSubDomain } from './domains';
+
+# scheme without ://
+@scheme https
+
+@subdomain <preprodSubDomain>
+
+# domain can contain subdomain and topLevelDomain
+# but if subdomain or topLevelDomain are set and domain contains "." then there will be an error
+@domain bell
+@topLevelDomain com
+
+# port number without including 
+@port 4001
+
+# path can have or omit leading and ending /
+@path restaurant/search
+
+# add as many params as you'd like
+@param filter = ["Open Now", "$$"]
+@param query = Sushi
+@param location = NY/New_York
+
+# TODO: tbh not sure how this would manifest
+@fragment option1
+
+GET

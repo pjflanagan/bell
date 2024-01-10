@@ -32,6 +32,8 @@ token = response.body.token
 
 POST
 
+# TODO: decide if response should be @response
+# TODO: also can we log @url
 # response is set to the latest response
 @log response.body.status
 
