@@ -1,17 +1,6 @@
 
-# define a variable using
-id = 123456
-
-# setup a request by defining a url
-# anything in <> will be replaced with a variable
-@url localhost:4000/post/<id>
-
-# write the HTTP method to send the request
+@url localhost:4000/post/123456
 GET
-
-# if the request is the last line of the file,
-# then Bell will log the response (writing: "@log message" is unnecessary)
-# bell will not log a response if you do anything after
 
 # response is a reserved word
 # to log one part of the response, reach into the response to get the contents

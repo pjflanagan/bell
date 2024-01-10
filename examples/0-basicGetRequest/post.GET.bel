@@ -1,0 +1,18 @@
+
+# define a variable using
+id = 123456
+
+# setup a request by defining a url
+# anything in ${} will be replaced with a variable
+@url localhost:4000/post/${id}
+
+# TODO: decide if I'm doing <> or ${}
+# I will be doing string like js in the json
+# I also need to determine how to input
+
+# write the HTTP method to send the request
+GET
+
+# if the request is the last line of the file,
+# then Bell will log the response (writing: "@log message" is unnecessary)
+# bell will not log a response if you do anything after
