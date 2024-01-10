@@ -1,0 +1,18 @@
+
+# import your environments
+@import envConfig.json
+
+# use @env to prompt the user to choose an environment before running
+# this will set @domain (@subdomain)
+# this will also set specified vars
+@env
+
+# use @env with delineators to give the user options
+@env dev|preprod|rc 
+
+# or use @env to set the environment
+@env preprod 
+
+@path /admin/user/suspend
+
+POST

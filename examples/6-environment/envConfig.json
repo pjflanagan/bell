@@ -1,0 +1,11 @@
+{
+  "dev": {
+    "url": "localhost:4001"
+  },
+  "preprod": {
+    "url": "preprod.com"
+  },
+  "prod": {
+    "url": "prod.com"
+  }
+}

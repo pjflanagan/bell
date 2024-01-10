@@ -1,0 +1,18 @@
+
+@url urlWithLongResponseTime
+
+# use @timeout to increase or decrease the max wait time for a response
+# the usual response delay is 30 seconds
+# if this number is exceeded, then error
+# here we are waiting ten seconds
+@timeout 10 * 1000
+
+POST
+
+# after the above response completes we are 5 seconds
+# this is useful if the backend has some processing time
+@wait 5 * 1000
+
+@url <urlToCheckStatus>/<response.id>
+
+GET

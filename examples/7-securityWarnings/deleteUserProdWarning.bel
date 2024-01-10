@@ -1,0 +1,12 @@
+
+# @warn will prompt the user to validate before sending each request
+# that contains the prodUrl variable
+prodUrl = @warn production.com
+id = 1234
+
+@url https://<prodUrl>/user/delete/<id>
+
+# warning will look like:
+# Warning: you are about to send a POST request to prodUrl: [production.com]
+# Please confirm before continuing (Y to continue, any other key to cancel)
+POST
