@@ -10,14 +10,28 @@
 		},
 		{
 			"include": "#comment"
+		},
+		{
+			"include": "#constant"
+		},
+		{
+			"include": "#storage"
 		}
 	],
 	"repository": {
+		"storage": {
+			"patterns": [
+				{
+					"name": "storage.type",
+					"match": "^(url|domain|path|log|write|header|body)\\b"
+				}
+			]
+		},
 		"keywords": {
 			"patterns": [
 				{
 					"name": "keyword.control.bel",
-					"match": "\\b(@url|@domain|@log|@write|@header|@body|GET|POST|PUT|DELETE|OPTIONS)\\b"
+					"match": "^(GET|POST|PUT|DELETE|OPTIONS)$"
 				}
 			]
 		},
@@ -37,13 +51,27 @@
 			]
 		},
 		"strings": {
-			"name": "string.quoted.double.bel",
-			"begin": "\"",
-			"end": "\"",
 			"patterns": [
+				{
+					"name": "string.quoted.double.bel",
+					"begin": "\"",
+					"end": "\""
+				},
 				{
 					"name": "constant.character.escape.bel",
 					"match": "\\\\."
+				},
+				{
+					"name": "string.unquoted",
+					"match": "^[url|domain|path] (.*)$"
+				}
+			]
+		},
+		"constant": {
+			"patterns": [
+				{
+					"name": "constant.language",
+					"match": "\\b(response)\\b"
 				}
 			]
 		}
