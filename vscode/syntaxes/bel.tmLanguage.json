@@ -1,0 +1,52 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Bell",
+	"patterns": [
+		{
+			"include": "#keywords"
+		},
+		{
+			"include": "#strings"
+		},
+		{
+			"include": "#comment"
+		}
+	],
+	"repository": {
+		"keywords": {
+			"patterns": [
+				{
+					"name": "keyword.control.bel",
+					"match": "\\b(@url|@domain|@log|@write|@header|@body|GET|POST|PUT|DELETE|OPTIONS)\\b"
+				}
+			]
+		},
+		"comment": {
+			"patterns": [
+				{
+					"name": "comment.line.number-sign",
+					"begin": "#",
+					"end": "\n"
+				},
+				{
+					"comment": "TODO: fix this",
+					"name": "comment.block",
+					"begin": "###\n",
+					"end": "###\n"
+				}
+			]
+		},
+		"strings": {
+			"name": "string.quoted.double.bel",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.bel",
+					"match": "\\\\."
+				}
+			]
+		}
+	},
+	"scopeName": "source.bel"
+}

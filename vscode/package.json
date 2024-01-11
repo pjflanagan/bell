@@ -1,0 +1,25 @@
+{
+  "name": "bel",
+  "displayName": "Bell",
+  "description": "A simple script for making http requests",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [{
+      "id": "bel",
+      "aliases": ["Bell", "bell", "bel"],
+      "extensions": [".bel"],
+      "configuration": "./language-configuration.json"
+    }],
+    "grammars": [{
+      "language": "bel",
+      "scopeName": "source.bel",
+      "path": "./syntaxes/bel.tmLanguage.json"
+    }]
+  }
+}
