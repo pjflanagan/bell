@@ -12,18 +12,22 @@
 			"include": "#comment"
 		},
 		{
-			"include": "#constant"
+			"include": "#support"
 		},
 		{
-			"include": "#storage"
+			"include": "#variable"
 		}
 	],
 	"repository": {
-		"storage": {
+		"support": {
 			"patterns": [
 				{
-					"name": "storage.type",
-					"match": "^(url|domain|path|log|write|header|body)\\b"
+					"name": "support.function",
+					"match": "^(log|write)\\b"
+				},
+				{
+					"name": "support.function",
+					"match": "\\b(input)\\b"
 				}
 			]
 		},
@@ -38,15 +42,14 @@
 		"comment": {
 			"patterns": [
 				{
-					"name": "comment.line.number-sign",
-					"begin": "#",
-					"end": "\n"
-				},
-				{
-					"comment": "TODO: fix this",
 					"name": "comment.block",
 					"begin": "###\n",
 					"end": "###\n"
+				},
+				{
+					"name": "comment.line.number-sign",
+					"begin": "#",
+					"end": "\n"
 				}
 			]
 		},
@@ -67,11 +70,15 @@
 				}
 			]
 		},
-		"constant": {
+		"variable": {
 			"patterns": [
 				{
-					"name": "constant.language",
-					"match": "\\b(response)\\b"
+					"name": "variable.language",
+					"match": "\\b(url|domain|subdomain|path|header|body|response|param|params)\\b"
+				},
+				{
+					"name": "variable.other",
+					"match": "\\b([[a-zA-Z0-9_]]*)\\b"
 				}
 			]
 		}
