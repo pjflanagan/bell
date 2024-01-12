@@ -2,14 +2,21 @@
 const METHODS = ['HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'CONNECT', 'PATCH'] as const;
 type Method = typeof METHODS[number];
 
-const COMMANDS = ['url', 'header', 'body'] as const;
+const REQUEST_PROPERTIES = ['url', 'header', 'body', 'scheme', 'subdomain', 'domain', 'topLevelDomain', 'port', 'path', 'param', 'params', 'fragment'] as const;
+type RequestProperty = typeof REQUEST_PROPERTIES[number];
+
+const COMMANDS = ['log', 'write', 'import', 'export', 'request', 'require'] as const;
 type Command = typeof COMMANDS[number];
 
 function isVariableDefinition(line: string): boolean {
   return /([a-zA-Z]*)\=.*/.test(line);
 }
 
-function handleCommand(lines: string[], i: number) {
+function handleRequestProperty(lines: string[], i: number): [number, string] {
+  return [i, ''];
+}
+
+function handleCommand(lines: string[], i: number): [number, string] {
   const commandName: string = ''; // TODO: get the first word
 
   if (!COMMANDS.includes(commandName as Command)) {
@@ -17,9 +24,9 @@ function handleCommand(lines: string[], i: number) {
   }
 
   // @import load that file 
-    // if it's a .bel do the bell things
-    // if its a .ts then do that
-    // if its .json then save it
+  // if it's a .bel do the bell things
+  // if its a .ts then do that
+  // if its .json then save it
 
   // @export save the var to the export map
 
@@ -33,11 +40,11 @@ function handleCommand(lines: string[], i: number) {
   // improperly formatted command, throw an error
   // unrecognized variable, throw an error
 
-  return { newIndex: i + 1, errorMessage: '' };
+  return [i, ''];
 }
 
 function handleMethod(line: Method) {
-  // TODO: make the fetch call using what we have build and this url method
+  // TODO: make the fetch call using what we have built and this url method
   // store the response in the map
   // log an error if there is one
   // fetch()
@@ -46,44 +53,52 @@ function handleMethod(line: Method) {
 function main() {
   // get the .bel file
   // go through each line and read the commands
-  const lines: string[] = [];
+  const lines: string[] = ([] as string[]).map(l => l.trim());
   let isMultilineComment = false;
 
   for (let i = 0; i < lines.length; ++i) {
     const line = lines[i];
-    const formattedLine = line.trim();
 
     // ignore blank lines
-    if (formattedLine.length === 0) {
+    if (line.length === 0) {
       continue;
     }
 
     // ignore comment lines # & ###
-    if (formattedLine[0] === '#' || isMultilineComment) {
-      if (formattedLine[1] === '#' && formattedLine[2] === '#') {
+    if (line[0] === '#' || isMultilineComment) {
+      if (line[1] === '#' && line[2] === '#') {
         isMultilineComment = !isMultilineComment;
       }
       continue;
     }
 
     switch (true) {
-      case COMMANDS.includes(formattedLine as Command):
-        // the handle command function returns the new i that we have reached
-        const { newIndex, errorMessage } = handleCommand(lines, i);
-        if (errorMessage !== '') {
-          throw errorMessage;
+      case REQUEST_PROPERTIES.includes(line as RequestProperty):
+        const [requestPartEndLine, requestPartErrorMessage] = handleRequestProperty(lines, i);
+        if (requestPartErrorMessage !== '') {
+          throw requestPartErrorMessage;
         }
-        i = newIndex;
-        continue;
-      case METHODS.includes(formattedLine as Method):
+        i = requestPartEndLine;
+        break;
+      case COMMANDS.includes(line as Command):
+        // the handle command function returns the new i that we have reached
+        const [commandEndLine, commandErrorMessage] = handleCommand(lines, i);
+        if (commandErrorMessage !== '') {
+          throw commandErrorMessage;
+        }
+        i = commandEndLine;
+        break;
+      case METHODS.includes(line as Method):
         // if the line is a method (POST, GET, etc.)
         // then send the request we've built
-        handleMethod(formattedLine as Method);
-      case isVariableDefinition(formattedLine):
+        handleMethod(line as Method);
+        break;
+      case isVariableDefinition(line):
         // if the line is a variable definition
         // _ = _, define or reset a variable in the map
+        break;
       default:
-        throw `Unexpected format on line ${i + 1}: ${formattedLine}`;
+        throw `Unexpected format on line ${i + 1}: ${line}`;
     }
   }
 }

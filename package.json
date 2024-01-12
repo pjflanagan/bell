@@ -14,7 +14,11 @@
       "id": "bel",
       "aliases": ["Bell", "bell", "bel"],
       "extensions": [".bel"],
-      "configuration": "./language-configuration.json"
+      "configuration": "./language-configuration.json",
+      "icon": {
+        "light": "./icons/bell-light.png",
+        "dark": "./icons/bell-dark.png"
+      }
     }],
     "grammars": [{
       "language": "bel",
