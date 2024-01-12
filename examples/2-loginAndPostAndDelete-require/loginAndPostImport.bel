@@ -1,9 +1,9 @@
 
 # first run the login
-@req ./login.bel
+request "./login.bel"
 
 # post requires token, set in login
-@req ./post.bel
+request "./post.bel"
 
 # delete requires token and id
-@req ./delete.bel
+request "./delete.bel"

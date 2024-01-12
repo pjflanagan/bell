@@ -1,10 +1,10 @@
 
-@require token
-@require id
+require token
+require id
 
-@url localhost:4000/post/<id>
+url 'localhost:4000/post/<id>'
 
-@header
+header
 {
   Authorization: `Bearer: ${token}`
 } 

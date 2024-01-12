@@ -1,22 +1,22 @@
 
-@url localhost:4000/post/123456
+url "localhost:4000/post/123456"
 GET
 
 # response is a reserved word
 # to log one part of the response, reach into the response to get the contents
-@log response.body.message
-@log response.headers
-@log response.status
+log response.body.message
+log response.headers
+log response.status
 
 # or you can log a variable
-@log id
+log id
 
 # or it can be written to a file
-@write ./out.json
+write ./out.json
 
 # you can write just one property or variable to a file
-@write ./out.json response.body.message
+write ./out.json response.body.message
 
 # you can also write to a formatted file name
 # the wildcard will be replaced with a number
-@write ./out-*.json 
+write ./out-*.json 

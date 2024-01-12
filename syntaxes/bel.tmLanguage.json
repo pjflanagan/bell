@@ -23,7 +23,7 @@
 			"patterns": [
 				{
 					"name": "support.function",
-					"match": "^(log|write)\\b"
+					"match": "^(log|write|validate|expect|wait)\\b"
 				},
 				{
 					"name": "support.function",
@@ -36,6 +36,18 @@
 				{
 					"name": "keyword.control.bel",
 					"match": "^(GET|POST|PUT|DELETE|OPTIONS)$"
+				},
+				{
+					"name": "keyword.control.bel",
+					"match": "^(import|export|require|request|env)\\b"
+				},
+				{
+					"name": "keyword.control.bel",
+					"match": " (from|as|warn) "
+				},
+				{
+					"name": "keyword.operator.bel",
+					"match": "\\b=|:\\b"
 				}
 			]
 		},
@@ -61,12 +73,22 @@
 					"end": "\""
 				},
 				{
+					"name": "string.quoted.single",
+					"begin": "'",
+					"end": "'"
+				},
+				{
+					"name": "string.quoted.other",
+					"begin": "`",
+					"end": "`"
+				},
+				{
 					"name": "constant.character.escape.bel",
 					"match": "\\\\."
 				},
 				{
-					"name": "string.unquoted",
-					"match": "^[url|domain|path] (.*)$"
+					"name": "constant.numeric",
+					"match": "\\b[0-9]+\\b"
 				}
 			]
 		},
@@ -74,11 +96,15 @@
 			"patterns": [
 				{
 					"name": "variable.language",
-					"match": "\\b(url|domain|subdomain|path|header|body|response|param|params)\\b"
+					"match": "\\b(url|scheme|subdomain|domain|topLevelDomain|port|path|param|params|fragment|header|body|timeout)\\b"
+				},
+				{
+					"name": "variable.language",
+					"match": "\\b(response)\\b"
 				},
 				{
 					"name": "variable.other",
-					"match": "\\b([[a-zA-Z0-9_]]*)\\b"
+					"match": "\\b([a-zA-Z][a-zA-Z0-9_]+)\\b"
 				}
 			]
 		}

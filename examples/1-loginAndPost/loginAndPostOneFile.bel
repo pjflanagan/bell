@@ -1,10 +1,10 @@
 
-url localhost:4000/login
+url "localhost:4000/login/"
 
 body
 {
-  "username": "testuser",
-  "password": "testpass"
+  username: "testuser",
+  password: "testpass"
 }
 
 POST
@@ -18,11 +18,10 @@ the login POST request will not be logged
 token = response.body.token
 
 # start a new request
-url localhost:4000/post
+url "localhost:4000/post/"
 
 # use the token in the header
 header
-# TODO: syntax highlight for JS but only allow a json object
 {
   Authorization: `Bearer: ${token}`
 } 
@@ -33,14 +32,14 @@ title = input("Write a title")
 body
 {
   title: title,
-  message: input("Write a message")
+  message: input('Write a message')
 }
 
 POST
 
-# TODO: decide if response should be @response
-# TODO: also can we log @url
+# response is a reserved constant (like "this" and "super")
 # response is set to the latest response
+# TODO: body should not be blue here, only response
 log response.body.status
 
 # this is the same as the above the command
@@ -48,3 +47,6 @@ log response[1].body.status
 
 # you can still access the first response
 log response[0].body.token
+
+# you can also log the url
+log url 

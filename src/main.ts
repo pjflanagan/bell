@@ -2,8 +2,12 @@
 const METHODS = ['HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'CONNECT', 'PATCH'] as const;
 type Method = typeof METHODS[number];
 
-const COMMANDS = ['@url'] as const;
+const COMMANDS = ['url', 'header', 'body'] as const;
 type Command = typeof COMMANDS[number];
+
+function isVariableDefinition(line: string): boolean {
+  return /([a-zA-Z]*)\=.*/.test(line);
+}
 
 function handleCommand(lines: string[], i: number) {
   const commandName: string = ''; // TODO: get the first word
@@ -43,6 +47,7 @@ function main() {
   // get the .bel file
   // go through each line and read the commands
   const lines: string[] = [];
+  let isMultilineComment = false;
 
   for (let i = 0; i < lines.length; ++i) {
     const line = lines[i];
@@ -53,13 +58,16 @@ function main() {
       continue;
     }
 
-    const firstChar = formattedLine[0];
+    // ignore comment lines # & ###
+    if (formattedLine[0] === '#' || isMultilineComment) {
+      if (formattedLine[1] === '#' && formattedLine[2] === '#') {
+        isMultilineComment = !isMultilineComment;
+      }
+      continue;
+    }
 
-    switch (firstChar) {
-      // # ignore comment lines
-      case '#':
-        continue;
-      case '@':
+    switch (true) {
+      case COMMANDS.includes(formattedLine as Command):
         // the handle command function returns the new i that we have reached
         const { newIndex, errorMessage } = handleCommand(lines, i);
         if (errorMessage !== '') {
@@ -67,17 +75,15 @@ function main() {
         }
         i = newIndex;
         continue;
+      case METHODS.includes(formattedLine as Method):
+        // if the line is a method (POST, GET, etc.)
+        // then send the request we've built
+        handleMethod(formattedLine as Method);
+      case isVariableDefinition(formattedLine):
+        // if the line is a variable definition
+        // _ = _, define or reset a variable in the map
       default:
-        if (METHODS.includes(line as Method)) {
-          // if the line is a method (POST, GET, etc.)
-          // then send the request we've built
-          handleMethod(line as Method);
-        } else if (/([a-zA-Z]*)\=.*/.test(line)) {
-          // if the line is a variable
-          // _ = _, define or reset a variable in the map
-        } else {
-          throw `Unexpected token ${firstChar} on line ${i + 1}`;
-        }
+        throw `Unexpected format on line ${i + 1}: ${formattedLine}`;
     }
   }
 }

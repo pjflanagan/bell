@@ -1,28 +1,31 @@
 
-@import { preprodSubDomain } from './domains';
+import { preprodSubDomain } from './domains';
 
 # scheme without ://
-@scheme https
+scheme "https"
 
-@subdomain <preprodSubDomain>
+subdomain preprodSubDomain
 
 # domain can contain subdomain and topLevelDomain
 # but if subdomain or topLevelDomain are set and domain contains "." then there will be an error
-@domain bell
-@topLevelDomain com
+domain "bell"
+topLevelDomain "com"
 
 # port number without including 
-@port 4001
+port 4001
 
 # path can have or omit leading and ending /
-@path restaurant/search
+path "restaurant/search"
 
 # add as many params as you'd like
-@param filter = ["Open Now", "$$"]
-@param query = Sushi
-@param location = NY/New_York
+# TODO: figure out how arrays would work
+# param filter = ["Open Now", "$$"]
+param query = "Sushi"
+param "location=NY/New_York"
 
-# TODO: tbh not sure how this would manifest
-@fragment option1
+fragment "option1"
+
+# https://pp.bell.com:4001/restaurant/search?query=Sushi&location=NY/New_York#option1
+log url
 
 GET
