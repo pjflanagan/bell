@@ -5,7 +5,7 @@ Bell is a simple script for describing and making API calls.
 
 ## TODO:
 
-- Need to finalize some of the code layout (handling variables)
+- Need to finalize some of the code layout (interpolated variables)
 
 1. VSCode Plugin for Syntax highlighting (I won't want to do this if I can't make it look good)
 2. Command Line Tool (make it work in the first place, after that I can try and make it look good)
