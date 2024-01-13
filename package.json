@@ -10,20 +10,33 @@
     "Programming Languages"
   ],
   "contributes": {
-    "languages": [{
-      "id": "bel",
-      "aliases": ["Bell", "bell", "bel"],
-      "extensions": [".bel"],
-      "configuration": "./language-configuration.json",
-      "icon": {
-        "light": "./icons/bell-light.png",
-        "dark": "./icons/bell-dark.png"
+    "languages": [
+      {
+        "id": "bel",
+        "aliases": [
+          "Bell",
+          "bell",
+          "bel"
+        ],
+        "extensions": [
+          ".bel"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/bell-light.png",
+          "dark": "./icons/bell-dark.png"
+        }
       }
-    }],
-    "grammars": [{
-      "language": "bel",
-      "scopeName": "source.bel",
-      "path": "./syntaxes/bel.tmLanguage.json"
-    }]
+    ],
+    "grammars": [
+      {
+        "language": "bel",
+        "scopeName": "source.bel",
+        "path": "./syntaxes/bel.tmLanguage.json"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0"
   }
 }

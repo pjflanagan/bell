@@ -1,33 +1,50 @@
+
+import * as fs from 'fs';
+
 import { handleCommand, isLineCommand } from "./commands";
 import { isMultiLineCommentDelineator, isSingleLineComment } from "./comments";
 import { Method, handleMethod, isLineMethod } from "./methods";
 import { handleRequestProperty, isLineRequestProperty } from "./requestProperties";
 import { isVariableDefinition } from "./variables";
 
+function formatFileData(data: Buffer): string[] {
+  return data
+  .toString()
+  .split('\n')
+  .map(l => l.trim());
+}
+
+export function readFile(fileName: string) {
+  fs.readFile(fileName, (err, data) => {
+    if (err) {
+      throw err;
+    }
+    const formattedFile = formatFileData(data);
+    interpretFile(formattedFile);
+  });
+}
+
 // TODO: interpretFile needs to check recursion
 // TODO: what is the main difference between and request (request just runs the file, import runs and pull vars)
 // TODO: interpretFile is the same as `request filename.bel` and `import filename.bel`
-// function loadFile() {
-//   const fileReader = new FileReader();
-//   fileReader
-// }
-
-export function interpretFile(fileName: string) {
-  // get the .bel file
+function interpretFile(lines: string[]) {
   // go through each line and read the commands
-  const lines: string[] = ([] as string[]).map(l => l.trim());
   let isMultilineComment = false;
 
   for (let i = 0; i < lines.length; ++i) {
     const line = lines[i];
 
+    console.log(line);
+
     // ignore blank lines
     if (line.length === 0) {
+      console.log('BLANK');
       continue;
     }
 
     // ignore comment lines # & ###
     if (isSingleLineComment(line) || isMultilineComment) {
+      console.log('COMMENT');
       if (isMultiLineCommentDelineator(line)) {
         isMultilineComment = !isMultilineComment;
       }

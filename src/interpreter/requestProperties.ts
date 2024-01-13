@@ -1,30 +1,59 @@
 
-export const REQUEST_PROPERTIES = ['url', 'headers', 'body', 'scheme', 'subdomain', 'domain', 'topLevelDomain', 'port', 'path', 'param', 'params', 'fragment'] as const;
+export const REQUEST_PROPERTIES = ['url', 'headers', 'body', 'scheme', 'domain', 'port', 'path', 'param', 'params', 'fragment'] as const;
 export type RequestProperty = typeof REQUEST_PROPERTIES[number];
 
+const URL_REGEX = /^(https?\:)\/\/(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]*)(\?[^#]*|)(#.*|)$/;
+
 export class RequestProperties {
-  url?: string;
-  scheme: 'http' | 'https' = 'http';
-  subdomain?: string;
+  scheme?: string;
   domain?: string;
-  topLevelDomain?: string;
   port?: number;
   path?: string;
-  params: URLSearchParams;
+  params?: URLSearchParams;
   fragment?: string;
   //
   headers?: Headers;
   body?: any;
 
-  constructor() {
+  public get(propertyName: RequestProperty): any {
+    switch (propertyName) {
+      case 'url':
+        return this.getUrl();
 
+    }
   }
 
   public getUrl(): string {
-    if (this.url) {
-      return this.url;
-    }
     return this.buildUrl();
+  }
+
+  public setUrl(url: string) {
+    this.clearUrlParts();
+    if (!URL_REGEX.test(url)) {
+      throw `Url ${url} is improperly formatted`
+    }
+    const results = URL_REGEX.exec(url);
+    if (results) {
+      const [
+        _fullUrl,
+        scheme,
+        _domainWithPort,
+        domain,
+        port,
+        path,
+        params,
+        fragment
+      ] = results;
+      // I think the standard should be, store things without the ://, #, :, or leading /
+      this.scheme = scheme;
+      this.domain = domain;
+      this.port = Number(port);
+      this.path = path;
+      this.params = new URLSearchParams(params);
+      this.fragment = fragment;
+    } else {
+      throw `Unable to deconstruct url ${url}`;
+    }
   }
 
   public getHeaders(): Headers | undefined {
@@ -35,20 +64,27 @@ export class RequestProperties {
     return this.body;
   }
 
-  public setUrl() {
-
+  public reset() {
+    this.clearUrlParts();
+    this.body = undefined;
+    this.headers = undefined;
   }
 
-  public reset() {
-
+  private clearUrlParts() {
+    this.scheme = undefined;
+    this.domain = undefined;
+    this.port = undefined;
+    this.path = undefined;
+    this.params = undefined;
+    this.fragment = undefined;
   }
 
   private buildUrl() {
     // TODO: this needs to build more elegantly
-    // the domain can embody the subdomain and topLevelDomain
     // we have to verify that some things are set, for instance path params and fragment might not be
     // default the scheme to http
-    return `${this.scheme}://${this.subdomain}.${this.domain}.${this.topLevelDomain}/${this.path}?${this.params.toString()}#${this.fragment}`;
+    // if they manually entered stuff, we will want to insert 
+    return `${this.scheme}://${this.domain}/${this.path}?${this.params?.toString()}#${this.fragment}`;
   }
 }
 

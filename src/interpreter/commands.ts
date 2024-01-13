@@ -1,4 +1,4 @@
-import { interpretFile } from "./interpreter";
+import { readFile } from "./interpreter";
 
 const COMMANDS = ['log', 'write', 'import', 'export', 'request', 'require'] as const;
 type Command = typeof COMMANDS[number];
@@ -17,7 +17,7 @@ export function handleCommand(lines: string[], i: number): [number, string] {
   switch(commandName) {
     case 'request':
     case 'import':
-      interpretFile(lines[i]);
+      readFile(lines[i]);
       return [i, ''];
   }
 

@@ -55,7 +55,7 @@
 			"patterns": [
 				{
 					"name": "comment.block",
-					"begin": "###\n",
+					"begin": "###.*\n",
 					"end": "###.*\n"
 				},
 				{
@@ -96,7 +96,7 @@
 			"patterns": [
 				{
 					"name": "variable.language",
-					"match": "\\b(url|scheme|subdomain|domain|topLevelDomain|port|path|param|params|fragment|headers|body|timeout)\\b"
+					"match": "\\b(url|scheme|domain|port|path|param|params|fragment|headers|body|timeout)\\b"
 				},
 				{
 					"name": "variable.language",

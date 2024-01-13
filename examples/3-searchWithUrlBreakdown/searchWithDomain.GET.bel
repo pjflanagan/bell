@@ -1,15 +1,10 @@
 
-import { preprodSubDomain } from './domains';
+import { preprodDomain } from './domains';
 
 # scheme without ://
 scheme "https"
 
-subdomain preprodSubDomain
-
-# domain can contain subdomain and topLevelDomain
-# but if subdomain or topLevelDomain are set and domain contains "." then there will be an error
-domain "bell"
-topLevelDomain "com"
+domain preprodDomain
 
 # port number without including 
 port 4001

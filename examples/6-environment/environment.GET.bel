@@ -3,7 +3,7 @@
 import "envConfig.json"
 
 # use env to prompt the user to choose an environment before running
-# this will set domain (subdomain)
+# this will set domain
 # this will also set specified vars
 env
 
