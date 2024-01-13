@@ -56,7 +56,7 @@
 				{
 					"name": "comment.block",
 					"begin": "###\n",
-					"end": "###\n"
+					"end": "###.*\n"
 				},
 				{
 					"name": "comment.line.number-sign",
@@ -96,7 +96,7 @@
 			"patterns": [
 				{
 					"name": "variable.language",
-					"match": "\\b(url|scheme|subdomain|domain|topLevelDomain|port|path|param|params|fragment|header|body|timeout)\\b"
+					"match": "\\b(url|scheme|subdomain|domain|topLevelDomain|port|path|param|params|fragment|headers|body|timeout)\\b"
 				},
 				{
 					"name": "variable.language",

@@ -10,7 +10,7 @@ require token
 
 url 'localhost:4000/post'
 
-header
+headers
 {
   Authorization: `Bearer: ${token}`
 } 

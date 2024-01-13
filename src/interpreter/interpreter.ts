@@ -2,6 +2,15 @@ import { handleCommand, isLineCommand } from "./commands";
 import { isMultiLineCommentDelineator, isSingleLineComment } from "./comments";
 import { Method, handleMethod, isLineMethod } from "./methods";
 import { handleRequestProperty, isLineRequestProperty } from "./requestProperties";
+import { isVariableDefinition } from "./variables";
+
+// TODO: interpretFile needs to check recursion
+// TODO: what is the main difference between and request (request just runs the file, import runs and pull vars)
+// TODO: interpretFile is the same as `request filename.bel` and `import filename.bel`
+// function loadFile() {
+//   const fileReader = new FileReader();
+//   fileReader
+// }
 
 export function interpretFile(fileName: string) {
   // get the .bel file
@@ -25,6 +34,9 @@ export function interpretFile(fileName: string) {
       continue;
     }
 
+    // TODO: DO NOT SPLIT THE LINE
+    // All lines should be determined by regex matching the whole line
+    // That way we can reuse the regex in the Textmate grammar
     const splitLine = line.split(' ');
     switch (true) {
       case isLineRequestProperty(splitLine[0]):

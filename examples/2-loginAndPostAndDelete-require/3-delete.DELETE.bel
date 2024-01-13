@@ -4,7 +4,7 @@ require id
 
 url 'localhost:4000/post/<id>'
 
-header
+headers
 {
   Authorization: `Bearer: ${token}`
 } 

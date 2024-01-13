@@ -14,5 +14,5 @@ url "localhost:4000/post/<id>"
 GET
 
 # if the request is the last line of the file,
-# then Bell will log the response (writing: "@log message" is unnecessary)
+# then Bell will log the response (writing: "log message" is unnecessary)
 # bell will not log a response if you do anything after

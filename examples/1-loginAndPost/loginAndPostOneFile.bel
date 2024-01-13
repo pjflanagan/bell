@@ -20,8 +20,8 @@ token = response.body.token
 # start a new request
 url "localhost:4000/post/"
 
-# use the token in the header
-header
+# use the token in the headers
+headers
 {
   Authorization: `Bearer: ${token}`
 } 
