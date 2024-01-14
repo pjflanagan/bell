@@ -1,13 +1,5 @@
 import { REQUEST_PROPERTIES, RequestProperty } from "../parsers/requestProperty";
-import { requestProperties, response } from "./state";
-
-class ExportVariables {
-
-}
-
-class VariableMap {
-
-}
+import { requestProperties, response, state } from "./state";
 
 export function isVariableDefinition(line: string): boolean {
   return /([a-zA-Z]*)\=.*/.test(line);
@@ -17,13 +9,14 @@ export function isReservedVariable(varName: string): boolean {
   return [...REQUEST_PROPERTIES, 'response'].includes(varName);
 }
 
-export function locateVariable(varName: string) {
+export function locateVariable(varName: string): any {
   if (isReservedVariable(varName)) {
     if (varName === 'response') {
+      // TODO: response is a json object that can be chained, so I need to make this chainable
       return response;
     }
     return requestProperties.get(varName as RequestProperty);
   }
-  // TODO: otherwise find the variable
+  return state.access(varName);
 }
 

@@ -1,16 +1,32 @@
+import { RequestProperty } from "../parsers";
 import { UrlParts, parseUrl } from "../parsers/url";
-import { RequestProperty } from "../parsers/requestProperty";
 
 export class RequestProperties {
   urlParts?: UrlParts;
   headers?: Headers;
   body?: any;
 
-  public get(propertyName: RequestProperty): any {
-    switch (propertyName) {
+  public get(requestProperty: RequestProperty) {
+    switch(requestProperty) {
       case 'url':
         return this.getUrl();
-
+      case "headers":
+        return this.getHeaders();
+      case "body":
+        return this.getBody();
+      case "scheme":
+        return this.getScheme();
+      case "domain":
+        return this.getDomain();
+      case "port":
+        return this.getPort();
+      case "path":
+        return this.getPath();
+      case "params":
+      case "param":
+        return this.getParams();
+      case "fragment":
+        return this.getFragment();
     }
   }
 
@@ -80,7 +96,17 @@ export class RequestProperties {
     return `#${fragment}`;
   }
 
-  public reset() {
+  // TODO: this might be bad practice, how will we
+  // know for sure that headers are reused
+  // what harm is their in respecifing the domain?
+  // we leave the headers as those don't often change
+  // we leave the domain
+  // public prepareForNextRequest() {
+  //   this.urlParts = this.urlParts && clearPath(this.urlParts);
+  //   this.body = undefined;
+  // }
+
+  public clear() {
     this.urlParts = undefined;
     this.body = undefined;
     this.headers = undefined;

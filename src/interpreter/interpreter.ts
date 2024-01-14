@@ -2,7 +2,7 @@
 import * as fs from 'fs';
 
 import { Method, handleCommand, handleMethod, handleRequestPropertyLine, isLineMethod } from "./handlers";
-import { isVariableDefinition } from "./state";
+import { isVariableDefinition, state } from "./state";
 import { isMultiLineCommentDelineator, isSingleLineComment, isLineCommand, isLineRequestProperty } from './parsers';
 
 function formatFileData(data: Buffer): string[] {
@@ -25,7 +25,7 @@ export function readBellFile(fileName: string) {
 // TODO: interpretFile needs to check recursion
 // TODO: what is the main difference between and request (request just runs the file, import runs and pull vars)
 // TODO: interpretFile is the same as `request filename.bel` and `import filename.bel`
-function interpretFile(lines: string[]) {
+async function interpretFile(lines: string[]) {
   // go through each line and read the commands
   let isMultilineComment = false;
 
@@ -68,7 +68,7 @@ function interpretFile(lines: string[]) {
       case isLineMethod(line):
         // if the line is a method (POST, GET, etc.)
         // then send the request we've built
-        handleMethod(line as Method);
+        await handleMethod(line as Method);
         break;
       case isVariableDefinition(line):
         // if the line is a variable definition
@@ -79,5 +79,8 @@ function interpretFile(lines: string[]) {
     }
   }
 
-  // if there are no other commands and we have not logged, log the last response
+  // TODO: if there are no other commands and we have not logged, log the last response
+  // TODO: cleanup the file by deleting all the requestProperties
+  // remove all the unexported variables from state
+  state.clearUnexportedVariables();
 }

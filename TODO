@@ -1,0 +1,10 @@
+
+In order:
+- All URL properties set (except body and headers)
+- Variables, setting and extracting
+- String interpolation
+- reading input
+- logging, writing
+- importing files
+- variable chaining
+- json with variables

@@ -1,6 +1,5 @@
 
-import { parseString } from "./string";
-
+// TODO: timeout
 export const REQUEST_PROPERTIES = ['url', 'headers', 'body', 'scheme', 'domain', 'port', 'path', 'param', 'params', 'fragment'] as const;
 export type RequestProperty = typeof REQUEST_PROPERTIES[number];
 
