@@ -1,1 +1,4 @@
 .DS_Store
+
+# TODO: remove after testing, only here because it has an API key
+*weather*

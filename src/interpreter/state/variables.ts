@@ -1,5 +1,5 @@
-import { requestProperties, response } from "../main";
-import { REQUEST_PROPERTIES, RequestProperty } from "./requestProperties";
+import { REQUEST_PROPERTIES, RequestProperty } from "../parsers/requestProperty";
+import { requestProperties, response } from "./state";
 
 class ExportVariables {
 
@@ -24,4 +24,6 @@ export function locateVariable(varName: string) {
     }
     return requestProperties.get(varName as RequestProperty);
   }
+  // TODO: otherwise find the variable
 }
+

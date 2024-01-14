@@ -9,6 +9,9 @@
   "categories": [
     "Programming Languages"
   ],
+  "scripts": {
+    "main": "npx ts-node ./src/main.ts;"
+  },
   "contributes": {
     "languages": [
       {

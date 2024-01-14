@@ -1,11 +1,5 @@
-import { readFile } from "./interpreter";
-
-const COMMANDS = ['log', 'write', 'import', 'export', 'request', 'require'] as const;
-type Command = typeof COMMANDS[number];
-
-export function isLineCommand(firstWordOfLine: string) {
-  return COMMANDS.includes(firstWordOfLine as Command);
-}
+import { readBellFile } from "../interpreter";
+import { COMMANDS, Command } from "../parsers/commands";
 
 export function handleCommand(lines: string[], i: number): [number, string] {
   const commandName: string = '';
@@ -17,7 +11,7 @@ export function handleCommand(lines: string[], i: number): [number, string] {
   switch(commandName) {
     case 'request':
     case 'import':
-      readFile(lines[i]);
+      readBellFile(lines[i]);
       return [i, ''];
   }
 

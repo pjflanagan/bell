@@ -1,11 +1,9 @@
 
 import * as fs from 'fs';
 
-import { handleCommand, isLineCommand } from "./commands";
-import { isMultiLineCommentDelineator, isSingleLineComment } from "./comments";
-import { Method, handleMethod, isLineMethod } from "./methods";
-import { handleRequestProperty, isLineRequestProperty } from "./requestProperties";
-import { isVariableDefinition } from "./variables";
+import { Method, handleCommand, handleMethod, handleRequestPropertyLine, isLineMethod } from "./handlers";
+import { isVariableDefinition } from "./state";
+import { isMultiLineCommentDelineator, isSingleLineComment, isLineCommand, isLineRequestProperty } from './parsers';
 
 function formatFileData(data: Buffer): string[] {
   return data
@@ -14,7 +12,7 @@ function formatFileData(data: Buffer): string[] {
   .map(l => l.trim());
 }
 
-export function readFile(fileName: string) {
+export function readBellFile(fileName: string) {
   fs.readFile(fileName, (err, data) => {
     if (err) {
       throw err;
@@ -34,17 +32,13 @@ function interpretFile(lines: string[]) {
   for (let i = 0; i < lines.length; ++i) {
     const line = lines[i];
 
-    console.log(line);
-
     // ignore blank lines
     if (line.length === 0) {
-      console.log('BLANK');
       continue;
     }
 
     // ignore comment lines # & ###
     if (isSingleLineComment(line) || isMultilineComment) {
-      console.log('COMMENT');
       if (isMultiLineCommentDelineator(line)) {
         isMultilineComment = !isMultilineComment;
       }
@@ -56,8 +50,8 @@ function interpretFile(lines: string[]) {
     // That way we can reuse the regex in the Textmate grammar
     const splitLine = line.split(' ');
     switch (true) {
-      case isLineRequestProperty(splitLine[0]):
-        const [requestPartEndLine, requestPartErrorMessage] = handleRequestProperty(splitLine, i);
+      case isLineRequestProperty(line):
+        const [requestPartEndLine, requestPartErrorMessage] = handleRequestPropertyLine(lines, i);
         if (requestPartErrorMessage !== '') {
           throw requestPartErrorMessage;
         }
@@ -65,7 +59,7 @@ function interpretFile(lines: string[]) {
         break;
       case isLineCommand(splitLine[0]):
         // the handle command function returns the new i that we have reached
-        const [commandEndLine, commandErrorMessage] = handleCommand(splitLine, i);
+        const [commandEndLine, commandErrorMessage] = handleCommand(lines, i);
         if (commandErrorMessage !== '') {
           throw commandErrorMessage;
         }
