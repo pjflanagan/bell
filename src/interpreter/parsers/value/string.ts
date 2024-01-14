@@ -1,9 +1,10 @@
 
+export const STRING_DELINEATOR = ['\'', '"', '`'];
 
 export function extractString(value: string) {
   // remove the first quote (",',`)
   const leadingChar = value[0];
-  if (!['\'', '"', '`'].includes(leadingChar)) {
+  if (!STRING_DELINEATOR.includes(leadingChar)) {
     throw 'Invalid string character';
   }
   const endingChar = value[value.length - 1];
