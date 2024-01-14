@@ -1,5 +1,5 @@
 import { RequestProperty } from "../parsers";
-import { UrlParts, parseUrl } from "../parsers/url";
+import { UrlParts, parseUrl } from "../parsers/value/url";
 
 export class RequestProperties {
   urlParts?: UrlParts;
@@ -126,7 +126,6 @@ export class RequestProperties {
     url += this.getPath();
     url += this.getParams();
     url += this.getFragment();
-    console.log(url);
     return url;
   }
 }

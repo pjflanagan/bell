@@ -1,9 +1,9 @@
 
 import * as fs from 'fs';
 
-import { Method, handleCommand, handleMethod, handleRequestPropertyLine, isLineMethod } from "./handlers";
-import { isVariableDefinition, state } from "./state";
-import { isMultiLineCommentDelineator, isSingleLineComment, isLineCommand, isLineRequestProperty } from './parsers';
+import { Method, handleCommand, handleMethod, handleRequestPropertyLine, handleVariableSet, isLineMethod } from "./handlers";
+import { state } from "./state";
+import { isMultiLineCommentDelineator, isSingleLineComment, isLineCommand, isLineRequestProperty, isLineVariableSet } from './parsers';
 
 function formatFileData(data: Buffer): string[] {
   return data
@@ -50,6 +50,9 @@ async function interpretFile(lines: string[]) {
     // That way we can reuse the regex in the Textmate grammar
     const splitLine = line.split(' ');
     switch (true) {
+      case isLineVariableSet(line):
+        handleVariableSet(line);
+        break;
       case isLineRequestProperty(line):
         const [requestPartEndLine, requestPartErrorMessage] = handleRequestPropertyLine(lines, i);
         if (requestPartErrorMessage !== '') {
@@ -58,7 +61,6 @@ async function interpretFile(lines: string[]) {
         i = requestPartEndLine;
         break;
       case isLineCommand(splitLine[0]):
-        // the handle command function returns the new i that we have reached
         const [commandEndLine, commandErrorMessage] = handleCommand(lines, i);
         if (commandErrorMessage !== '') {
           throw commandErrorMessage;
@@ -66,13 +68,7 @@ async function interpretFile(lines: string[]) {
         i = commandEndLine;
         break;
       case isLineMethod(line):
-        // if the line is a method (POST, GET, etc.)
-        // then send the request we've built
         await handleMethod(line as Method);
-        break;
-      case isVariableDefinition(line):
-        // if the line is a variable definition
-        // _ = _, define or reset a variable in the map
         break;
       default:
         throw `Unexpected format on line ${i + 1}: ${line}`;

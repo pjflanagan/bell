@@ -1,10 +1,6 @@
 import { REQUEST_PROPERTIES, RequestProperty } from "../parsers/requestProperty";
 import { requestProperties, response, state } from "./state";
 
-export function isVariableDefinition(line: string): boolean {
-  return /([a-zA-Z]*)\=.*/.test(line);
-}
-
 export function isReservedVariable(varName: string): boolean {
   return [...REQUEST_PROPERTIES, 'response'].includes(varName);
 }

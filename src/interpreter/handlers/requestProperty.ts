@@ -2,8 +2,8 @@
 // TODO: this should move to a parsing file because it has everything to do
 // parsing what is written, this should then call functions in a 
 
-import { parseString } from "../parsers";
-import { requestProperties } from "../state";
+import { parseString, parseValue } from "../parsers";
+import { requestProperties, state } from "../state";
 
 // handler file
 export function handleRequestPropertyLine(lines: string[], i: number): [number, string] {
@@ -32,10 +32,14 @@ export function handleRequestPropertyLine(lines: string[], i: number): [number, 
       // if we start with a ?, replace all the params
       // if we start with a var, append the params
       break;
-    case 'param':
-      // param varName value -> appendValue
-      // param varName -> search for var name, error if no
-      requestProperties.appendParam(requestLine[1], requestLine[2]);
+      case 'param':
+        if (requestLine.length === 3) {
+        // param varName value -> appendValue
+        requestProperties.appendParam(requestLine[1], parseValue(requestLine[2]));
+      } else if (requestLine.length === 2) {
+        // param varName -> search for var name, error if no
+        requestProperties.appendParam(requestLine[1], state.access(requestLine[1]));
+      }
       break;
     case 'fragment':
       break;
