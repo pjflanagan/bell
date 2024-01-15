@@ -1,0 +1,8 @@
+
+# a valid camel case variable set to a number
+
+testVariable = 10
+
+log testVariable
+
+# expect 10

@@ -1,6 +1,10 @@
 
 export const STRING_DELINEATORS = ['\'', '"', '`'];
 
+export function isString(parseableValue: string) {
+  return STRING_DELINEATORS.includes(parseableValue[0]);
+}
+
 // Takes the string out of the quotes
 export function extractString(value: string) {
   // remove the first quote (",',`)

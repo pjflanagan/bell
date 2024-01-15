@@ -1,12 +1,12 @@
-import { locateVariable, state } from "../../state";
-import { VARAIBLE_NAME_REGEX } from "../variables";
+import { locateVariable } from "../../state";
+import { isVariableName } from "../variables";
 import { NUMBER_REGEX } from "./number";
-import { STRING_DELINEATORS, extractString } from "./string";
+import { extractString, isString } from "./string";
 
 // this will either return a number, string, or variable's value
 export function parseValue(word: string): any {
   // if it starts with " ' or `
-  if (STRING_DELINEATORS.includes(word[0])) {
+  if (isString(word)) {
     return extractString(word);
   }
   // TODO: if this is shaped like a function (ie: input)
@@ -15,7 +15,7 @@ export function parseValue(word: string): any {
 
   // }
   // if it looks like a var name
-  if (VARAIBLE_NAME_REGEX.test(word)) {
+  if (isVariableName(word)) {
     return locateVariable(word);
   }
   // if it is a number

@@ -1,0 +1,9 @@
+
+# an invalid variable with a numbers
+
+test1 = 999
+test2 = test1
+
+log test2
+
+# expect error: no variable found

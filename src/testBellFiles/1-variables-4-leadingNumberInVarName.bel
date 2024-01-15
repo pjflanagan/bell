@@ -1,0 +1,8 @@
+
+# an invalid variable with a numbers
+
+2test1Variable2 = 999
+
+log "invalid"
+
+# expect error

@@ -11,9 +11,7 @@ export function handleVariableSet(line: string) {
       varName,
       varValue
     ] = results;
-    console.log(varName, varValue);
     if (RESERVED_WORDS.includes(varName)) {
-      console.log("ERROR")
       throw `Cannot set variable ${varName} because ${varName} is a reserved word`;
     }
     const parsedVarValue = parseValue(varValue);

@@ -1,5 +1,5 @@
 
-import * as fs from 'fs';
+import * as fs from 'fs/promises';
 
 import { Method, handleCommand, handleMethod, handleRequestPropertyLine, handleVariableSet, isLineMethod } from "./handlers";
 import { requestProperties, state } from "./state";
@@ -8,26 +8,26 @@ import { logResponse } from './io/log';
 
 function formatFileData(data: Buffer): string[] {
   return data
-  .toString()
-  .split('\n')
-  .map(l => l.trim());
+    .toString()
+    .split('\n')
+    .map(l => l.trim());
 }
 
-export function readBellFile(fileName: string) {
-  fs.readFile(fileName, (err, data) => {
-    if (err) {
-      throw err;
-    }
+export async function readBellFile(fileName: string) {
+  try {
+    const data = await fs.readFile(fileName)
     const formattedFile = formatFileData(data);
     interpretFile(formattedFile);
-  });
+  } catch(err) {
+    throw err;
+  }
 }
 
 type ActionableLineType = 'command' | 'requestProperty' | 'variableSet' | 'method';
 // type LineType = ActionableLineType | 'blank' | 'comment';
 
 // TODO: interpretFile needs to check recursion
-async function interpretFile(lines: string[]) {
+export async function interpretFile(lines: string[]) {
   // go through each line and read the commands
   let isMultilineComment = false;
   let lastActionableLineType: ActionableLineType | undefined = undefined;

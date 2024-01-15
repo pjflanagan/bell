@@ -1,0 +1,8 @@
+
+# an invalid variable with a numbers
+
+testInvalidString = "invalid'
+
+log "error"
+
+# expect error, no matching enclosing quote

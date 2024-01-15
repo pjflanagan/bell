@@ -1,0 +1,8 @@
+
+# a valid snake case variable set to a string
+
+test_variable = "valid"
+
+log test_variable
+
+# expect "valid"
