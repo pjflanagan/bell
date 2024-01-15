@@ -20,8 +20,13 @@ Bell is a simple script for describing and making API calls.
 The project is divided into three parts
 
 - New file type with documentation
-- Command Line Tool for executing Bell files
-- VSCode plugin with syntax highlighting, error flags, and simple GUI
+- Command Line Tool
+  - Capable of executing Bell files
+  - Capable of running individual commands (like Python Shell)
+- VSCode plugin
+  - with syntax highlighting
+  - simple GUI
+  - error flags
 
 ### VSCode Plugins
 

@@ -1,10 +1,10 @@
 
-import { VARIABLE_SET_REGEX, parseValue } from "../parsers";
+import { VARIABLE_SET_LINE_REGEX, parseValue } from "../parsers";
 import { state } from "../state";
 import { RESERVED_WORDS } from "../types";
 
 export function handleVariableSet(line: string) {
-  const results = VARIABLE_SET_REGEX.exec(line);
+  const results = VARIABLE_SET_LINE_REGEX.exec(line);
   if (results) {
     const [
       _fullLine,

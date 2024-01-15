@@ -2,7 +2,7 @@ import { RequestProperty } from "../parsers";
 import { UrlParts, parseUrl } from "../parsers/value/url";
 
 export class RequestProperties {
-  urlParts?: UrlParts;
+  urlParts: UrlParts = {};
   headers?: Headers;
   body?: any;
 
@@ -38,8 +38,18 @@ export class RequestProperties {
     this.urlParts = parseUrl(url);
   }
 
+  public setParams(newParams: string) {
+    this.urlParts.params = new URLSearchParams(newParams);
+  }
+
+  public appendParams(newParamString: string) {
+    const oldParamsString = this.urlParts.params?.toString() || '';
+    const newParamsString = new URLSearchParams(newParamString).toString();
+    this.urlParts.params = new URLSearchParams(`${oldParamsString}&${newParamsString}`)
+  }
+
   public appendParam(key: string, value: string) {
-    this.urlParts?.params.append(key, value);
+    this.urlParts.params?.append(key, value);
   }
 
   public getHeaders(): Headers | undefined {
@@ -51,17 +61,17 @@ export class RequestProperties {
   }
 
   public getScheme(): string {
-    const scheme = this.urlParts?.scheme || 'http';
+    const scheme = this.urlParts.scheme || 'http';
     return `${scheme}://`;
   }
 
   public getDomain(): string {
-    const domain = this.urlParts?.domain || '';
+    const domain = this.urlParts.domain || '';
     return domain;
   }
 
   public getPort(): string {
-    const port = this.urlParts?.port || 0;
+    const port = this.urlParts.port || 0;
     if (port > 0) {
       return `:${port}`;
     }
@@ -69,7 +79,7 @@ export class RequestProperties {
   }
 
   public getPath(): string {
-    const path = this.urlParts?.path || '';
+    const path = this.urlParts.path || '';
     if (path.length === 0) {
       return '';
     } else if (path[0] === '/') {
@@ -79,7 +89,7 @@ export class RequestProperties {
   }
 
   public getParams(): string {
-    const params = this.urlParts?.params?.toString();
+    const params = this.urlParts.params?.toString();
     if (params) {
       return`?${params.toString()}`
     }
@@ -87,7 +97,7 @@ export class RequestProperties {
   }
 
   public getFragment(): string {
-    const fragment = this.urlParts?.fragment || '';
+    const fragment = this.urlParts.fragment || '';
     if (fragment.length === 0) {
       return '';
     } else if (fragment[0] === '#') {
@@ -107,7 +117,7 @@ export class RequestProperties {
   // }
 
   public clear() {
-    this.urlParts = undefined;
+    this.urlParts = {};
     this.body = undefined;
     this.headers = undefined;
   }

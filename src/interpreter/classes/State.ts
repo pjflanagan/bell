@@ -47,6 +47,14 @@ export class State {
     return variable.getValue();
   }
 
+  public contains(name: string) {
+    const variable = this.find(name);
+    if (!variable) {
+      throw `Unable to find variable ${name}`;
+    }
+    return true;
+  }
+
   public setVariable(name: string, value: any) {
     const variable = this.find(name);
     if (variable) {

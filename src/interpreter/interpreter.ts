@@ -45,27 +45,16 @@ async function interpretFile(lines: string[]) {
       continue;
     }
 
-    // TODO: DO NOT SPLIT THE LINE
-    // All lines should be determined by regex matching the whole line
-    // That way we can reuse the regex in the Textmate grammar
-    const splitLine = line.split(' ');
     switch (true) {
       case isLineVariableSet(line):
         handleVariableSet(line);
         break;
       case isLineRequestProperty(line):
-        const [requestPartEndLine, requestPartErrorMessage] = handleRequestPropertyLine(lines, i);
-        if (requestPartErrorMessage !== '') {
-          throw requestPartErrorMessage;
-        }
-        i = requestPartEndLine;
+        // TODO: get rid of the error messaging here, just throw an error
+        i = handleRequestPropertyLine(lines, i);
         break;
-      case isLineCommand(splitLine[0]):
-        const [commandEndLine, commandErrorMessage] = handleCommand(lines, i);
-        if (commandErrorMessage !== '') {
-          throw commandErrorMessage;
-        }
-        i = commandEndLine;
+      case isLineCommand(line):
+        i = await handleCommand(lines, i);
         break;
       case isLineMethod(line):
         await handleMethod(line as Method);

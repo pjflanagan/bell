@@ -3,11 +3,11 @@ const URL_REGEX = /^((https?)\:\/\/)?(([^:\/?#]*)(?:\:([0-9]+))?)([\/]{0,1}[^?#]
 
 export type UrlParts = {
   scheme?: string;
-  domain: string;
-  port: number;
-  path: string;
-  params: URLSearchParams;
-  fragment: string;
+  domain?: string;
+  port?: number;
+  path?: string;
+  params?: URLSearchParams;
+  fragment?: string;
 }
 
 export function parseUrl(url: string): UrlParts {
