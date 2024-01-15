@@ -1,10 +1,16 @@
 import { readBellFile, initState } from "./interpreter";
 
-// TODO: read file name from command line
-
 function main() {
+  const fileName = process.env.npm_config_file;
+  if (!fileName) {
+    throw 'fileName not specified: npm run main --file=<fileName>'
+  }
   initState();
-  readBellFile('./examples/weatherTest.GET.bel');
+  try {
+    readBellFile(fileName);
+  } catch (err) {
+    throw err;
+  }
 }
 
 main();

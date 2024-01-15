@@ -3,13 +3,6 @@ import { parseValue } from "../parsers";
 import { COMMANDS, Command } from "../parsers/commands";
 import { state } from "../state";
 
-// TODO: this should be a bunch of functions like
-// handleLog
-// handleWrite
-// handleExport
-// handleImport
-// not this general handle command
-
 export async function handleCommand(lines: string[], i: number): Promise<number> {
   const splitLine = lines[i].split(' ');
   const commandName = splitLine[0] as Command;
@@ -18,8 +11,6 @@ export async function handleCommand(lines: string[], i: number): Promise<number>
     throw `Unrecognized command ${commandName}`;
   }
 
-  // TODO:
-  // improperly formatted command, throw an error
   switch(commandName) {
     case 'log':
       if (splitLine.length > 2) {
@@ -29,8 +20,7 @@ export async function handleCommand(lines: string[], i: number): Promise<number>
     case "write":
       break;
     case "export":
-      // TODO: export as array when there are multiple
-      // remove all commas from things
+      // TODO: export as array when there are multiple, remove all commas from things
       // FIXME: see this is why we need regex for every single possible line format
       // export save the var to the export map
       state.exportVariable(splitLine[1]);

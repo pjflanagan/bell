@@ -1,6 +1,7 @@
 
 export const STRING_DELINEATORS = ['\'', '"', '`'];
 
+// Takes the string out of the quotes
 export function extractString(value: string) {
   // remove the first quote (",',`)
   const leadingChar = value[0];
@@ -15,6 +16,7 @@ export function extractString(value: string) {
   return value.substring(1, value.length - 1);
 }
 
+// Inserts variables into the string
 export function interpolateString(value: string) {
   // find all instances of ${}
   // lookup the variables inside the string, error if not found
@@ -22,6 +24,7 @@ export function interpolateString(value: string) {
   return value;
 }
 
+// Interpolates and extracts the string
 export function parseString(value: string) {
   return extractString(interpolateString(value));
 }

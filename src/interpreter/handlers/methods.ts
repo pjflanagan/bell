@@ -20,7 +20,7 @@ export async function handleMethod(method: Method) {
 }
 
 /*
-TODO:
+TODO v2:
 
 async function fetchWithTimeout(resource, options = {}) {
   const { timeout = 8000 } = options;

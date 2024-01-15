@@ -1,8 +1,5 @@
 
-// TODO: this should move to a parsing file because it has everything to do
-// parsing what is written, this should then call functions in a 
-
-import { RequestProperty, VARAIBLE_NAME_REGEX, extractString, parseString, parseValue } from "../parsers";
+import { RequestProperty, URL_PATH_PARAMS_FRAGMENT_REGEX, URL_PATH_REGEX, URL_REGEX, VARAIBLE_NAME_REGEX, parseString, parseValue } from "../parsers";
 import { requestProperties, state } from "../state";
 
 function handleUrl(requestLine: string[]) {
@@ -10,19 +7,37 @@ function handleUrl(requestLine: string[]) {
     throw 'Improperly formatted url line, should adhere to: url "<url>"'
   }
   const parsedUrlString = parseString(requestLine[1]);
+  // NOTE: this check is doubled but it should happen here for visibility
+  if (!URL_REGEX.test(parsedUrlString)) {
+    throw `Improperly formatted url: ${parsedUrlString}`;
+  }
   requestProperties.setUrl(parsedUrlString);
 }
 
-function handleParams(requestLine: string[]) {
-  if (requestLine.length === 2) {
-    const paramString = extractString(requestLine[1]);
-    if (paramString[0] === '?') {
-      requestProperties.setParams(paramString);
-    } else {
-      requestProperties.appendParams(paramString);
-    }
+function handlePath(requestLine: string[]) {
+  if (requestLine.length !== 2) {
+    throw `Improperly formatted path line, should adhere to: path "</><path><?params><#fragment>"`;
+  }
+  const parsedPathString = parseString(requestLine[1]);
+  if (URL_PATH_PARAMS_FRAGMENT_REGEX.test(parsedPathString)) {
+    requestProperties.setPathWithParamsAndFragment(parsedPathString);
+  } else if (URL_PATH_REGEX.test(parsedPathString)) {
+    requestProperties.setPath(parsedPathString);
   } else {
-    throw 'Improperly formatted params';
+    throw `Improperly formatted path: ${parsedPathString}`;
+  }
+}
+
+function handleParams(requestLine: string[]) {
+  if (requestLine.length !== 2) {
+    throw 'Improperly formatted params line, should adhere to: params "<?><params>"';
+  }
+  // TODO: I'm gonna need more validations for each part
+  const parsedParamString = parseString(requestLine[1]);
+  if (parsedParamString[0] === '?') {
+    requestProperties.setParams(parsedParamString);
+  } else {
+    requestProperties.appendParams(parsedParamString);
   }
 }
 
@@ -40,6 +55,8 @@ function handleParam(requestLine: string[]) {
   }
 }
 
+// NOTE: handlers are everything that happens after we determine what kind of line
+// this is. We will still need to do parsing inside a handler
 export function handleRequestPropertyLine(lines: string[], i: number): number {
   const requestLine = lines[i].split(' ');
   const requestProperty = requestLine[0] as RequestProperty;
@@ -56,14 +73,13 @@ export function handleRequestPropertyLine(lines: string[], i: number): number {
     case 'port':
       break;
     case 'path':
-      // TODO: path should allow params and fragment too
-      // so users can set the quickly
+      handlePath(requestLine);
       break;
     case 'params':
       handleParams(requestLine);
       break;
     case 'param':
-        handleParam(requestLine);
+      handleParam(requestLine);
       break;
     case 'fragment':
       break;

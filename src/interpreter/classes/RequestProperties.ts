@@ -1,5 +1,4 @@
-import { RequestProperty } from "../parsers";
-import { UrlParts, parseUrl } from "../parsers/value/url";
+import { RequestProperty, UrlParts, parsePathWithParamsAndFragment, parseUrl } from "../parsers";
 
 export class RequestProperties {
   urlParts: UrlParts = {};
@@ -36,6 +35,17 @@ export class RequestProperties {
 
   public setUrl(url: string) {
     this.urlParts = parseUrl(url);
+  }
+
+  public setPathWithParamsAndFragment(newPath: string) {
+    const { path, params, fragment } = parsePathWithParamsAndFragment(newPath);
+    this.urlParts.path = path;
+    this.urlParts.params = params;
+    this.urlParts.fragment = fragment;
+  }
+
+  public setPath(newPath: string) {
+    this.urlParts.path = newPath;
   }
 
   public setParams(newParams: string) {
@@ -106,16 +116,6 @@ export class RequestProperties {
     return `#${fragment}`;
   }
 
-  // TODO: this might be bad practice, how will we
-  // know for sure that headers are reused
-  // what harm is their in respecifing the domain?
-  // we leave the headers as those don't often change
-  // we leave the domain
-  // public prepareForNextRequest() {
-  //   this.urlParts = this.urlParts && clearPath(this.urlParts);
-  //   this.body = undefined;
-  // }
-
   public clear() {
     this.urlParts = {};
     this.body = undefined;
@@ -123,10 +123,6 @@ export class RequestProperties {
   }
 
   private buildUrl() {
-    // TODO: this needs to build more elegantly
-    // we have to verify that some things are set, for instance path params and fragment might not be
-    // default the scheme to http
-    // if they manually entered stuff, we will want to insert 
     if (!this.urlParts) {
       throw `No Url set`;
     }

@@ -13,7 +13,7 @@ port 4001
 path "restaurant/search"
 
 # add as many params as you'd like
-# TODO: figure out how arrays would work
+#  v2: figure out how arrays would work
 # param filter = ["Open Now", "$$"]
 param query = "Sushi"
 param "location=NY/New_York"

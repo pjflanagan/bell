@@ -16,7 +16,7 @@ POST
 
 # Bell can validate the response matches the body, this can be useful
 # for monitoring API changes and staying up to date
-# TODO: figure out how to make types show up in the language
+# TODO v2: figure out how to make types show up in the language
 # but also this is a way further down the line feature, so maybe don't worry about it
 validate response.body as EndpointResponseBody
 

@@ -2,8 +2,9 @@
 import * as fs from 'fs';
 
 import { Method, handleCommand, handleMethod, handleRequestPropertyLine, handleVariableSet, isLineMethod } from "./handlers";
-import { state } from "./state";
+import { requestProperties, state } from "./state";
 import { isMultiLineCommentDelineator, isSingleLineComment, isLineCommand, isLineRequestProperty, isLineVariableSet } from './parsers';
+import { logResponse } from './io/log';
 
 function formatFileData(data: Buffer): string[] {
   return data
@@ -22,12 +23,14 @@ export function readBellFile(fileName: string) {
   });
 }
 
+type ActionableLineType = 'command' | 'requestProperty' | 'variableSet' | 'method';
+// type LineType = ActionableLineType | 'blank' | 'comment';
+
 // TODO: interpretFile needs to check recursion
-// TODO: what is the main difference between and request (request just runs the file, import runs and pull vars)
-// TODO: interpretFile is the same as `request filename.bel` and `import filename.bel`
 async function interpretFile(lines: string[]) {
   // go through each line and read the commands
   let isMultilineComment = false;
+  let lastActionableLineType: ActionableLineType | undefined = undefined;
 
   for (let i = 0; i < lines.length; ++i) {
     const line = lines[i];
@@ -47,16 +50,19 @@ async function interpretFile(lines: string[]) {
 
     switch (true) {
       case isLineVariableSet(line):
+        lastActionableLineType = 'variableSet';
         handleVariableSet(line);
         break;
       case isLineRequestProperty(line):
-        // TODO: get rid of the error messaging here, just throw an error
+        lastActionableLineType = 'requestProperty';
         i = handleRequestPropertyLine(lines, i);
         break;
       case isLineCommand(line):
+        lastActionableLineType = 'command';
         i = await handleCommand(lines, i);
         break;
       case isLineMethod(line):
+        lastActionableLineType = 'method';
         await handleMethod(line as Method);
         break;
       default:
@@ -64,8 +70,12 @@ async function interpretFile(lines: string[]) {
     }
   }
 
-  // TODO: if there are no other commands and we have not logged, log the last response
-  // TODO: cleanup the file by deleting all the requestProperties
+  // if there are no other commands and we have not logged, log the last response
+  if (lastActionableLineType && lastActionableLineType === 'method') {
+    logResponse();
+  }
+  // cleanup the file by deleting all the requestProperties
+  requestProperties.clear();
   // remove all the unexported variables from state
   state.clearUnexportedVariables();
 }

@@ -32,7 +32,7 @@ export class Variable {
 }
 
 export class State {
-  // TODO: this would be better as an object but whatever
+  // FIXME: this would be better as a Map
   private variables: Variable[];
 
   constructor() {
