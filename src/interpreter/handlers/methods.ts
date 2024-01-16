@@ -16,7 +16,7 @@ export async function handleMethod(method: Method) {
     body: requestProperties.getBody()
   });
   requestProperties.clear();
-  response.set(newResponse);
+  await response.set(newResponse);
 }
 
 /*

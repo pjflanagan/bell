@@ -1,16 +1,28 @@
+import { getIn } from "../state";
 
 export class BellResponse {
-  response?: Response;
+  status?: number;
+  headers?: Headers;
+  body?: any;
 
-  set(newResponse: Response) {
-    this.response = newResponse;
+  async set(newResponse: Response) {
+    this.status = newResponse.status
+    this.headers = newResponse.headers;
+    this.body = await newResponse.json();
   }
 
-  get() {
-    return this.response;
+  get(chain?: string[]) {
+    if (!chain || chain?.length === 0) {
+      return this;
+    } else if (chain[0] === 'body') {
+      chain.unshift();
+      return getIn(this.body, chain);
+    } else if (chain[0] === 'status') {
+      return this.status;
+    }
   }
 
   log() {
-    console.log(this.response);
+    console.log(this.headers, this.body);
   }
 }

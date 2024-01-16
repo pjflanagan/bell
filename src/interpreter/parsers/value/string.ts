@@ -48,6 +48,9 @@ export function interpolateString(value: string) {
       interpolatedString += currentChar;
     }
   }
+  if (isCapturingVariableName) {
+    throw 'Expected } in interpolated string but none was found';
+  }
   return interpolatedString;
 }
 
