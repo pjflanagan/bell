@@ -1,5 +1,5 @@
 
-# an invalid variable with a numbers
+# an invalid variable with leading number
 
 2test1Variable2 = 999
 

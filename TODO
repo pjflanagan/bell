@@ -1,10 +1,13 @@
 
 In order:
-- All URL properties set (except body and headers)
-- Variables, setting and extracting
-- String interpolation
-- reading input
-- logging, writing
-- importing files
-- variable chaining
-- json with variables
+- [ ] Variables
+  - [x] setting (id = 10)
+  - [ ] String interpolation
+  - [ ] extracting (chaining: response.body.id)
+  - [ ] json with variables
+- [ ] All URL properties set
+  - [ ] url parts
+  - [ ] body and header
+- [ ] reading input
+- [ ] importing files
+- [ ] logging, writing

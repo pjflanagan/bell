@@ -63,36 +63,32 @@ export function handleRequestPropertyLine(lines: string[], i: number): number {
   const requestProperty = requestLine[0] as RequestProperty;
 
   // url|scheme|domain|port|path|param|params|fragment|headers|body|timeout
-  try {
-    switch (requestProperty) {
-      case 'url':
-        handleUrl(requestLine);
-        break;
-      case 'scheme':
-        break;
-      case 'domain':
-        break;
-      case 'port':
-        break;
-      case 'path':
-        handlePath(requestLine);
-        break;
-      case 'params':
-        handleParams(requestLine);
-        break;
-      case 'param':
-        handleParam(requestLine);
-        break;
-      case 'fragment':
-        break;
-      case 'body':
-        break;
-      case 'headers':
-        break;
-    }
-  } catch (err) {
-    throw `Error [line:${i + 1}]: ${err}`;
+  switch (requestProperty) {
+    case 'url':
+      handleUrl(requestLine);
+      break;
+    case 'scheme':
+      break;
+    case 'domain':
+      break;
+    case 'port':
+      break;
+    case 'path':
+      handlePath(requestLine);
+      break;
+    case 'params':
+      handleParams(requestLine);
+      break;
+    case 'param':
+      handleParam(requestLine);
+      break;
+    case 'fragment':
+      break;
+    case 'body':
+      break;
+    case 'headers':
+      break;
   }
-  
+
   return i;
 }

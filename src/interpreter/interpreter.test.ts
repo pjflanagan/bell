@@ -8,9 +8,11 @@ import { initState } from "./state";
 describe('interpreter.ts', () => {
   describe('readBellFile', () => {
     let consoleLog: jest.SpyInstance;
+    // let consoleError: jest.SpyInstance;
 
     beforeEach(() => {
-      consoleLog = jest.spyOn(console, "log").mockImplementation(() => {});
+      consoleLog = jest.spyOn(console, "log").mockImplementation(() => { });
+      // consoleError = jest.spyOn(console, "error").mockImplementation(() => { });
       initState();
     });
 
@@ -28,23 +30,33 @@ describe('interpreter.ts', () => {
         expect(consoleLog).toHaveBeenCalledWith(expectedLog);
       });
     })
-  
+
     describe('#variables', () => {
-      it.each([
-        ['1-variables-0-camelCaseNumber', 10],
-        ['1-variables-1-snakeCaseString', 'valid'],
-        ['1-variables-2-withNumbers', 'valid'],
-        // ['1-variables-3-noEndToString', false],
-        // ['1-variables-4-leadingNumberInVarName', false],
-        // ['1-variables-5-variableNotFound', false],
-        ['1-variables-6-variableSetToVariable', 999],
-        ['1-variables-7-variableReset', "reset"],
-      ])('should read file %s and log %s', async (fileName, expectedLog) => {
-        await readBellFile(`src/testBellFiles/${fileName}.bel`);
-        if (expectedLog) {
+
+      type VariablesTest = [string, boolean, any?];
+
+      it.each<VariablesTest>([
+        ['1-variables-0-camelCaseNumber', false, 10, ],
+        ['1-variables-1-snakeCaseString', false, 'valid'],
+        ['1-variables-2-withNumbers', false, 'valid'],
+        // ['1-variables-3-noEndToString', true],
+        // ['1-variables-4-leadingNumberInVarName', true],
+        // ['1-variables-5-variableNotFound', true],
+        ['1-variables-6-variableSetToVariable', false, 999],
+        ['1-variables-7-variableReset', false, 'reset'],
+      ])('should read file %s and log %s', async (fileName, expectError, expectedLog) => {
+        try {
+          await readBellFile(`src/testBellFiles/${fileName}.bel`);
+        } catch {
+          if (expectError) {
+            // expect(consoleError).toHaveBeenCalled();
+            expect(true).toBe(true);
+          } else {
+            expect(true).toBe(false);
+          }
+        }
+        if (!expectError) {
           expect(consoleLog).toHaveBeenCalledWith(expectedLog);
-        } else {
-          expect(consoleLog).not.toHaveBeenCalled();
         }
       });
     });

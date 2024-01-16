@@ -42,7 +42,7 @@ export class State {
   public access(name: string) {
     const variable = this.find(name);
     if (!variable) {
-      throw `Unable to find variable ${name}`;
+      throw `Unable to find variable: "${name}"`;
     }
     return variable.getValue();
   }
@@ -50,7 +50,7 @@ export class State {
   public contains(name: string) {
     const variable = this.find(name);
     if (!variable) {
-      throw `Unable to find variable ${name}`;
+      throw `Unable to find variable: "${name}"`;
     }
     return true;
   }
@@ -67,7 +67,7 @@ export class State {
   public exportVariable(name: string) {
     const variable = this.find(name);
     if (!variable) {
-      throw `Unable to find variable for export ${name}`;
+      throw `Unable to find variable for export: "${name}"`;
     }
     variable.setExport();
   }

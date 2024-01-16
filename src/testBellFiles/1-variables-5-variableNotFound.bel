@@ -1,6 +1,4 @@
 
-# an invalid variable with a numbers
-
 testVariable = 999
 
 log variableThatDoesNotExist

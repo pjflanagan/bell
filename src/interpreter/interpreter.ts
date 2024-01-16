@@ -17,9 +17,9 @@ export async function readBellFile(fileName: string) {
   try {
     const data = await fs.readFile(fileName)
     const formattedFile = formatFileData(data);
-    interpretFile(formattedFile);
-  } catch(err) {
-    throw err;
+    await interpretFile(formattedFile);
+  } catch (err) {
+    console.error(err);
   }
 }
 
@@ -48,25 +48,29 @@ export async function interpretFile(lines: string[]) {
       continue;
     }
 
-    switch (true) {
-      case isLineVariableSet(line):
-        lastActionableLineType = 'variableSet';
-        handleVariableSet(line);
-        break;
-      case isLineRequestProperty(line):
-        lastActionableLineType = 'requestProperty';
-        i = handleRequestPropertyLine(lines, i);
-        break;
-      case isLineCommand(line):
-        lastActionableLineType = 'command';
-        i = await handleCommand(lines, i);
-        break;
-      case isLineMethod(line):
-        lastActionableLineType = 'method';
-        await handleMethod(line as Method);
-        break;
-      default:
-        throw `Unexpected format on line ${i + 1}: ${line}`;
+    try {
+      switch (true) {
+        case isLineVariableSet(line):
+          lastActionableLineType = 'variableSet';
+          handleVariableSet(line);
+          break;
+        case isLineRequestProperty(line):
+          lastActionableLineType = 'requestProperty';
+          i = handleRequestPropertyLine(lines, i);
+          break;
+        case isLineCommand(line):
+          lastActionableLineType = 'command';
+          i = await handleCommand(lines, i);
+          break;
+        case isLineMethod(line):
+          lastActionableLineType = 'method';
+          await handleMethod(line as Method);
+          break;
+        default:
+          throw `Unexpected format on line ${i + 1}: ${line}`;
+      }
+    } catch (err) {
+      throw `Error on line ${i + 1}: ${err}`;
     }
   }
 
