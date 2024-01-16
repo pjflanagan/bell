@@ -44,6 +44,7 @@ describe('interpreter.ts', () => {
         // ['1-variables-5-variableNotFound', true],
         ['1-variables-6-variableSetToVariable', false, 999],
         ['1-variables-7-variableReset', false, 'reset'],
+        ['1-variables-8-stringInterpolation', false, 'string has 10 inside'],
       ])('should read file %s and log %s', async (fileName, expectError, expectedLog) => {
         try {
           await readBellFile(`src/testBellFiles/${fileName}.bel`);

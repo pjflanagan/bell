@@ -4,6 +4,8 @@ import { COMMANDS, Command } from "../parsers/commands";
 import { state } from "../state";
 
 export async function handleCommand(lines: string[], i: number): Promise<number> {
+  // TODO: this is maybe okay for getting the first word, but everything after that needs to be regex
+  // TODO: Because what if there are spaces in the string.
   const splitLine = lines[i].split(' ');
   const commandName = splitLine[0] as Command;
 

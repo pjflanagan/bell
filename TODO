@@ -2,8 +2,8 @@
 In order:
 - [ ] Variables
   - [x] setting (id = 10)
-  - [ ] String interpolation
-  - [ ] extracting (chaining: response.body.id)
+  - [x] String interpolation
+  - [ ] extracting (chaining: response.body.id) (I have an idea, if we just get the whole thing as a valid varaible name, then we split on the dots, then we can pass that into get() as an array once we find the variable, so we might just need to change VARIABLE_NAME_REGEX)
   - [ ] json with variables
 - [ ] All URL properties set
   - [ ] url parts

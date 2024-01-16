@@ -1,13 +1,13 @@
 import { locateVariable } from "../../state";
 import { isVariableName } from "../variables";
 import { NUMBER_REGEX } from "./number";
-import { extractString, isString } from "./string";
+import { isString, parseString } from "./string";
 
 // this will either return a number, string, or variable's value
 export function parseValue(word: string): any {
   // if it starts with " ' or `
   if (isString(word)) {
-    return extractString(word);
+    return parseString(word);
   }
   // TODO: if this is shaped like a function (ie: input)
   // then run that function

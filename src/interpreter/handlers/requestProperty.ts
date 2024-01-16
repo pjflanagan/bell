@@ -59,6 +59,7 @@ function handleParam(requestLine: string[]) {
 // NOTE: handlers are everything that happens after we determine what kind of line
 // this is. We will still need to do parsing inside a handler
 export function handleRequestPropertyLine(lines: string[], i: number): number {
+  // TODO: this is maybe okay for getting the first word, but everything after that needs to be regex
   const requestLine = lines[i].split(' ');
   const requestProperty = requestLine[0] as RequestProperty;
 

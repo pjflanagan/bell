@@ -1,0 +1,9 @@
+
+inside = 10
+outside = "string has {inside} inside"
+
+log outside
+
+# TODO:
+# log "another <inside>"
+
