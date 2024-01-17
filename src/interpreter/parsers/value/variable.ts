@@ -1,20 +1,13 @@
-import { locateVariable } from "../state";
-
-// abcDef123_ghi = .*
-export const VARIABLE_SET_LINE_REGEX = /^([a-zA-Z][a-zA-Z0-9_]*) ?\= ?(.*)$/;
+import { locateVariable } from "../../state";
 
 // varName.child.subchild2
 export const VALID_VAR_CHARACTERS_REGEX = /[a-zA-Z0-9_]/;
 export const VARIABLE_NAME_WITH_CHAIN_AND_INDEX_REGEX = /^([a-zA-Z][a-zA-Z0-9_\.\[\]]*)$/;
 
-export function isLineVariableSet(line: string) {
-  return VARIABLE_SET_LINE_REGEX.test(line);
-}
 
 export function isVariableNameWithChainAndIndex(word: string) {
   return VARIABLE_NAME_WITH_CHAIN_AND_INDEX_REGEX.test(word);
 }
-
 
 export function isValidVarCharacter(character: string): boolean {
   if (character.length !== 1) {

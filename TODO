@@ -8,13 +8,13 @@ In order:
   - [ ] json with variables and string interpolation
 - [ ] All URL properties set
   - [ ] url parts
-    - [ ] url
+    - [x] url
     - [ ] scheme
     - [ ] domain
-    - [ ] port
+    - [x] port
     - [x] path
     - [x] params & param
-    - [ ] fragment
+    - [x] fragment
   - [ ] body and header
 - [ ] functions
   - [ ] reading input

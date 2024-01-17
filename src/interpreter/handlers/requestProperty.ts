@@ -14,6 +14,20 @@ function handleUrl(requestLine: string[]) {
   requestProperties.setUrl(parsedUrlString);
 }
 
+function handlePort(requestLine: string[]) {
+  const port = parseValue(requestLine[1]);
+  if (typeof port === 'number') {
+    requestProperties.setPort(port);
+  } else if(typeof port === 'string') {
+    const portNumber = port.match(/\d+/);
+    if (portNumber && portNumber.length > 0) {
+      requestProperties.setPort(Number(port[0]));
+    }
+  } else {
+    throw `Error parsing port number "${requestLine[1]}"`;
+  }
+}
+
 function handlePath(requestLine: string[]) {
   if (requestLine.length !== 2) {
     throw `Improperly formatted path line, should adhere to: path "</><path><?params><#fragment>"`;
@@ -56,6 +70,11 @@ function handleParam(requestLine: string[]) {
   }
 }
 
+function handleFragment(requestLine: string[]) {
+  const fragment = parseValue(requestLine[1]);
+  requestProperties.setFragment(fragment);
+}
+
 // NOTE: handlers are everything that happens after we determine what kind of line
 // this is. We will still need to do parsing inside a handler
 export function handleRequestPropertyLine(lines: string[], i: number): number {
@@ -69,10 +88,13 @@ export function handleRequestPropertyLine(lines: string[], i: number): number {
       handleUrl(requestLine);
       break;
     case 'scheme':
+      // handleScheme(requestLine);
       break;
     case 'domain':
+      // handleDomain(requestLine);
       break;
     case 'port':
+      handlePort(requestLine);
       break;
     case 'path':
       handlePath(requestLine);
@@ -84,6 +106,7 @@ export function handleRequestPropertyLine(lines: string[], i: number): number {
       handleParam(requestLine);
       break;
     case 'fragment':
+      handleFragment(requestLine);
       break;
     case 'body':
       break;

@@ -37,6 +37,10 @@ export class RequestProperties {
     this.urlParts = parseUrl(url);
   }
 
+  public setPort(newPort: number) {
+    this.urlParts.port = Number();
+  }
+
   public setPathWithParamsAndFragment(newPath: string) {
     const { path, params, fragment } = parsePathWithParamsAndFragment(newPath);
     this.urlParts.path = path;
@@ -60,6 +64,10 @@ export class RequestProperties {
 
   public appendParam(key: string, value: string) {
     this.urlParts.params?.append(key, value);
+  }
+
+  public setFragment(value: string) {
+    this.urlParts.fragment = value;
   }
 
   public getHeaders(): Headers | undefined {

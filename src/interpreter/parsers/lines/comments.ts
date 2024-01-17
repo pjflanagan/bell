@@ -1,5 +1,4 @@
 
-
 export function isSingleLineComment(line: string) {
   return line.length > 0 && line[0] === '#';
 }

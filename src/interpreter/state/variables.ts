@@ -1,5 +1,5 @@
-import { VariableNameChain } from "../parsers";
-import { REQUEST_PROPERTIES, RequestProperty } from "../parsers/requestProperty";
+import { VariableNameChain } from "../parsers/lines";
+import { REQUEST_PROPERTIES, RequestProperty } from "../parsers/lines/requestProperty";
 import { requestProperties, response, state } from "./state";
 
 export function isReservedVariable(varName: string): boolean {

@@ -1,4 +1,4 @@
-import { VariableNameChain } from "../parsers";
+import { VariableNameChain } from "../parsers/lines";
 import { getIn } from "../state";
 
 export class BellResponse {
