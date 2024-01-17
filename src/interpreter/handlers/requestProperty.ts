@@ -1,5 +1,5 @@
 
-import { RequestProperty, URL_PATH_PARAMS_FRAGMENT_REGEX, URL_PATH_REGEX, URL_REGEX, isString, isVariableName, parseString, parseValue } from "../parsers";
+import { RequestProperty, URL_PATH_PARAMS_FRAGMENT_REGEX, URL_PATH_REGEX, URL_REGEX, isString, isVariableNameWithChainAndIndex, parseString, parseValue } from "../parsers";
 import { requestProperties, state } from "../state";
 
 function handleUrl(requestLine: string[]) {
@@ -44,7 +44,7 @@ function handleParams(requestLine: string[]) {
 
 function handleParam(requestLine: string[]) {
   const paramName = requestLine[1];
-  if (!isVariableName(paramName)) {
+  if (!isVariableNameWithChainAndIndex(paramName)) {
     throw 'Invalid param configuration. Must adhere to: param <varName> or param <paramName> <paramValue>';
   }
   if (requestLine.length === 3) {

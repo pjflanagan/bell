@@ -1,15 +1,52 @@
+import { locateVariable } from "../state";
 
+// abcDef123_ghi = .*
 export const VARIABLE_SET_LINE_REGEX = /^([a-zA-Z][a-zA-Z0-9_]*) ?\= ?(.*)$/;
-export const VARIABLE_NAME_REGEX = /^([a-zA-Z][a-zA-Z0-9_\.]*)$/;
+
+// varName.child.subchild2
+export const VALID_VAR_CHARACTERS_REGEX = /[a-zA-Z0-9_]/;
+export const VARIABLE_NAME_WITH_CHAIN_AND_INDEX_REGEX = /^([a-zA-Z][a-zA-Z0-9_\.\[\]]*)$/;
 
 export function isLineVariableSet(line: string) {
   return VARIABLE_SET_LINE_REGEX.test(line);
 }
 
-export function isVariableName(word: string) {
-  return VARIABLE_NAME_REGEX.test(word);
+export function isVariableNameWithChainAndIndex(word: string) {
+  return VARIABLE_NAME_WITH_CHAIN_AND_INDEX_REGEX.test(word);
 }
 
-export function isChainedVariable(varName: string): boolean {
-  return varName.includes('.');
+
+export function isValidVarCharacter(character: string): boolean {
+  if (character.length !== 1) {
+    return false;
+  }
+  return VALID_VAR_CHARACTERS_REGEX.test(character);
+}
+
+// returns a variable name chain
+export type VariableNameChain = string[];
+
+export function parseVariableNameChain(fullVariableName: string): VariableNameChain {
+  const variableNameChain: VariableNameChain = [];
+  let currentVariableName = '';
+  for (let i = 0; i < fullVariableName.length; ++i) {
+    const currentChar = fullVariableName[i];
+    if (['.', '[', ']'].includes(currentChar)) {
+      if (currentVariableName.length > 0) {
+        variableNameChain.push(currentVariableName);
+      }
+      currentVariableName = '';
+    } else {
+      currentVariableName += currentChar;
+    }
+  }
+  if (currentVariableName.length > 0) {
+    variableNameChain.push(currentVariableName);
+  }
+  return variableNameChain;
+}
+
+export function parseVariable(variableName: string): any {
+  const variableNameChain = parseVariableNameChain(variableName);
+  return locateVariable(variableNameChain);
 }

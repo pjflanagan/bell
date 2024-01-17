@@ -1,5 +1,4 @@
-import { locateVariable } from "../../state";
-import { isVariableName } from "../variables";
+import { isVariableNameWithChainAndIndex, parseVariable } from "../variables";
 import { NUMBER_REGEX } from "./number";
 import { isString, parseString } from "./string";
 
@@ -15,8 +14,8 @@ export function parseValue(word: string): any {
 
   // }
   // if it looks like a var name
-  if (isVariableName(word)) {
-    return locateVariable(word);
+  if (isVariableNameWithChainAndIndex(word)) {
+    return parseVariable(word);
   }
   // if it is a number
   if (NUMBER_REGEX.test(word)) {

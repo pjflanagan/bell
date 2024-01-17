@@ -1,4 +1,4 @@
-import { isChainedVariable } from "../parsers";
+import { VariableNameChain } from "../parsers";
 import { REQUEST_PROPERTIES, RequestProperty } from "../parsers/requestProperty";
 import { requestProperties, response, state } from "./state";
 
@@ -6,39 +6,34 @@ export function isReservedVariable(varName: string): boolean {
   return [...REQUEST_PROPERTIES, 'response'].includes(varName);
 }
 
-// TODO: this is a util
-export function getIn(variable: any, varNameChain: string[]) {
-  for (let i = 1; i < varNameChain.length; ++i) {
-    try {
-      variable = variable[varNameChain[i]];
-    } catch {
-      throw `No value found for ${varNameChain.join('.')}`
-    }
+export function getIn(variable: any, variableNameChain: VariableNameChain) {
+  if (variableNameChain.length === 0) {
+    return variable;
   }
-  return variable;
+  try {
+    const childVariableName = variableNameChain.shift();
+    if (!childVariableName) {
+      throw `Unexpected error while accessing variable ${variableNameChain.join('.')}`;
+    }
+    const childVariable = variable[childVariableName];
+    return getIn(childVariable, variableNameChain)
+  } catch {
+    throw `No value found for ${variableNameChain.join('.')}`
+  }
 }
 
-export function accessChainedVariable(varName: string) {
-  const varNameChain = varName.split('.');
-  const parentVaraible = varNameChain[0];
-  varNameChain.shift();
-  if (parentVaraible === 'response') {
-    return response.get(varNameChain);
+export function locateVariable(variableNameChain: VariableNameChain): any {
+  const parentVariableName = variableNameChain.shift();
+  if (!parentVariableName) {
+    throw `Unexpected error while accessing variable ${variableNameChain.join('.')}`;
   }
-  let variable = locateVariable(parentVaraible);
-  return getIn(variable, varNameChain);
-}
-
-export function locateVariable(varName: string): any {
-  if (isChainedVariable(varName)) {
-    return accessChainedVariable(varName);
-  }
-  if (isReservedVariable(varName)) {
-    if (varName === 'response') {
-      return response.get();
+  if (isReservedVariable(parentVariableName as string)) {
+    if (parentVariableName === 'response') {
+      return response.get(variableNameChain);
     }
-    return requestProperties.get(varName as RequestProperty);
+    // TODO: pass variableNameChain
+    return requestProperties.get(parentVariableName as RequestProperty);
   }
-  return state.access(varName);
+  return getIn(state.access(parentVariableName as string), variableNameChain);
 }
 

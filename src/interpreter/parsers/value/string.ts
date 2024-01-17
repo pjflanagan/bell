@@ -1,4 +1,4 @@
-import { locateVariable } from "../../state";
+import { parseVariable } from "../variables";
 
 export const STRING_DELINEATORS = ['\'', '"', '`'];
 
@@ -38,7 +38,7 @@ export function interpolateString(value: string) {
         throw `Unexpected } in interpolated string`;
       }
       isCapturingVariableName = false;
-      interpolatedString += locateVariable(currentVariableName);
+      interpolatedString += parseVariable(currentVariableName);
       currentVariableName = '';
     } else if(isCapturingVariableName) {
       // if capturing, get the name
