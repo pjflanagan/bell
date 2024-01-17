@@ -31,6 +31,9 @@ export function parseVariableNameChain(fullVariableName: string): VariableNameCh
   let currentVariableName = '';
   for (let i = 0; i < fullVariableName.length; ++i) {
     const currentChar = fullVariableName[i];
+    // TODO: this will not worry about the order
+    // technically you can say variable.1.child[subchild[subsubchild][][].5...final and it will work
+    // I need some expects for error handling here
     if (['.', '[', ']'].includes(currentChar)) {
       if (currentVariableName.length > 0) {
         variableNameChain.push(currentVariableName);
