@@ -1,6 +1,8 @@
 
 # Bell
 
+<img width="499" alt="Screenshot 2024-01-16 at 9 30 09 PM" src="https://github.com/pjflanagan/bell/assets/10575487/43985232-1608-4a46-bdd2-da4db5c163ca">
+
 Bell is a simple script for describing and making API calls. 
 
 ## TODO
