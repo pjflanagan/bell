@@ -1,5 +1,20 @@
 
+Revamp:
+- [ ] Make a Lexer (Tokenizer) that creates Tokens
+  - [ ] The lexer catches syntax errors and remove comments, that way we catch errors before they run
+- [ ] Make a parser (this takes the lexer and turns it into a tree (so we handle parentheticals))
+- [ ] Make the Actionizer (or better name) to turn the AST into an action tree
+- [ ] Make the Executer run the actions
+
+Tokenize -> Parse -> (Actionize | Contectualize)
+Token List -> Abstract Syntax Tree -> Action Tree
+
+https://www.freecodecamp.org/news/the-programming-language-pipeline-91d3f449c919/
+
+
 In order:
+
+
 - [ ] Variables
   - [x] setting (id = 10)
   - [x] String interpolation
