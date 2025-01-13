@@ -1,4 +1,10 @@
 
+// type TokenPart =
+//   | 'command'
+//   | 'request'
+//   | 'httpMethod'
+//   | 'operator'
+//   ;
 
 export type TokenType = 
   // Commands
@@ -9,6 +15,7 @@ export type TokenType =
   | 'request'
   | 'require'
   | 'wait'
+  | 'expect'
 
   // Request
   | 'url'
@@ -22,8 +29,16 @@ export type TokenType =
   | 'headers'
   | 'body'
 
-  // Test
-  | 'expect'
+  // HTTP Methods
+  | 'GET'
+  | 'POST'
+  | 'PUT'
+  | 'DELETE'
+  | 'PATCH'
+  | 'HEAD'
+  | 'CONNECT'
+  | 'OPTIONS'
+  | 'TRACE'
 
   | 'var'
   | '='
@@ -36,6 +51,7 @@ export type TokenType =
   | '('
   | ')'
   | '.'
+  | ','
   | '*'
   | '==='
   | '='
@@ -53,8 +69,10 @@ export type TokenType =
   | 'false'
 
   | 'comment'
+  | 'multi-line-comment'
   | 'line-break'
   | 'string-literal'
+  | 'unquoted-string-literal'
   | 'number-literal'
   | null
   ;

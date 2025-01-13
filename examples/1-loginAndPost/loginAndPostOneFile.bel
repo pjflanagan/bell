@@ -1,5 +1,5 @@
 
-url "localhost:4000/login/"
+url localhost:4000/login/
 
 body
 {
@@ -18,7 +18,7 @@ the login POST request will not be logged
 token = response.body.token
 
 # start a new request
-url "localhost:4000/post/"
+url localhost:4000/post/
 
 # use the token in the headers
 headers

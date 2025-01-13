@@ -8,7 +8,7 @@ require simply ensures that this variable has been set by the time this file is 
 
 require token
 
-url 'localhost:4000/post'
+url localhost:4000/post
 
 headers
 {

@@ -9,14 +9,16 @@ export function tokenize(sourceCode: string): Token[] {
 export const END = Symbol("END");
 
 export class Tokenizer {
-  tokenTypes: Matcher[];
+  private tokenTypes: Matcher[];
 
   constructor(tokenTypes: Matcher[]) {
     this.tokenTypes = tokenTypes;
   }
 
-  *tokenize(text: string): Generator<Token | { type: typeof END }> {
+  public *tokenize(text: string): Generator<Token | { type: typeof END }> {
     let index = 0;
+    let line = 0;
+    let col = 0;
     while (index < text.length) {
       let hasMatch = false;
 
@@ -26,20 +28,27 @@ export class Tokenizer {
         const matched = currentMatcher.exec(text);
         if (matched !== null) {
           index += matched[0].length;
+          col += matched[0].length;
           if (type != null) {
             const token: Token = { type, index };
             if (valueExtractor) {
               token.value = valueExtractor(matched[0]);
+            }
+            if (type === "line-break") {
+              line += 1;
+              col = 0;
             }
             yield token;
           }
           hasMatch = true;
         }
       }
+
       if (!hasMatch) {
-        throw new Error(`Unexpected token at index ${index}`);
+        throw new Error(`Unexpected token at line ${line} col ${col}`);
       }
     }
+
     yield { type: END };
   }
 }
