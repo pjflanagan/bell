@@ -1,6 +1,69 @@
 import { Tokenizer } from "./Tokenizer";
+import { Matcher, TokenTypePartMap } from "./types";
 
-export const bellTokenizer = new Tokenizer([
+const bellTokenTypePartMap: TokenTypePartMap = {
+  import: "command",
+  export: "command",
+  write: "command",
+  log: "command",
+  request: "command",
+  require: "command",
+  wait: "command",
+  expect: "command",
+  url: "requestPart",
+  scheme: "requestPart",
+  domain: "requestPart",
+  port: "requestPart",
+  path: "requestPart",
+  param: "requestPart",
+  params: "requestPart",
+  fragment: "requestPart",
+  headers: "requestPart",
+  body: "requestPart",
+  GET: "httpMethod",
+  POST: "httpMethod",
+  PUT: "httpMethod",
+  DELETE: "httpMethod",
+  PATCH: "httpMethod",
+  HEAD: "httpMethod",
+  CONNECT: "httpMethod",
+  OPTIONS: "httpMethod",
+  TRACE: "httpMethod",
+  "{": "brackets",
+  "}": "brackets",
+  "[": "brackets",
+  "]": "brackets",
+  "(": "brackets",
+  ")": "brackets",
+  "=": "equal",
+  ",": "deliminator",
+  "*": "operation",
+  "/": "operation",
+  "+": "operation",
+  "-": "operation",
+  "||": "operation",
+  "&&": "operation",
+  '!': 'operation',
+  "===": "comparator",
+  "!==": "comparator",
+  ">=": "comparator",
+  ">": "comparator",
+  "<=": "comparator",
+  "<": "comparator",
+  identifier: "value",
+  ".": "value",
+  true: "value",
+  false: "value",
+  "string-literal": "value",
+  "unquoted-string-literal": "value",
+  "number-literal": "value",
+  comment: "comment",
+  "multi-line-comment": "comment",
+  "line-break": "whitespace",
+  "end-of-file": "whitespace"
+}
+
+const bellTokenMatcher: Matcher[] = [
   { matcher: /[ \t]+/, type: null },
   { matcher: /\r?\n/, type: "line-break" },
   { matcher: /###/, type: "multi-line-comment" },
@@ -19,6 +82,7 @@ export const bellTokenizer = new Tokenizer([
   { matcher: /\./, type: "." },
   { matcher: /,/, type: "," },
   { matcher: /\*/, type: "*" },
+  { matcher: /\//, type: "/" },
   { matcher: /===/, type: "===" },
   { matcher: /=/, type: "=" },
   { matcher: /!==/, type: "!==" },
@@ -65,4 +129,6 @@ export const bellTokenizer = new Tokenizer([
 
   { matcher: /[a-zA-Z$_][a-zA-Z0-9$_]*/, type: "identifier", valueExtractor: x => x },
   { matcher: /[^\s](.+)[ \t\r\n]?/, type: "unquoted-string-literal", valueExtractor: x => x },
-]);
+];
+
+export const bellTokenizer = new Tokenizer(bellTokenMatcher, bellTokenTypePartMap);

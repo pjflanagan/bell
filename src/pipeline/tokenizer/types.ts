@@ -1,10 +1,17 @@
 
-// type TokenPart =
-//   | 'command'
-//   | 'request'
-//   | 'httpMethod'
-//   | 'operator'
-//   ;
+type TokenPart =
+  | 'command'
+  | 'requestPart'
+  | 'httpMethod'
+  | 'comparator'
+  | 'operation'
+  | 'value'
+  | 'brackets'
+  | 'whitespace'
+  | 'deliminator'
+  | 'equal'
+  | 'comment'
+  ;
 
 export type TokenType = 
   // Commands
@@ -40,8 +47,11 @@ export type TokenType =
   | 'OPTIONS'
   | 'TRACE'
 
-  | 'identifier'
+  // equal
   | '='
+
+  // deliminator
+  | ','
 
   | '{'
   | '}'
@@ -49,38 +59,51 @@ export type TokenType =
   | ']'
   | '('
   | ')'
-  | '.'
-  | ','
+
+  // operators
   | '*'
-  | '==='
-  | '!=='
-  | '&&'
-  | '!'
-  | '||'
+  | '/'
   | '+'
   | '-'
+  | '||'
+  | '&&'
+  | '!'
+  
+  // comparators
+  | '==='
+  | '!=='
   | '>='
   | '>'
   | '<='
   | '<'
+
+  // value
+  | 'identifier'
+  | '.'
   | 'true'
   | 'false'
-
-  | 'comment'
-  | 'multi-line-comment'
-  | 'line-break'
   | 'string-literal'
   | 'unquoted-string-literal'
   | 'number-literal'
+  
+  // comment
+  | 'comment'
+  | 'multi-line-comment'
+
+  // whitespace
+  | 'line-break'
   | 'end-of-file'
-  | null
   ;
 
+export type TokenTypePartMap = Record<TokenType, TokenPart>;
+  
 // Matcher
+  
+export type NulledWhitespaceToken = TokenType | null;
 
 export type Matcher = {
   matcher: RegExp;
-  type: TokenType;
+  type: NulledWhitespaceToken;
   valueExtractor?: (match: string) => string | number;
 }
 
@@ -89,5 +112,6 @@ export type Matcher = {
 export type Token = {
   index: number;
   type: TokenType;
+  part: TokenPart;
   value?: string | number;
 }

@@ -1,12 +1,14 @@
-import { Matcher, Token } from "./types";
+import { Matcher, Token, TokenTypePartMap } from "./types";
 
 // https://dev.to/ndesmic/writing-a-tokenizer-1j85
 
 export class Tokenizer {
-  private tokenTypes: Matcher[];
+  private tokenTypeMatcher: Matcher[];
+  private tokenTypePartMap: TokenTypePartMap;
 
-  constructor(tokenTypes: Matcher[]) {
-    this.tokenTypes = tokenTypes;
+  constructor(tokenTypeMatcher: Matcher[], tokenTypePartMap: TokenTypePartMap) {
+    this.tokenTypeMatcher = tokenTypeMatcher;
+    this.tokenTypePartMap = tokenTypePartMap;
   }
 
   public *tokenize(sourceCode: string): Generator<Token> {
@@ -17,7 +19,7 @@ export class Tokenizer {
     while (index < sourceCode.length) {
       let hasMatch = false;
 
-      for (const { matcher, type, valueExtractor } of this.tokenTypes) {
+      for (const { matcher, type, valueExtractor } of this.tokenTypeMatcher) {
         const currentMatcher = new RegExp(matcher.source, "y");
         currentMatcher.lastIndex = index;
         const matchedSourceCode = currentMatcher.exec(sourceCode);
@@ -27,7 +29,11 @@ export class Tokenizer {
           col += matchedSourceCode[0].length;
 
           if (type !== null) {
-            const token: Token = { type, index };
+            const token: Token = {
+              type,
+              index,
+              part: this.tokenTypePartMap[type]
+            };
             if (valueExtractor) {
               token.value = valueExtractor(matchedSourceCode[0]);
             }
@@ -52,6 +58,7 @@ export class Tokenizer {
     yield {
       type: "end-of-file",
       index,
+      part: this.tokenTypePartMap["end-of-file"]
     };
   }
 }
