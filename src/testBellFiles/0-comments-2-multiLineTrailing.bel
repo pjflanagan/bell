@@ -1,6 +1,6 @@
 
 ### a valid
 multiline comment
-### with trailing comments
+### with erroneous trailing comments
 
-log 'valid'
+log 'error'

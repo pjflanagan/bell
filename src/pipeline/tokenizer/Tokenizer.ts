@@ -2,12 +2,6 @@ import { Matcher, Token } from "./types";
 
 // https://dev.to/ndesmic/writing-a-tokenizer-1j85
 
-export function tokenize(sourceCode: string): Token[] {
-  return [];
-}
-
-export const END = Symbol("END");
-
 export class Tokenizer {
   private tokenTypes: Matcher[];
 
@@ -15,31 +9,37 @@ export class Tokenizer {
     this.tokenTypes = tokenTypes;
   }
 
-  public *tokenize(text: string): Generator<Token | { type: typeof END }> {
+  public *tokenize(sourceCode: string): Generator<Token> {
     let index = 0;
     let line = 0;
     let col = 0;
-    while (index < text.length) {
+
+    while (index < sourceCode.length) {
       let hasMatch = false;
 
       for (const { matcher, type, valueExtractor } of this.tokenTypes) {
         const currentMatcher = new RegExp(matcher.source, "y");
         currentMatcher.lastIndex = index;
-        const matched = currentMatcher.exec(text);
-        if (matched !== null) {
-          index += matched[0].length;
-          col += matched[0].length;
-          if (type != null) {
+        const matchedSourceCode = currentMatcher.exec(sourceCode);
+
+        if (matchedSourceCode !== null) {
+          index += matchedSourceCode[0].length;
+          col += matchedSourceCode[0].length;
+
+          if (type !== null) {
             const token: Token = { type, index };
             if (valueExtractor) {
-              token.value = valueExtractor(matched[0]);
+              token.value = valueExtractor(matchedSourceCode[0]);
             }
+
             if (type === "line-break") {
               line += 1;
               col = 0;
             }
+
             yield token;
           }
+
           hasMatch = true;
         }
       }
@@ -49,6 +49,9 @@ export class Tokenizer {
       }
     }
 
-    yield { type: END };
+    yield {
+      type: "end-of-file",
+      index,
+    };
   }
 }

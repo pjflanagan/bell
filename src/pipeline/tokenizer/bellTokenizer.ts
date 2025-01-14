@@ -3,8 +3,8 @@ import { Tokenizer } from "./Tokenizer";
 export const bellTokenizer = new Tokenizer([
   { matcher: /[ \t]+/, type: null },
   { matcher: /\r?\n/, type: "line-break" },
-  { matcher: /#(.*?)(?=\r?\n|$)/, type: "comment", valueExtractor: match => match.slice(2) },
   { matcher: /###/, type: "multi-line-comment" },
+  { matcher: /#(.*?)(?=\r?\n|$)/, type: "comment", valueExtractor: match => match.slice(2) },
   { matcher: /"[^"\r\n]+"/, type: "string-literal", valueExtractor: match => match.slice(1, -1) },
   { matcher: /'[^'\r\n]+'/, type: "string-literal", valueExtractor: match => match.slice(1, -1) },
   { matcher: /`[^`]+`/, type: "string-literal", valueExtractor: match => match.slice(1, -1) },
@@ -51,7 +51,6 @@ export const bellTokenizer = new Tokenizer([
   { matcher: /fragment/, type: "fragment" },
   { matcher: /headers/, type: "headers" },
   { matcher: /body/, type: "body" },
-  { matcher: /var/, type: "var" },
   { matcher: /expect/, type: "expect" },
 
   { matcher: /GET/, type: "GET" },
@@ -65,5 +64,5 @@ export const bellTokenizer = new Tokenizer([
   { matcher: /TRACE/, type: "TRACE" },
 
   { matcher: /[a-zA-Z$_][a-zA-Z0-9$_]*/, type: "identifier", valueExtractor: x => x },
-  { matcher: /(.+)[ \t\r\n]?/, type: "unquoted-string-literal", valueExtractor: x => x },
+  { matcher: /[^\s](.+)[ \t\r\n]?/, type: "unquoted-string-literal", valueExtractor: x => x },
 ]);

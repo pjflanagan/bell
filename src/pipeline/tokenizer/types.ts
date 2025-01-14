@@ -40,9 +40,8 @@ export type TokenType =
   | 'OPTIONS'
   | 'TRACE'
 
-  | 'var'
-  | '='
   | 'identifier'
+  | '='
 
   | '{'
   | '}'
@@ -54,7 +53,6 @@ export type TokenType =
   | ','
   | '*'
   | '==='
-  | '='
   | '!=='
   | '&&'
   | '!'
@@ -74,6 +72,7 @@ export type TokenType =
   | 'string-literal'
   | 'unquoted-string-literal'
   | 'number-literal'
+  | 'end-of-file'
   | null
   ;
 
