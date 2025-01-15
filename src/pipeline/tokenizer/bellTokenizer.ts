@@ -127,8 +127,9 @@ const bellTokenMatcher: Matcher[] = [
   { matcher: /OPTIONS/, type: "OPTIONS" },
   { matcher: /TRACE/, type: "TRACE" },
 
-  { matcher: /[a-zA-Z$_][a-zA-Z0-9$_]*/, type: "identifier", valueExtractor: x => x },
+  { matcher: /\$[a-zA-Z_][a-zA-Z0-9_]*/, type: "identifier", valueExtractor: x => x },
   { matcher: /[^\s](.+)[ \t\r\n]?/, type: "unquoted-string-literal", valueExtractor: x => x },
 ];
 
 export const bellTokenizer = new Tokenizer(bellTokenMatcher, bellTokenTypePartMap);
+
