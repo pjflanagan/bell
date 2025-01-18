@@ -1,6 +1,6 @@
 import { read } from "../read/read";
 import { bellTokenizer } from "./bellTokenizer";
-import { Token } from "./types";
+import { Token, TokenType } from "./types";
 import { log } from 'console';
 
 describe('bellTokenizer.ts', () => {
@@ -18,7 +18,7 @@ describe('bellTokenizer.ts', () => {
     // the validate tokens function validates that the expected types
     // show up in order and are all present
     // it does NOT verify that the expected tokens array is equal to the result tokens array
-    function validateTokens(tokens: Token[], expectedTypes: string[]) {
+    function validateTokens(fileName: string, tokens: Token[], expectedTypes: string[]) {
       let lastSeenIndex = -1;
       tokens.forEach((token: Token) => {
         if (token.type === expectedTypes[lastSeenIndex + 1]) {
@@ -26,12 +26,13 @@ describe('bellTokenizer.ts', () => {
         }
       });
       if (lastSeenIndex !== expectedTypes.length - 1) {
+        log(fileName);
         log(tokens);
       }
       expect(lastSeenIndex).toBe(expectedTypes.length - 1);
     }
 
-    type TokenizeTestCase = [string, string[]];
+    type TokenizeTestCase = [string, TokenType[]];
 
     it.each<TokenizeTestCase>([
       ['0-comments-0-singleLine', ['comment', 'line-break']],
@@ -46,10 +47,13 @@ describe('bellTokenizer.ts', () => {
       ['1-variables-6-variableSetToVariable', ['comment', 'identifier', '=', 'number-literal', 'line-break', 'identifier', '=', 'identifier']],
       ['1-variables-7-variableReset', ['identifier', '=', 'number-literal', 'line-break', 'identifier', '=', 'string-literal']],
       // // ['1-variables-8-stringInterpolation', []],
+      ['2-request-0-url', ['url', 'unquoted-string-literal', 'GET']],
+      ['2-request-1-param', ['url', 'unquoted-string-literal', 'param', 'unquoted-string-literal', 'unquoted-string-literal', 'GET']],
+      ['2-request-2-paramNumbersAndBooleans', ['url', 'unquoted-string-literal', 'param', 'unquoted-string-literal', 'number-literal', 'param', 'unquoted-string-literal', 'true', 'GET']],
     ])('should read file %s and create tokens', async (fileName: string, expectedTokenTypes: string[]) => {
       const sourceCode = await read(`src/testBellFiles/${fileName}.bel`);
       const tokens = [...bellTokenizer.tokenize(sourceCode)];
-      validateTokens(tokens, expectedTokenTypes);
+      validateTokens(fileName, tokens, expectedTokenTypes);
     });
   })
 });

@@ -36,6 +36,7 @@ const bellTokenTypePartMap: TokenTypePartMap = {
   "(": "brackets",
   ")": "brackets",
   "=": "equal",
+  ":": "equal",
   ",": "deliminator",
   "*": "operation",
   "/": "operation",
@@ -85,6 +86,7 @@ const bellTokenMatcher: Matcher[] = [
   { matcher: /\//, type: "/" },
   { matcher: /===/, type: "===" },
   { matcher: /=/, type: "=" },
+  { matcher: /:/, type: ":" },
   { matcher: /!==/, type: "!==" },
   { matcher: /&&/, type: "&&" },
   { matcher: /!/, type: "!" },
@@ -128,7 +130,7 @@ const bellTokenMatcher: Matcher[] = [
   { matcher: /TRACE/, type: "TRACE" },
 
   { matcher: /\$[a-zA-Z_][a-zA-Z0-9_]*/, type: "identifier", valueExtractor: x => x },
-  { matcher: /[^\s](.+)[ \t\r\n]?/, type: "unquoted-string-literal", valueExtractor: x => x },
+  { matcher: /([^\s].+?)[\s]/, type: "unquoted-string-literal", valueExtractor: match => match.slice(0, -1) },
 ];
 
 export const bellTokenizer = new Tokenizer(bellTokenMatcher, bellTokenTypePartMap);

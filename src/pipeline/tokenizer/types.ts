@@ -49,6 +49,7 @@ export type TokenType =
 
   // equal
   | '='
+  | ':'
 
   // deliminator
   | ','
