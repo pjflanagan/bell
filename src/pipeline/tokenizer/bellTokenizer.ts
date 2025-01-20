@@ -72,7 +72,7 @@ const bellTokenMatcher: Matcher[] = [
   { matcher: /"[^"\r\n]+"/, type: "string-literal", valueExtractor: match => match.slice(1, -1) },
   { matcher: /'[^'\r\n]+'/, type: "string-literal", valueExtractor: match => match.slice(1, -1) },
   { matcher: /`[^`]+`/, type: "string-literal", valueExtractor: match => match.slice(1, -1) },
-  { matcher: /-?[0-9]+\.?[0-9]*(?![a-zA-Z$_])/, type: "number-literal", valueExtractor: match => parseFloat(match) },
+  { matcher: /-?[0-9]+\.?[0-9]*/, type: "number-literal", valueExtractor: match => parseFloat(match) }, // (?![a-zA-Z$_])
 
   { matcher: /{/, type: "{" },
   { matcher: /}/, type: "}" },

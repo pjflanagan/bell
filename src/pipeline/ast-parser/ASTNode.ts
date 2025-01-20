@@ -1,10 +1,12 @@
 import { Token } from "../tokenizer/types";
 
 export class ASTNode {
-  public children: ASTNode[];
-  public value: Token | null;
+  private children: ASTNode[];
+  private value: Token | undefined;
+  private parent: ASTNode | undefined;
 
-  constructor(value: Token | null) {
+  constructor(parent?: ASTNode, value?: Token) {
+    this.parent = parent;
     this.value = value;
     this.children = [];
   }
@@ -12,10 +14,24 @@ export class ASTNode {
   addChild(node: ASTNode): void {
     this.children.push(node);
   }
-}
 
-export class CommandImport extends ASTNode {
-  constructor(value: Token) {
-    super(value);
+  removeChild(node: ASTNode): void {
+    this.children = this.children.filter(child => child !== node);
+  }
+
+  getChildren(): ASTNode[] {
+    return this.children;
+  }
+
+  getParent() {
+    return this.parent;
+  }
+
+  setParent(parent: ASTNode): void {
+    this.parent = parent;
+  }
+
+  getValue(): Token | undefined {
+    return this.value;
   }
 }
