@@ -1,8 +1,8 @@
 
 # a valid camel case variable set to a number
 
-testVariable = 10
+$testVariable = 10
 
-log testVariable
+log $testVariable
 
 # expect 10

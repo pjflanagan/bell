@@ -1,6 +1,6 @@
 
-inside = 10
-outside = "string has error {inside"
+$inside = 10
+$outside = "string has error {inside"
 
 # expect error
 

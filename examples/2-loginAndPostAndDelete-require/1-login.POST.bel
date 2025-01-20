@@ -1,9 +1,9 @@
 
 # import variables from another bell file
-import { username, password } from './priv';
+import { username, password } from './cred.bell';
 
 # define the route
-url 'localhost:4000/login'
+url localhost:4000/login
 
 # username: define username in a "./priv.bell" file, DO NOT commit to git
 # password: see username error
