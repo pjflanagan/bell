@@ -54,9 +54,6 @@ export class AbstractSyntaxTree {
     // set the new parent as the parent of the active node
     this.activeNode.setParent(newParent);
     newParent.addChild(this.activeNode);
-
-
-    this.activeNode = newParent;
     return newParent;
   }
 
