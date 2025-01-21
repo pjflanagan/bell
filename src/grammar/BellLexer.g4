@@ -1,8 +1,11 @@
+// https://www.youtube.com/watch?v=tkDfxdoQw4I
+// https://shalithasuranga.medium.com/build-your-own-programming-language-with-antlr-5201955537a5 
+
 lexer grammar BellLexer;
 
 // Comments
 
-MultiLineComment  : '###' .*? '###'             -> channel(HIDDEN);
+MultiLineComment  : '###' .*? '###'          -> channel(HIDDEN);
 SingleLineComment : '#' ~[\r\n\u2028\u2029]* -> channel(HIDDEN);
 
 // Special tokens
@@ -11,13 +14,13 @@ Assign            : '=';
 
 // Literal tokens
 
-NullLiteral: 'null';
-BooleanLiteral: 'true' | 'false';
-DecimalLiteral:
-    DecimalIntegerLiteral '.' [0-9] [0-9_]* ExponentPart?
-    | '.' [0-9] [0-9_]* ExponentPart?
-    | DecimalIntegerLiteral ExponentPart?
-;
+NullLiteral       : 'null';
+BooleanLiteral    : 'true' | 'false';
+DecimalLiteral
+  : DecimalIntegerLiteral '.' [0-9] [0-9_]* ExponentPart?
+  | '.' [0-9] [0-9_]* ExponentPart?
+  | DecimalIntegerLiteral ExponentPart?
+  ;
 
 // HTTP Request Statements
 HTTPGet      : 'GET';
@@ -30,17 +33,19 @@ Param        : 'param';
 // Command Statements
 Log          : 'log';
 
-Identifier: IdentifierStart IdentifierPart*;
-/// String Literals
+Identifier   : IdentifierStart IdentifierPart*;
+
+// String Literals
+
 StringLiteral:
-    ('"' DoubleStringCharacter* '"' | '\'' SingleStringCharacter* '\'') {this.ProcessStringLiteral();}
-;
+  ('"' DoubleStringCharacter* '"' | '\'' SingleStringCharacter* '\'') {this.ProcessStringLiteral();}
+  ;
 
 fragment EscapeSequence:
-    CharacterEscapeSequence
-    | '0' // no digit ahead! TODO
-    | UnicodeEscapeSequence
-;
+  CharacterEscapeSequence
+  | '0' // no digit ahead! TODO
+  | UnicodeEscapeSequence
+  ;
 
 fragment ExponentPart: [eE] [+-]? [0-9_]+;
 
@@ -52,9 +57,9 @@ fragment NonEscapeCharacter: ~['"\\bfnrtv0-9xu\r\n];
 
 fragment SingleEscapeCharacter: ['"\\bfnrtv];
 
-fragment UnicodeEscapeSequence:
-    'u' HexDigit HexDigit HexDigit HexDigit
-    | 'u' '{' HexDigit HexDigit+ '}'
+fragment UnicodeEscapeSequence
+  : 'u' HexDigit HexDigit HexDigit HexDigit
+  | 'u' '{' HexDigit HexDigit+ '}'
 ;
 
 fragment CharacterEscapeSequence: SingleEscapeCharacter | NonEscapeCharacter;

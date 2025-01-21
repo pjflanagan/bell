@@ -27,15 +27,11 @@ eos
     | {this.lineTerminatorAhead()}?
     ;
 
-literal
-  : NUMBER
-  | STRING
-  ;
-
 
 singleExpression
-  : literal
-  | identifier
+  : StringLiteral
+  | Identifier
+  | DecimalLiteral
   ;
 
 // HTTP Request Statements
@@ -61,11 +57,12 @@ requestBuildingStatement
   ;
 
 urlStatement
-  : 'url' STRING eos
+  : Url StringLiteral eos
   ;
 
 paramStatement
-  : 'param' ID NUMBER eos
+  : Param (StringLiteral | Identifier) singleExpression eos # NamedParamStatement
+  | Param Identifier eos                                    # IdentifierParamStatement
   ;
 
 // Command Statements
@@ -75,4 +72,5 @@ commandStatement
   ;
 
 logStatement
-  : 'log' ID eos;
+  : 'log' singleExpression eos;
+

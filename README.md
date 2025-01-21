@@ -37,3 +37,13 @@ The project is divided into three parts
 
 - https://code.visualstudio.com/api/language-extensions/syntax-highlight-guide
 - https://code.visualstudio.com/api/references/contribution-points
+
+
+## Develop
+
+Using the Antlr VSCode extension, drag the `*.tokens` files out of the `.antlr` folder and into the `grammar` folder.
+
+```
+$ pip3 install antlr4-tools
+$ antlr4 -Dlanguage=JavaScript ./src/grammar/BellParser.g4 
+```
