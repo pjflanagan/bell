@@ -16,4 +16,5 @@ Token List -> Abstract Syntax Tree -> Action Tree
 ## Resources
 
 - https://www.freecodecamp.org/news/the-programming-language-pipeline-91d3f449c919/
+- https://dev.to/ndesmic/writing-a-tokenizer-1j85
 - https://leanovate.github.io/bedcon/talk/abstract_syntax_tree.html 

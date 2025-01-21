@@ -1,4 +1,8 @@
 
+- [ ] Split this into two parts (see where it makes sense)
+  - [ ] VSCode Extension
+  - [ ] NPM Package for executing Bell files
+
 Revamp using Antlr
 - [ ] Cleanup all the other Todo and Readme files so that we only have the relevant stuff
 - [ ] Remove all irrelevant legacy-todo: comments

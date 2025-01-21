@@ -1,7 +1,5 @@
 import { Matcher, Token, TokenTypePartMap } from "./types";
 
-// https://dev.to/ndesmic/writing-a-tokenizer-1j85
-
 export class Tokenizer {
   private tokenTypeMatcher: Matcher[];
   private tokenTypePartMap: TokenTypePartMap;

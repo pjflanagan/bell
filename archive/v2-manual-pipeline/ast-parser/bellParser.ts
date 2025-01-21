@@ -1,8 +1,6 @@
 import { TokenType } from "../tokenizer/types";
 import { Parser } from "./Parser";
 
-// https://www.antlr.org
-
 type Position = 'parent' | 'sibling' | 'child';
 
 type TokenRule = {

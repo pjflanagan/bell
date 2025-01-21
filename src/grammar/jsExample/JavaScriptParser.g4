@@ -407,7 +407,7 @@ singleExpression
     ;
 
 initializer
-    // legacy-todo: must be `= AssignmentExpression` and we have such label alredy but it doesn't respect the specification.
+    // todo: must be `= AssignmentExpression` and we have such label alredy but it doesn't respect the specification.
     //  See https://tc39.es/ecma262/multipage/ecmascript-language-expressions.html#prod-Initializer
     : '=' singleExpression
     ;
