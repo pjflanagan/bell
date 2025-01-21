@@ -5,7 +5,6 @@
 
 import { Token } from "../tokenizer/types";
 import { AbstractSyntaxTree } from "./AbstractSyntaxTree";
-import { ASTNode } from "./ASTNode";
 import { TokenRuleMap } from "./bellParser";
 
 // the parser will validate that each line is formatted properly, then place the tokens into an AST
