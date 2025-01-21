@@ -1,10 +1,14 @@
 import { TokenType } from "../tokenizer/types";
 import { Parser } from "./Parser";
 
+// https://www.antlr.org
+
+type Position = 'parent' | 'sibling' | 'child';
+
 type TokenRule = {
-  position?: 'parent' | 'sibling' | 'child';
+  position?: Position;
   expectedNextTokens: {
-    position: 'child',
+    position: Position,
     tokenTypes: TokenType[]
   }[];
 }

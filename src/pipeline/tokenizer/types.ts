@@ -15,12 +15,12 @@ type TokenPart =
 
 export type TokenType = 
   // Commands
-  | 'import'
-  | 'export'
-  | 'write'
+  // | 'import'
+  // | 'export'
+  // | 'write'
+  // | 'request'
+  // | 'require'
   | 'log'
-  | 'request'
-  | 'require'
   | 'wait'
   | 'expect'
 
@@ -39,13 +39,13 @@ export type TokenType =
   // HTTP Methods
   | 'GET'
   | 'POST'
-  | 'PUT'
-  | 'DELETE'
-  | 'PATCH'
-  | 'HEAD'
-  | 'CONNECT'
-  | 'OPTIONS'
-  | 'TRACE'
+  // | 'PUT'
+  // | 'DELETE'
+  // | 'PATCH'
+  // | 'HEAD'
+  // | 'CONNECT'
+  // | 'OPTIONS'
+  // | 'TRACE'
 
   // equal
   | '='
