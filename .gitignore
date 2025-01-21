@@ -1,5 +1,6 @@
 .DS_Store
 node_modules
+.antlr
 
 # TODO: remove after testing, only here because it has an API key
 *weather*
