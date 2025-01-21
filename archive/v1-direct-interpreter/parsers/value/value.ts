@@ -8,7 +8,7 @@ export function parseValue(word: string): any {
   if (isString(word)) {
     return parseString(word);
   }
-  // TODO: if this is shaped like a function (ie: input)
+  // legacy-todo: if this is shaped like a function (ie: input)
   // then run that function
   // if (FUNCTION_REGEX) {
 

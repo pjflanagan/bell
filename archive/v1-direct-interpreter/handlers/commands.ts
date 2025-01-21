@@ -4,8 +4,8 @@ import { COMMANDS, Command } from "../parsers/commands";
 import { state } from "../state";
 
 export async function handleCommand(lines: string[], i: number): Promise<number> {
-  // TODO: this is maybe okay for getting the first word, but everything after that needs to be regex
-  // TODO: Because what if there are spaces in the string.
+  // legacy-legacy-todo: this is maybe okay for getting the first word, but everything after that needs to be regex
+  // legacy-todo: Because what if there are spaces in the string.
   const splitLine = lines[i].split(' ');
   const commandName = splitLine[0] as Command;
 
@@ -22,7 +22,7 @@ export async function handleCommand(lines: string[], i: number): Promise<number>
     case "write":
       break;
     case "export":
-      // TODO: export as array when there are multiple, remove all commas from things
+      // legacy-todo: export as array when there are multiple, remove all commas from things
       // FIXME: see this is why we need regex for every single possible line format
       // export save the var to the export map
       state.exportVariable(splitLine[1]);
@@ -56,7 +56,7 @@ export async function handleCommand(lines: string[], i: number): Promise<number>
       // if it's a .bel, run that file
       readBellFile(splitLine[1]);
       // if its .json then save it
-      // TODO: v2 if its a .ts then do that
+      // legacy-todo: v2 if its a .ts then do that
   }
 
   return i;

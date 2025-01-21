@@ -31,7 +31,7 @@ export function locateVariable(variableNameChain: VariableNameChain): any {
     if (parentVariableName === 'response') {
       return response.get(variableNameChain);
     }
-    // TODO: pass variableNameChain
+    // legacy-todo: pass variableNameChain
     return requestProperties.get(parentVariableName as RequestProperty);
   }
   return getIn(state.access(parentVariableName as string), variableNameChain);

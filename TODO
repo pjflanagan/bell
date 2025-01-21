@@ -1,40 +1,14 @@
 
-Revamp:
-- [ ] Make a Lexer (Tokenizer) that creates Tokens
-  - [ ] The lexer catches syntax errors and remove comments, that way we catch errors before they run
-- [ ] Make a parser (this takes the lexer and turns it into a tree (so we handle parentheticals))
-- [ ] Make the Actionizer (or better name) to turn the AST into an action tree
-- [ ] Make the Executer run the actions
-
-Tokenize -> Parse -> (Actionize | Contectualize)
-Token List -> Abstract Syntax Tree -> Action Tree
-
-https://www.freecodecamp.org/news/the-programming-language-pipeline-91d3f449c919/
-
-https://leanovate.github.io/bedcon/talk/abstract_syntax_tree.html 
+Revamp using Antlr
+- [ ] Cleanup all the other Todo and Readme files so that we only have the relevant stuff
+- [ ] Remove all irrelevant legacy-todo: comments
+- [ ] Consolidate all relevant legacy-todo: and resource link comments into the README
+- [ ] Relearn how to do the vscode syntax highlighting so that I can document how
 
 
-In order:
-
-
-- [ ] Variables
-  - [x] setting (id = 10)
-  - [x] String interpolation
-  - [x] extracting (chaining: response.body.id)
-  - [x] extracting from an array (list[3])
-  - [ ] json with variables and string interpolation
-- [ ] All URL properties set
-  - [ ] url parts
-    - [x] url
-    - [ ] scheme
-    - [ ] domain
-    - [x] port
-    - [x] path
-    - [x] params & param
-    - [x] fragment
-  - [ ] body and header
-- [ ] functions
-  - [ ] reading input
-  - [ ] Date
-- [ ] importing files
-- [ ] logging, writing
+1. VSCode Plugin for Syntax highlighting (I won't want to do this if I can't make it look good)
+2. Command Line Tool (make it work in the first place, after that I can try and make it look good)
+3. VSCode Plugin expansion for GUI (this will take the form of an output terminal with a run and cancel button)
+  - unlike Thunder Client this will be more basic and integrated into the existing VSCode file system, rather than a new tab that looks exactly like Postman
+  - This is where the true benefit of this needs to come through. Postman has a lot of features (nameley the enviornment var stuff) that make it powerful. If this is to be a tool rather than a basic scripting language then we need to have useful UI
+4. Perhaps I need a way to export Postman to Bell and vice versa

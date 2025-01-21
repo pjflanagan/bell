@@ -5,15 +5,6 @@
 
 Bell is a simple script for describing and making API calls. 
 
-## TODO
-
-1. VSCode Plugin for Syntax highlighting (I won't want to do this if I can't make it look good)
-2. Command Line Tool (make it work in the first place, after that I can try and make it look good)
-3. VSCode Plugin expansion for GUI (this will take the form of an output terminal with a run and cancel button)
-  - unlike Thunder Client this will be more basic and integrated into the existing VSCode file system, rather than a new tab that looks exactly like Postman
-  - This is where the true benefit of this needs to come through. Postman has a lot of features (nameley the enviornment var stuff) that make it powerful. If this is to be a tool rather than a basic scripting language then we need to have useful UI
-4. Perhaps I need a way to export bell to postman and vice versa
-
 ## Advantages
 
 - Bell files are easy to read: unlike Postman which buries important information in various menu tabs

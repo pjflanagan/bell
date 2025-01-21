@@ -1,5 +1,5 @@
 
-// TODO: this is probably going to be a long file
+// legacy-todo: this is probably going to be a long file
 
 import { readBellFile } from "./interpreter";
 import { initState } from "./state";

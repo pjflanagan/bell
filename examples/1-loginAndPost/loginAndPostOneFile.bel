@@ -39,7 +39,7 @@ POST
 
 # response is a reserved constant (like "this" and "super")
 # response is set to the latest response
-# TODO: body should not be blue here, only response
+# legacy-todo: body should not be blue here, only response
 log response.body.status
 
 # this is the same as the above the command

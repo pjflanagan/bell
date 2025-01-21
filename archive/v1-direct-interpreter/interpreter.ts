@@ -26,7 +26,7 @@ export async function readBellFile(fileName: string) {
 type ActionableLineType = 'command' | 'requestProperty' | 'variableSet' | 'method';
 // type LineType = ActionableLineType | 'blank' | 'comment';
 
-// TODO: interpretFile needs to check recursion
+// legacy-todo: interpretFile needs to check recursion
 export async function interpretFile(lines: string[]) {
   // go through each line and read the commands
   let isMultilineComment = false;
