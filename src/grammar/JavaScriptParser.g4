@@ -1,3 +1,5 @@
+// https://github.com/antlr/grammars-v4/blob/master/javascript/javascript/JavaScriptParser.g4
+
 /*
  * The MIT License (MIT)
  *
