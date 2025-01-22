@@ -32,8 +32,8 @@ identifier
   ;
 
 singleExpression
-  : StringLiteral
-  | Identifier
+  : Identifier
+  | StringLiteral 
   | DecimalLiteral
   ;
 
@@ -70,12 +70,12 @@ requestBuildingStatement
   ;
 
 urlStatement
-  : Url StringLiteral eos
+  : Url (StringLiteral | Identifier) eos
   ;
 
 paramStatement
-  : Param (StringLiteral | Identifier) singleExpression eos # NamedParamStatement
-  | Param Identifier eos                                    # IdentifierParamStatement
+  : Param (StringLiteral | Identifier) singleExpression eos   # NamedParamStatement
+  | Param Identifier eos                                                              # IdentifierParamStatement
   ;
 
 // Command Statements

@@ -3,10 +3,10 @@ lexer grammar BellLexer;
 
 // Hidden tokens
 
-MultiLineComment  : '###' .*? '###'          -> channel(HIDDEN);
-SingleLineComment : '#' ~[\r\n\u2028\u2029]* -> channel(HIDDEN);
-WhiteSpaces: [\t\u000B\u000C\u0020\u00A0]+ -> channel(HIDDEN);
-LineTerminator: [\r\n\u2028\u2029] -> channel(HIDDEN);
+MultiLineComment    : '###' .*? '###'                 -> channel(HIDDEN);
+SingleLineComment   : '#' ~[\r\n\u2028\u2029]*        -> channel(HIDDEN);
+WhiteSpaces         : [\t\u000B\u000C\u0020\u00A0]+   -> channel(HIDDEN);
+LineTerminator      : [\r\n\u2028\u2029]              -> channel(HIDDEN);
 
 
 // Special tokens
@@ -17,10 +17,15 @@ Assign            : '=';
 
 NullLiteral       : 'null';
 BooleanLiteral    : 'true' | 'false';
+
+// Numbers
+
+fragment DecimalIntegerLiteral: '0' | [1-9] [0-9_]*;
+
 DecimalLiteral
-  : DecimalIntegerLiteral '.' [0-9] [0-9_]* ExponentPart?
-  | '.' [0-9] [0-9_]* ExponentPart?
-  | DecimalIntegerLiteral ExponentPart?
+  : DecimalIntegerLiteral '.' [0-9] [0-9_]*
+  | '.' [0-9] [0-9_]*
+  | DecimalIntegerLiteral
   ;
 
 // HTTP Request Statements
@@ -34,43 +39,25 @@ Param        : 'param';
 // Command Statements
 Log          : 'log';
 
-Identifier   : IdentifierStart IdentifierPart*;
+// Variables
+
+// fragment NamedVariableStart: '$' [a-zA-Z_];
+fragment NamedVariable: [a-zA-Z_0-9]+;
+
+Identifier   : '$'NamedVariable*;
 
 // String Literals
 
-StringLiteral:
-  ('"' DoubleStringCharacter* '"' | '\'' SingleStringCharacter* '\'') {this.ProcessStringLiteral();}
+fragment DoubleStringCharacter: ~["\\\r\n];
+
+fragment SingleStringCharacter: ~['\\\r\n];
+
+StringLiteral
+  : ('"' DoubleStringCharacter* '"' | '\'' SingleStringCharacter* '\'') {this.ProcessStringLiteral();}
   ;
 
-fragment EscapeSequence:
-  CharacterEscapeSequence
-  | '0' // no digit ahead! TODO
-  | UnicodeEscapeSequence
-  ;
+// fragment UnquotedStringLiteralCharacter: ~[ \t\r\n\\\u000C];
 
-fragment ExponentPart: [eE] [+-]? [0-9_]+;
-
-fragment LineContinuation: '\\' [\r\n\u2028\u2029]+;
-
-fragment HexDigit: [_0-9a-fA-F];
-
-fragment NonEscapeCharacter: ~['"\\bfnrtv0-9xu\r\n];
-
-fragment SingleEscapeCharacter: ['"\\bfnrtv];
-
-fragment UnicodeEscapeSequence
-  : 'u' HexDigit HexDigit HexDigit HexDigit
-  | 'u' '{' HexDigit HexDigit+ '}'
-  ;
-
-fragment CharacterEscapeSequence: SingleEscapeCharacter | NonEscapeCharacter;
-
-fragment DoubleStringCharacter: ~["\\\r\n] | '\\' EscapeSequence | LineContinuation;
-
-fragment SingleStringCharacter: ~['\\\r\n] | '\\' EscapeSequence | LineContinuation;
-
-fragment DecimalIntegerLiteral: '0' | [1-9] [0-9_]*;
-
-fragment IdentifierPart: IdentifierStart | [\p{Mn}] | [\p{Nd}] | [\p{Pc}] | '\u200C' | '\u200D';
-
-fragment IdentifierStart: [\p{L}] | [$_] | '\\' UnicodeEscapeSequence;
+// UnquotedStringLiteral
+//   : UnquotedStringLiteralCharacter+ {this.ProcessUnquotedStringLiteral();}
+//   ;
