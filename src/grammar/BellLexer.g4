@@ -1,10 +1,13 @@
 
 lexer grammar BellLexer;
 
-// Comments
+// Hidden tokens
 
 MultiLineComment  : '###' .*? '###'          -> channel(HIDDEN);
 SingleLineComment : '#' ~[\r\n\u2028\u2029]* -> channel(HIDDEN);
+WhiteSpaces: [\t\u000B\u000C\u0020\u00A0]+ -> channel(HIDDEN);
+LineTerminator: [\r\n\u2028\u2029] -> channel(HIDDEN);
+
 
 // Special tokens
 
@@ -58,7 +61,7 @@ fragment SingleEscapeCharacter: ['"\\bfnrtv];
 fragment UnicodeEscapeSequence
   : 'u' HexDigit HexDigit HexDigit HexDigit
   | 'u' '{' HexDigit HexDigit+ '}'
-;
+  ;
 
 fragment CharacterEscapeSequence: SingleEscapeCharacter | NonEscapeCharacter;
 

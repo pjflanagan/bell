@@ -27,12 +27,25 @@ eos
     | {this.lineTerminatorAhead()}?
     ;
 
+identifier
+  : Identifier
+  ;
 
 singleExpression
   : StringLiteral
   | Identifier
   | DecimalLiteral
   ;
+
+// Assignment
+
+assignable
+  : identifier
+  ;
+
+variableDeclaration
+    : assignable Assign singleExpression
+    ;
 
 // HTTP Request Statements
 
@@ -42,11 +55,11 @@ requestStatement
   ;
 
 getStatement
-  : 'GET' eos
+  : HTTPGet eos
   ;
 
 postStatement
-  : 'POST' eos
+  : HTTPPost eos
   ;
 
 // Request Building Statements
@@ -72,5 +85,5 @@ commandStatement
   ;
 
 logStatement
-  : 'log' singleExpression eos;
+  : Log singleExpression eos;
 

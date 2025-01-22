@@ -10,7 +10,8 @@
     "Programming Languages"
   ],
   "scripts": {
-    "build": "antlr4ts -visitor ./src/grammar/BellParser.g4",
+    "build-lexer": "antlr4ts -visitor ./src/grammar/BellLexer.g4",
+    "build-parser": "antlr4ts -visitor ./src/grammar/BellParser.g4",
     "build-js": "antlr4 -Dlanguage=Javascript ./src/grammar/BellParser.g4",
     "main": "npx ts-node ./src/main.ts",
     "test": "jest",
