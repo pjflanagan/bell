@@ -10,10 +10,12 @@ import { SourceElementContext } from "./BellParser";
 import { SourceElementsContext } from "./BellParser";
 import { StatementContext } from "./BellParser";
 import { EosContext } from "./BellParser";
+import { NamedVariableContext } from "./BellParser";
+import { IdentifierContext } from "./BellParser";
 import { SingleExpressionContext } from "./BellParser";
+import { AssignableContext } from "./BellParser";
+import { VariableDeclarationContext } from "./BellParser";
 import { RequestStatementContext } from "./BellParser";
-import { GetStatementContext } from "./BellParser";
-import { PostStatementContext } from "./BellParser";
 import { RequestBuildingStatementContext } from "./BellParser";
 import { UrlStatementContext } from "./BellParser";
 import { ParamStatementContext } from "./BellParser";
@@ -108,6 +110,28 @@ export interface BellParserListener extends ParseTreeListener {
 	exitEos?: (ctx: EosContext) => void;
 
 	/**
+	 * Enter a parse tree produced by `BellParser.namedVariable`.
+	 * @param ctx the parse tree
+	 */
+	enterNamedVariable?: (ctx: NamedVariableContext) => void;
+	/**
+	 * Exit a parse tree produced by `BellParser.namedVariable`.
+	 * @param ctx the parse tree
+	 */
+	exitNamedVariable?: (ctx: NamedVariableContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `BellParser.identifier`.
+	 * @param ctx the parse tree
+	 */
+	enterIdentifier?: (ctx: IdentifierContext) => void;
+	/**
+	 * Exit a parse tree produced by `BellParser.identifier`.
+	 * @param ctx the parse tree
+	 */
+	exitIdentifier?: (ctx: IdentifierContext) => void;
+
+	/**
 	 * Enter a parse tree produced by `BellParser.singleExpression`.
 	 * @param ctx the parse tree
 	 */
@@ -119,6 +143,28 @@ export interface BellParserListener extends ParseTreeListener {
 	exitSingleExpression?: (ctx: SingleExpressionContext) => void;
 
 	/**
+	 * Enter a parse tree produced by `BellParser.assignable`.
+	 * @param ctx the parse tree
+	 */
+	enterAssignable?: (ctx: AssignableContext) => void;
+	/**
+	 * Exit a parse tree produced by `BellParser.assignable`.
+	 * @param ctx the parse tree
+	 */
+	exitAssignable?: (ctx: AssignableContext) => void;
+
+	/**
+	 * Enter a parse tree produced by `BellParser.variableDeclaration`.
+	 * @param ctx the parse tree
+	 */
+	enterVariableDeclaration?: (ctx: VariableDeclarationContext) => void;
+	/**
+	 * Exit a parse tree produced by `BellParser.variableDeclaration`.
+	 * @param ctx the parse tree
+	 */
+	exitVariableDeclaration?: (ctx: VariableDeclarationContext) => void;
+
+	/**
 	 * Enter a parse tree produced by `BellParser.requestStatement`.
 	 * @param ctx the parse tree
 	 */
@@ -128,28 +174,6 @@ export interface BellParserListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	exitRequestStatement?: (ctx: RequestStatementContext) => void;
-
-	/**
-	 * Enter a parse tree produced by `BellParser.getStatement`.
-	 * @param ctx the parse tree
-	 */
-	enterGetStatement?: (ctx: GetStatementContext) => void;
-	/**
-	 * Exit a parse tree produced by `BellParser.getStatement`.
-	 * @param ctx the parse tree
-	 */
-	exitGetStatement?: (ctx: GetStatementContext) => void;
-
-	/**
-	 * Enter a parse tree produced by `BellParser.postStatement`.
-	 * @param ctx the parse tree
-	 */
-	enterPostStatement?: (ctx: PostStatementContext) => void;
-	/**
-	 * Exit a parse tree produced by `BellParser.postStatement`.
-	 * @param ctx the parse tree
-	 */
-	exitPostStatement?: (ctx: PostStatementContext) => void;
 
 	/**
 	 * Enter a parse tree produced by `BellParser.requestBuildingStatement`.

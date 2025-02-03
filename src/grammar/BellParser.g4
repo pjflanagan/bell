@@ -27,12 +27,16 @@ eos
     | {this.lineTerminatorAhead()}?
     ;
 
-identifier
+namedVariable
   : Identifier
   ;
 
+identifier
+  : namedVariable
+  ;
+
 singleExpression
-  : Identifier
+  : identifier
   | StringLiteral 
   | DecimalLiteral
   ;
@@ -50,16 +54,7 @@ variableDeclaration
 // HTTP Request Statements
 
 requestStatement
-  : getStatement
-  | postStatement
-  ;
-
-getStatement
-  : HTTPGet eos
-  ;
-
-postStatement
-  : HTTPPost eos
+  : (HTTPGet | HTTPPost) eos
   ;
 
 // Request Building Statements
@@ -70,12 +65,12 @@ requestBuildingStatement
   ;
 
 urlStatement
-  : Url (StringLiteral | Identifier) eos
+  : Url (StringLiteral | identifier) eos
   ;
 
 paramStatement
-  : Param (StringLiteral | Identifier) singleExpression eos   # NamedParamStatement
-  | Param Identifier eos                                                              # IdentifierParamStatement
+  : Param (StringLiteral | identifier) singleExpression eos  # NamedParamStatement
+  | Param namedVariable eos                                  # IdentifierParamStatement
   ;
 
 // Command Statements

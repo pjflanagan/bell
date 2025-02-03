@@ -46,20 +46,23 @@ export class BellParser extends Parser {
 	public static readonly RULE_sourceElements = 2;
 	public static readonly RULE_statement = 3;
 	public static readonly RULE_eos = 4;
-	public static readonly RULE_singleExpression = 5;
-	public static readonly RULE_requestStatement = 6;
-	public static readonly RULE_getStatement = 7;
-	public static readonly RULE_postStatement = 8;
-	public static readonly RULE_requestBuildingStatement = 9;
-	public static readonly RULE_urlStatement = 10;
-	public static readonly RULE_paramStatement = 11;
-	public static readonly RULE_commandStatement = 12;
-	public static readonly RULE_logStatement = 13;
+	public static readonly RULE_namedVariable = 5;
+	public static readonly RULE_identifier = 6;
+	public static readonly RULE_singleExpression = 7;
+	public static readonly RULE_assignable = 8;
+	public static readonly RULE_variableDeclaration = 9;
+	public static readonly RULE_requestStatement = 10;
+	public static readonly RULE_requestBuildingStatement = 11;
+	public static readonly RULE_urlStatement = 12;
+	public static readonly RULE_paramStatement = 13;
+	public static readonly RULE_commandStatement = 14;
+	public static readonly RULE_logStatement = 15;
 	// tslint:disable:no-trailing-whitespace
 	public static readonly ruleNames: string[] = [
-		"program", "sourceElement", "sourceElements", "statement", "eos", "singleExpression", 
-		"requestStatement", "getStatement", "postStatement", "requestBuildingStatement", 
-		"urlStatement", "paramStatement", "commandStatement", "logStatement",
+		"program", "sourceElement", "sourceElements", "statement", "eos", "namedVariable", 
+		"identifier", "singleExpression", "assignable", "variableDeclaration", 
+		"requestStatement", "requestBuildingStatement", "urlStatement", "paramStatement", 
+		"commandStatement", "logStatement",
 	];
 
 	private static readonly _LITERAL_NAMES: Array<string | undefined> = [
@@ -105,17 +108,17 @@ export class BellParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 29;
+			this.state = 33;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << BellParser.HTTPGet) | (1 << BellParser.HTTPPost) | (1 << BellParser.Url) | (1 << BellParser.Param) | (1 << BellParser.Log))) !== 0)) {
 				{
-				this.state = 28;
+				this.state = 32;
 				this.sourceElements();
 				}
 			}
 
-			this.state = 31;
+			this.state = 35;
 			this.match(BellParser.EOF);
 			}
 		}
@@ -140,7 +143,7 @@ export class BellParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 33;
+			this.state = 37;
 			this.statement();
 			}
 		}
@@ -166,17 +169,17 @@ export class BellParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 36;
+			this.state = 40;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			do {
 				{
 				{
-				this.state = 35;
+				this.state = 39;
 				this.sourceElement();
 				}
 				}
-				this.state = 38;
+				this.state = 42;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			} while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << BellParser.HTTPGet) | (1 << BellParser.HTTPPost) | (1 << BellParser.Url) | (1 << BellParser.Param) | (1 << BellParser.Log))) !== 0));
@@ -201,14 +204,14 @@ export class BellParser extends Parser {
 		let _localctx: StatementContext = new StatementContext(this._ctx, this.state);
 		this.enterRule(_localctx, 6, BellParser.RULE_statement);
 		try {
-			this.state = 43;
+			this.state = 47;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case BellParser.Url:
 			case BellParser.Param:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 40;
+				this.state = 44;
 				this.requestBuildingStatement();
 				}
 				break;
@@ -216,14 +219,14 @@ export class BellParser extends Parser {
 			case BellParser.HTTPPost:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 41;
+				this.state = 45;
 				this.requestStatement();
 				}
 				break;
 			case BellParser.Log:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 42;
+				this.state = 46;
 				this.commandStatement();
 				}
 				break;
@@ -250,13 +253,13 @@ export class BellParser extends Parser {
 		let _localctx: EosContext = new EosContext(this._ctx, this.state);
 		this.enterRule(_localctx, 8, BellParser.RULE_eos);
 		try {
-			this.state = 47;
+			this.state = 51;
 			this._errHandler.sync(this);
 			switch ( this.interpreter.adaptivePredict(this._input, 3, this._ctx) ) {
 			case 1:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 45;
+				this.state = 49;
 				this.match(BellParser.EOF);
 				}
 				break;
@@ -264,7 +267,7 @@ export class BellParser extends Parser {
 			case 2:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 46;
+				this.state = 50;
 				if (!(this.lineTerminatorAhead())) {
 					throw this.createFailedPredicateException("this.lineTerminatorAhead()");
 				}
@@ -287,25 +290,14 @@ export class BellParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public singleExpression(): SingleExpressionContext {
-		let _localctx: SingleExpressionContext = new SingleExpressionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 10, BellParser.RULE_singleExpression);
-		let _la: number;
+	public namedVariable(): NamedVariableContext {
+		let _localctx: NamedVariableContext = new NamedVariableContext(this._ctx, this.state);
+		this.enterRule(_localctx, 10, BellParser.RULE_namedVariable);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 49;
-			_la = this._input.LA(1);
-			if (!((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << BellParser.DecimalLiteral) | (1 << BellParser.Identifier) | (1 << BellParser.StringLiteral))) !== 0))) {
-			this._errHandler.recoverInline(this);
-			} else {
-				if (this._input.LA(1) === Token.EOF) {
-					this.matchedEOF = true;
-				}
-
-				this._errHandler.reportMatch(this);
-				this.consume();
-			}
+			this.state = 53;
+			this.match(BellParser.Identifier);
 			}
 		}
 		catch (re) {
@@ -323,25 +315,57 @@ export class BellParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public requestStatement(): RequestStatementContext {
-		let _localctx: RequestStatementContext = new RequestStatementContext(this._ctx, this.state);
-		this.enterRule(_localctx, 12, BellParser.RULE_requestStatement);
+	public identifier(): IdentifierContext {
+		let _localctx: IdentifierContext = new IdentifierContext(this._ctx, this.state);
+		this.enterRule(_localctx, 12, BellParser.RULE_identifier);
 		try {
-			this.state = 53;
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 55;
+			this.namedVariable();
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public singleExpression(): SingleExpressionContext {
+		let _localctx: SingleExpressionContext = new SingleExpressionContext(this._ctx, this.state);
+		this.enterRule(_localctx, 14, BellParser.RULE_singleExpression);
+		try {
+			this.state = 60;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
-			case BellParser.HTTPGet:
+			case BellParser.Identifier:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 51;
-				this.getStatement();
+				this.state = 57;
+				this.identifier();
 				}
 				break;
-			case BellParser.HTTPPost:
+			case BellParser.StringLiteral:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 52;
-				this.postStatement();
+				this.state = 58;
+				this.match(BellParser.StringLiteral);
+				}
+				break;
+			case BellParser.DecimalLiteral:
+				this.enterOuterAlt(_localctx, 3);
+				{
+				this.state = 59;
+				this.match(BellParser.DecimalLiteral);
 				}
 				break;
 			default:
@@ -363,16 +387,14 @@ export class BellParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public getStatement(): GetStatementContext {
-		let _localctx: GetStatementContext = new GetStatementContext(this._ctx, this.state);
-		this.enterRule(_localctx, 14, BellParser.RULE_getStatement);
+	public assignable(): AssignableContext {
+		let _localctx: AssignableContext = new AssignableContext(this._ctx, this.state);
+		this.enterRule(_localctx, 16, BellParser.RULE_assignable);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 55;
-			this.match(BellParser.HTTPGet);
-			this.state = 56;
-			this.eos();
+			this.state = 62;
+			this.identifier();
 			}
 		}
 		catch (re) {
@@ -390,15 +412,55 @@ export class BellParser extends Parser {
 		return _localctx;
 	}
 	// @RuleVersion(0)
-	public postStatement(): PostStatementContext {
-		let _localctx: PostStatementContext = new PostStatementContext(this._ctx, this.state);
-		this.enterRule(_localctx, 16, BellParser.RULE_postStatement);
+	public variableDeclaration(): VariableDeclarationContext {
+		let _localctx: VariableDeclarationContext = new VariableDeclarationContext(this._ctx, this.state);
+		this.enterRule(_localctx, 18, BellParser.RULE_variableDeclaration);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 58;
-			this.match(BellParser.HTTPPost);
-			this.state = 59;
+			this.state = 64;
+			this.assignable();
+			this.state = 65;
+			this.match(BellParser.Assign);
+			this.state = 66;
+			this.singleExpression();
+			}
+		}
+		catch (re) {
+			if (re instanceof RecognitionException) {
+				_localctx.exception = re;
+				this._errHandler.reportError(this, re);
+				this._errHandler.recover(this, re);
+			} else {
+				throw re;
+			}
+		}
+		finally {
+			this.exitRule();
+		}
+		return _localctx;
+	}
+	// @RuleVersion(0)
+	public requestStatement(): RequestStatementContext {
+		let _localctx: RequestStatementContext = new RequestStatementContext(this._ctx, this.state);
+		this.enterRule(_localctx, 20, BellParser.RULE_requestStatement);
+		let _la: number;
+		try {
+			this.enterOuterAlt(_localctx, 1);
+			{
+			this.state = 68;
+			_la = this._input.LA(1);
+			if (!(_la === BellParser.HTTPGet || _la === BellParser.HTTPPost)) {
+			this._errHandler.recoverInline(this);
+			} else {
+				if (this._input.LA(1) === Token.EOF) {
+					this.matchedEOF = true;
+				}
+
+				this._errHandler.reportMatch(this);
+				this.consume();
+			}
+			this.state = 69;
 			this.eos();
 			}
 		}
@@ -419,22 +481,22 @@ export class BellParser extends Parser {
 	// @RuleVersion(0)
 	public requestBuildingStatement(): RequestBuildingStatementContext {
 		let _localctx: RequestBuildingStatementContext = new RequestBuildingStatementContext(this._ctx, this.state);
-		this.enterRule(_localctx, 18, BellParser.RULE_requestBuildingStatement);
+		this.enterRule(_localctx, 22, BellParser.RULE_requestBuildingStatement);
 		try {
-			this.state = 63;
+			this.state = 73;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case BellParser.Url:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 61;
+				this.state = 71;
 				this.urlStatement();
 				}
 				break;
 			case BellParser.Param:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 62;
+				this.state = 72;
 				this.paramStatement();
 				}
 				break;
@@ -459,15 +521,31 @@ export class BellParser extends Parser {
 	// @RuleVersion(0)
 	public urlStatement(): UrlStatementContext {
 		let _localctx: UrlStatementContext = new UrlStatementContext(this._ctx, this.state);
-		this.enterRule(_localctx, 20, BellParser.RULE_urlStatement);
+		this.enterRule(_localctx, 24, BellParser.RULE_urlStatement);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 65;
+			this.state = 75;
 			this.match(BellParser.Url);
-			this.state = 66;
-			this.match(BellParser.StringLiteral);
-			this.state = 67;
+			this.state = 78;
+			this._errHandler.sync(this);
+			switch (this._input.LA(1)) {
+			case BellParser.StringLiteral:
+				{
+				this.state = 76;
+				this.match(BellParser.StringLiteral);
+				}
+				break;
+			case BellParser.Identifier:
+				{
+				this.state = 77;
+				this.identifier();
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+			this.state = 80;
 			this.eos();
 			}
 		}
@@ -488,33 +566,38 @@ export class BellParser extends Parser {
 	// @RuleVersion(0)
 	public paramStatement(): ParamStatementContext {
 		let _localctx: ParamStatementContext = new ParamStatementContext(this._ctx, this.state);
-		this.enterRule(_localctx, 22, BellParser.RULE_paramStatement);
-		let _la: number;
+		this.enterRule(_localctx, 26, BellParser.RULE_paramStatement);
 		try {
-			this.state = 77;
+			this.state = 94;
 			this._errHandler.sync(this);
-			switch ( this.interpreter.adaptivePredict(this._input, 6, this._ctx) ) {
+			switch ( this.interpreter.adaptivePredict(this._input, 8, this._ctx) ) {
 			case 1:
 				_localctx = new NamedParamStatementContext(_localctx);
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 69;
+				this.state = 82;
 				this.match(BellParser.Param);
-				this.state = 70;
-				_la = this._input.LA(1);
-				if (!(_la === BellParser.Identifier || _la === BellParser.StringLiteral)) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
+				this.state = 85;
+				this._errHandler.sync(this);
+				switch (this._input.LA(1)) {
+				case BellParser.StringLiteral:
+					{
+					this.state = 83;
+					this.match(BellParser.StringLiteral);
 					}
-
-					this._errHandler.reportMatch(this);
-					this.consume();
+					break;
+				case BellParser.Identifier:
+					{
+					this.state = 84;
+					this.identifier();
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
 				}
-				this.state = 71;
+				this.state = 87;
 				this.singleExpression();
-				this.state = 72;
+				this.state = 88;
 				this.eos();
 				}
 				break;
@@ -523,11 +606,11 @@ export class BellParser extends Parser {
 				_localctx = new IdentifierParamStatementContext(_localctx);
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 74;
+				this.state = 90;
 				this.match(BellParser.Param);
-				this.state = 75;
-				this.match(BellParser.Identifier);
-				this.state = 76;
+				this.state = 91;
+				this.namedVariable();
+				this.state = 92;
 				this.eos();
 				}
 				break;
@@ -550,11 +633,11 @@ export class BellParser extends Parser {
 	// @RuleVersion(0)
 	public commandStatement(): CommandStatementContext {
 		let _localctx: CommandStatementContext = new CommandStatementContext(this._ctx, this.state);
-		this.enterRule(_localctx, 24, BellParser.RULE_commandStatement);
+		this.enterRule(_localctx, 28, BellParser.RULE_commandStatement);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 79;
+			this.state = 96;
 			this.logStatement();
 			}
 		}
@@ -575,15 +658,15 @@ export class BellParser extends Parser {
 	// @RuleVersion(0)
 	public logStatement(): LogStatementContext {
 		let _localctx: LogStatementContext = new LogStatementContext(this._ctx, this.state);
-		this.enterRule(_localctx, 26, BellParser.RULE_logStatement);
+		this.enterRule(_localctx, 30, BellParser.RULE_logStatement);
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 81;
+			this.state = 98;
 			this.match(BellParser.Log);
-			this.state = 82;
+			this.state = 99;
 			this.singleExpression();
-			this.state = 83;
+			this.state = 100;
 			this.eos();
 			}
 		}
@@ -618,39 +701,45 @@ export class BellParser extends Parser {
 	}
 
 	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x0FX\x04\x02" +
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x0Fi\x04\x02" +
 		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
 		"\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x04\f\t\f\x04\r\t\r\x04" +
-		"\x0E\t\x0E\x04\x0F\t\x0F\x03\x02\x05\x02 \n\x02\x03\x02\x03\x02\x03\x03" +
-		"\x03\x03\x03\x04\x06\x04\'\n\x04\r\x04\x0E\x04(\x03\x05\x03\x05\x03\x05" +
-		"\x05\x05.\n\x05\x03\x06\x03\x06\x05\x062\n\x06\x03\x07\x03\x07\x03\b\x03" +
-		"\b\x05\b8\n\b\x03\t\x03\t\x03\t\x03\n\x03\n\x03\n\x03\v\x03\v\x05\vB\n" +
-		"\v\x03\f\x03\f\x03\f\x03\f\x03\r\x03\r\x03\r\x03\r\x03\r\x03\r\x03\r\x03" +
-		"\r\x05\rP\n\r\x03\x0E\x03\x0E\x03\x0F\x03\x0F\x03\x0F\x03\x0F\x03\x0F" +
-		"\x02\x02\x02\x10\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x10" +
-		"\x02\x12\x02\x14\x02\x16\x02\x18\x02\x1A\x02\x1C\x02\x02\x04\x04\x02\b" +
-		"\b\x0E\x0F\x03\x02\x0E\x0F\x02Q\x02\x1F\x03\x02\x02\x02\x04#\x03\x02\x02" +
-		"\x02\x06&\x03\x02\x02\x02\b-\x03\x02\x02\x02\n1\x03\x02\x02\x02\f3\x03" +
-		"\x02\x02\x02\x0E7\x03\x02\x02\x02\x109\x03\x02\x02\x02\x12<\x03\x02\x02" +
-		"\x02\x14A\x03\x02\x02\x02\x16C\x03\x02\x02\x02\x18O\x03\x02\x02\x02\x1A" +
-		"Q\x03\x02\x02\x02\x1CS\x03\x02\x02\x02\x1E \x05\x06\x04\x02\x1F\x1E\x03" +
-		"\x02\x02\x02\x1F \x03\x02\x02\x02 !\x03\x02\x02\x02!\"\x07\x02\x02\x03" +
-		"\"\x03\x03\x02\x02\x02#$\x05\b\x05\x02$\x05\x03\x02\x02\x02%\'\x05\x04" +
-		"\x03\x02&%\x03\x02\x02\x02\'(\x03\x02\x02\x02(&\x03\x02\x02\x02()\x03" +
-		"\x02\x02\x02)\x07\x03\x02\x02\x02*.\x05\x14\v\x02+.\x05\x0E\b\x02,.\x05" +
-		"\x1A\x0E\x02-*\x03\x02\x02\x02-+\x03\x02\x02\x02-,\x03\x02\x02\x02.\t" +
-		"\x03\x02\x02\x02/2\x07\x02\x02\x0302\x06\x06\x02\x021/\x03\x02\x02\x02" +
-		"10\x03\x02\x02\x022\v\x03\x02\x02\x0234\t\x02\x02\x024\r\x03\x02\x02\x02" +
-		"58\x05\x10\t\x0268\x05\x12\n\x0275\x03\x02\x02\x0276\x03\x02\x02\x028" +
-		"\x0F\x03\x02\x02\x029:\x07\t\x02\x02:;\x05\n\x06\x02;\x11\x03\x02\x02" +
-		"\x02<=\x07\n\x02\x02=>\x05\n\x06\x02>\x13\x03\x02\x02\x02?B\x05\x16\f" +
-		"\x02@B\x05\x18\r\x02A?\x03\x02\x02\x02A@\x03\x02\x02\x02B\x15\x03\x02" +
-		"\x02\x02CD\x07\v\x02\x02DE\x07\x0F\x02\x02EF\x05\n\x06\x02F\x17\x03\x02" +
-		"\x02\x02GH\x07\f\x02\x02HI\t\x03\x02\x02IJ\x05\f\x07\x02JK\x05\n\x06\x02" +
-		"KP\x03\x02\x02\x02LM\x07\f\x02\x02MN\x07\x0E\x02\x02NP\x05\n\x06\x02O" +
-		"G\x03\x02\x02\x02OL\x03\x02\x02\x02P\x19\x03\x02\x02\x02QR\x05\x1C\x0F" +
-		"\x02R\x1B\x03\x02\x02\x02ST\x07\r\x02\x02TU\x05\f\x07\x02UV\x05\n\x06" +
-		"\x02V\x1D\x03\x02\x02\x02\t\x1F(-17AO";
+		"\x0E\t\x0E\x04\x0F\t\x0F\x04\x10\t\x10\x04\x11\t\x11\x03\x02\x05\x02$" +
+		"\n\x02\x03\x02\x03\x02\x03\x03\x03\x03\x03\x04\x06\x04+\n\x04\r\x04\x0E" +
+		"\x04,\x03\x05\x03\x05\x03\x05\x05\x052\n\x05\x03\x06\x03\x06\x05\x066" +
+		"\n\x06\x03\x07\x03\x07\x03\b\x03\b\x03\t\x03\t\x03\t\x05\t?\n\t\x03\n" +
+		"\x03\n\x03\v\x03\v\x03\v\x03\v\x03\f\x03\f\x03\f\x03\r\x03\r\x05\rL\n" +
+		"\r\x03\x0E\x03\x0E\x03\x0E\x05\x0EQ\n\x0E\x03\x0E\x03\x0E\x03\x0F\x03" +
+		"\x0F\x03\x0F\x05\x0FX\n\x0F\x03\x0F\x03\x0F\x03\x0F\x03\x0F\x03\x0F\x03" +
+		"\x0F\x03\x0F\x05\x0Fa\n\x0F\x03\x10\x03\x10\x03\x11\x03\x11\x03\x11\x03" +
+		"\x11\x03\x11\x02\x02\x02\x12\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02" +
+		"\x0E\x02\x10\x02\x12\x02\x14\x02\x16\x02\x18\x02\x1A\x02\x1C\x02\x1E\x02" +
+		" \x02\x02\x03\x03\x02\t\n\x02c\x02#\x03\x02\x02\x02\x04\'\x03\x02\x02" +
+		"\x02\x06*\x03\x02\x02\x02\b1\x03\x02\x02\x02\n5\x03\x02\x02\x02\f7\x03" +
+		"\x02\x02\x02\x0E9\x03\x02\x02\x02\x10>\x03\x02\x02\x02\x12@\x03\x02\x02" +
+		"\x02\x14B\x03\x02\x02\x02\x16F\x03\x02\x02\x02\x18K\x03\x02\x02\x02\x1A" +
+		"M\x03\x02\x02\x02\x1C`\x03\x02\x02\x02\x1Eb\x03\x02\x02\x02 d\x03\x02" +
+		"\x02\x02\"$\x05\x06\x04\x02#\"\x03\x02\x02\x02#$\x03\x02\x02\x02$%\x03" +
+		"\x02\x02\x02%&\x07\x02\x02\x03&\x03\x03\x02\x02\x02\'(\x05\b\x05\x02(" +
+		"\x05\x03\x02\x02\x02)+\x05\x04\x03\x02*)\x03\x02\x02\x02+,\x03\x02\x02" +
+		"\x02,*\x03\x02\x02\x02,-\x03\x02\x02\x02-\x07\x03\x02\x02\x02.2\x05\x18" +
+		"\r\x02/2\x05\x16\f\x0202\x05\x1E\x10\x021.\x03\x02\x02\x021/\x03\x02\x02" +
+		"\x0210\x03\x02\x02\x022\t\x03\x02\x02\x0236\x07\x02\x02\x0346\x06\x06" +
+		"\x02\x0253\x03\x02\x02\x0254\x03\x02\x02\x026\v\x03\x02\x02\x0278\x07" +
+		"\x0E\x02\x028\r\x03\x02\x02\x029:\x05\f\x07\x02:\x0F\x03\x02\x02\x02;" +
+		"?\x05\x0E\b\x02<?\x07\x0F\x02\x02=?\x07\b\x02\x02>;\x03\x02\x02\x02><" +
+		"\x03\x02\x02\x02>=\x03\x02\x02\x02?\x11\x03\x02\x02\x02@A\x05\x0E\b\x02" +
+		"A\x13\x03\x02\x02\x02BC\x05\x12\n\x02CD\x07\x05\x02\x02DE\x05\x10\t\x02" +
+		"E\x15\x03\x02\x02\x02FG\t\x02\x02\x02GH\x05\n\x06\x02H\x17\x03\x02\x02" +
+		"\x02IL\x05\x1A\x0E\x02JL\x05\x1C\x0F\x02KI\x03\x02\x02\x02KJ\x03\x02\x02" +
+		"\x02L\x19\x03\x02\x02\x02MP\x07\v\x02\x02NQ\x07\x0F\x02\x02OQ\x05\x0E" +
+		"\b\x02PN\x03\x02\x02\x02PO\x03\x02\x02\x02QR\x03\x02\x02\x02RS\x05\n\x06" +
+		"\x02S\x1B\x03\x02\x02\x02TW\x07\f\x02\x02UX\x07\x0F\x02\x02VX\x05\x0E" +
+		"\b\x02WU\x03\x02\x02\x02WV\x03\x02\x02\x02XY\x03\x02\x02\x02YZ\x05\x10" +
+		"\t\x02Z[\x05\n\x06\x02[a\x03\x02\x02\x02\\]\x07\f\x02\x02]^\x05\f\x07" +
+		"\x02^_\x05\n\x06\x02_a\x03\x02\x02\x02`T\x03\x02\x02\x02`\\\x03\x02\x02" +
+		"\x02a\x1D\x03\x02\x02\x02bc\x05 \x11\x02c\x1F\x03\x02\x02\x02de\x07\r" +
+		"\x02\x02ef\x05\x10\t\x02fg\x05\n\x06\x02g!\x03\x02\x02\x02\v#,15>KPW`";
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
 		if (!BellParser.__ATN) {
@@ -833,9 +922,73 @@ export class EosContext extends ParserRuleContext {
 }
 
 
+export class NamedVariableContext extends ParserRuleContext {
+	public Identifier(): TerminalNode { return this.getToken(BellParser.Identifier, 0); }
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return BellParser.RULE_namedVariable; }
+	// @Override
+	public enterRule(listener: BellParserListener): void {
+		if (listener.enterNamedVariable) {
+			listener.enterNamedVariable(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: BellParserListener): void {
+		if (listener.exitNamedVariable) {
+			listener.exitNamedVariable(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: BellParserVisitor<Result>): Result {
+		if (visitor.visitNamedVariable) {
+			return visitor.visitNamedVariable(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class IdentifierContext extends ParserRuleContext {
+	public namedVariable(): NamedVariableContext {
+		return this.getRuleContext(0, NamedVariableContext);
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return BellParser.RULE_identifier; }
+	// @Override
+	public enterRule(listener: BellParserListener): void {
+		if (listener.enterIdentifier) {
+			listener.enterIdentifier(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: BellParserListener): void {
+		if (listener.exitIdentifier) {
+			listener.exitIdentifier(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: BellParserVisitor<Result>): Result {
+		if (visitor.visitIdentifier) {
+			return visitor.visitIdentifier(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
 export class SingleExpressionContext extends ParserRuleContext {
+	public identifier(): IdentifierContext | undefined {
+		return this.tryGetRuleContext(0, IdentifierContext);
+	}
 	public StringLiteral(): TerminalNode | undefined { return this.tryGetToken(BellParser.StringLiteral, 0); }
-	public Identifier(): TerminalNode | undefined { return this.tryGetToken(BellParser.Identifier, 0); }
 	public DecimalLiteral(): TerminalNode | undefined { return this.tryGetToken(BellParser.DecimalLiteral, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -865,13 +1018,80 @@ export class SingleExpressionContext extends ParserRuleContext {
 }
 
 
+export class AssignableContext extends ParserRuleContext {
+	public identifier(): IdentifierContext {
+		return this.getRuleContext(0, IdentifierContext);
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return BellParser.RULE_assignable; }
+	// @Override
+	public enterRule(listener: BellParserListener): void {
+		if (listener.enterAssignable) {
+			listener.enterAssignable(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: BellParserListener): void {
+		if (listener.exitAssignable) {
+			listener.exitAssignable(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: BellParserVisitor<Result>): Result {
+		if (visitor.visitAssignable) {
+			return visitor.visitAssignable(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
+export class VariableDeclarationContext extends ParserRuleContext {
+	public assignable(): AssignableContext {
+		return this.getRuleContext(0, AssignableContext);
+	}
+	public Assign(): TerminalNode { return this.getToken(BellParser.Assign, 0); }
+	public singleExpression(): SingleExpressionContext {
+		return this.getRuleContext(0, SingleExpressionContext);
+	}
+	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
+		super(parent, invokingState);
+	}
+	// @Override
+	public get ruleIndex(): number { return BellParser.RULE_variableDeclaration; }
+	// @Override
+	public enterRule(listener: BellParserListener): void {
+		if (listener.enterVariableDeclaration) {
+			listener.enterVariableDeclaration(this);
+		}
+	}
+	// @Override
+	public exitRule(listener: BellParserListener): void {
+		if (listener.exitVariableDeclaration) {
+			listener.exitVariableDeclaration(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: BellParserVisitor<Result>): Result {
+		if (visitor.visitVariableDeclaration) {
+			return visitor.visitVariableDeclaration(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
+}
+
+
 export class RequestStatementContext extends ParserRuleContext {
-	public getStatement(): GetStatementContext | undefined {
-		return this.tryGetRuleContext(0, GetStatementContext);
+	public eos(): EosContext {
+		return this.getRuleContext(0, EosContext);
 	}
-	public postStatement(): PostStatementContext | undefined {
-		return this.tryGetRuleContext(0, PostStatementContext);
-	}
+	public HTTPGet(): TerminalNode | undefined { return this.tryGetToken(BellParser.HTTPGet, 0); }
+	public HTTPPost(): TerminalNode | undefined { return this.tryGetToken(BellParser.HTTPPost, 0); }
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
@@ -893,72 +1113,6 @@ export class RequestStatementContext extends ParserRuleContext {
 	public accept<Result>(visitor: BellParserVisitor<Result>): Result {
 		if (visitor.visitRequestStatement) {
 			return visitor.visitRequestStatement(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class GetStatementContext extends ParserRuleContext {
-	public HTTPGet(): TerminalNode { return this.getToken(BellParser.HTTPGet, 0); }
-	public eos(): EosContext {
-		return this.getRuleContext(0, EosContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return BellParser.RULE_getStatement; }
-	// @Override
-	public enterRule(listener: BellParserListener): void {
-		if (listener.enterGetStatement) {
-			listener.enterGetStatement(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: BellParserListener): void {
-		if (listener.exitGetStatement) {
-			listener.exitGetStatement(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: BellParserVisitor<Result>): Result {
-		if (visitor.visitGetStatement) {
-			return visitor.visitGetStatement(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class PostStatementContext extends ParserRuleContext {
-	public HTTPPost(): TerminalNode { return this.getToken(BellParser.HTTPPost, 0); }
-	public eos(): EosContext {
-		return this.getRuleContext(0, EosContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return BellParser.RULE_postStatement; }
-	// @Override
-	public enterRule(listener: BellParserListener): void {
-		if (listener.enterPostStatement) {
-			listener.enterPostStatement(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: BellParserListener): void {
-		if (listener.exitPostStatement) {
-			listener.exitPostStatement(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: BellParserVisitor<Result>): Result {
-		if (visitor.visitPostStatement) {
-			return visitor.visitPostStatement(this);
 		} else {
 			return visitor.visitChildren(this);
 		}
@@ -1003,9 +1157,12 @@ export class RequestBuildingStatementContext extends ParserRuleContext {
 
 export class UrlStatementContext extends ParserRuleContext {
 	public Url(): TerminalNode { return this.getToken(BellParser.Url, 0); }
-	public StringLiteral(): TerminalNode { return this.getToken(BellParser.StringLiteral, 0); }
 	public eos(): EosContext {
 		return this.getRuleContext(0, EosContext);
+	}
+	public StringLiteral(): TerminalNode | undefined { return this.tryGetToken(BellParser.StringLiteral, 0); }
+	public identifier(): IdentifierContext | undefined {
+		return this.tryGetRuleContext(0, IdentifierContext);
 	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
@@ -1054,7 +1211,9 @@ export class NamedParamStatementContext extends ParamStatementContext {
 		return this.getRuleContext(0, EosContext);
 	}
 	public StringLiteral(): TerminalNode | undefined { return this.tryGetToken(BellParser.StringLiteral, 0); }
-	public Identifier(): TerminalNode | undefined { return this.tryGetToken(BellParser.Identifier, 0); }
+	public identifier(): IdentifierContext | undefined {
+		return this.tryGetRuleContext(0, IdentifierContext);
+	}
 	constructor(ctx: ParamStatementContext) {
 		super(ctx.parent, ctx.invokingState);
 		this.copyFrom(ctx);
@@ -1082,7 +1241,9 @@ export class NamedParamStatementContext extends ParamStatementContext {
 }
 export class IdentifierParamStatementContext extends ParamStatementContext {
 	public Param(): TerminalNode { return this.getToken(BellParser.Param, 0); }
-	public Identifier(): TerminalNode { return this.getToken(BellParser.Identifier, 0); }
+	public namedVariable(): NamedVariableContext {
+		return this.getRuleContext(0, NamedVariableContext);
+	}
 	public eos(): EosContext {
 		return this.getRuleContext(0, EosContext);
 	}

@@ -38,13 +38,16 @@ Param        : 'param';
 
 // Command Statements
 Log          : 'log';
+Input        : 'input';
+Assert       : 'assert';
 
 // Variables
 
-// fragment NamedVariableStart: '$' [a-zA-Z_];
-fragment NamedVariable: [a-zA-Z_0-9]+;
+Response     : 'response';
 
-Identifier   : '$'NamedVariable*;
+fragment NamedVariableCharacter: [a-zA-Z_0-9]+;
+
+Identifier   : '$'NamedVariableCharacter*;
 
 // String Literals
 
@@ -55,9 +58,3 @@ fragment SingleStringCharacter: ~['\\\r\n];
 StringLiteral
   : ('"' DoubleStringCharacter* '"' | '\'' SingleStringCharacter* '\'') {this.ProcessStringLiteral();}
   ;
-
-// fragment UnquotedStringLiteralCharacter: ~[ \t\r\n\\\u000C];
-
-// UnquotedStringLiteral
-//   : UnquotedStringLiteralCharacter+ {this.ProcessUnquotedStringLiteral();}
-//   ;

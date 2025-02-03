@@ -10,10 +10,12 @@ import { SourceElementContext } from "./BellParser";
 import { SourceElementsContext } from "./BellParser";
 import { StatementContext } from "./BellParser";
 import { EosContext } from "./BellParser";
+import { NamedVariableContext } from "./BellParser";
+import { IdentifierContext } from "./BellParser";
 import { SingleExpressionContext } from "./BellParser";
+import { AssignableContext } from "./BellParser";
+import { VariableDeclarationContext } from "./BellParser";
 import { RequestStatementContext } from "./BellParser";
-import { GetStatementContext } from "./BellParser";
-import { PostStatementContext } from "./BellParser";
 import { RequestBuildingStatementContext } from "./BellParser";
 import { UrlStatementContext } from "./BellParser";
 import { ParamStatementContext } from "./BellParser";
@@ -81,6 +83,20 @@ export interface BellParserVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitEos?: (ctx: EosContext) => Result;
 
 	/**
+	 * Visit a parse tree produced by `BellParser.namedVariable`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitNamedVariable?: (ctx: NamedVariableContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `BellParser.identifier`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitIdentifier?: (ctx: IdentifierContext) => Result;
+
+	/**
 	 * Visit a parse tree produced by `BellParser.singleExpression`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -88,25 +104,25 @@ export interface BellParserVisitor<Result> extends ParseTreeVisitor<Result> {
 	visitSingleExpression?: (ctx: SingleExpressionContext) => Result;
 
 	/**
+	 * Visit a parse tree produced by `BellParser.assignable`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitAssignable?: (ctx: AssignableContext) => Result;
+
+	/**
+	 * Visit a parse tree produced by `BellParser.variableDeclaration`.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	visitVariableDeclaration?: (ctx: VariableDeclarationContext) => Result;
+
+	/**
 	 * Visit a parse tree produced by `BellParser.requestStatement`.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	visitRequestStatement?: (ctx: RequestStatementContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `BellParser.getStatement`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitGetStatement?: (ctx: GetStatementContext) => Result;
-
-	/**
-	 * Visit a parse tree produced by `BellParser.postStatement`.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	visitPostStatement?: (ctx: PostStatementContext) => Result;
 
 	/**
 	 * Visit a parse tree produced by `BellParser.requestBuildingStatement`.
