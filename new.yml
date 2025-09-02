@@ -1,0 +1,9 @@
+
+- url: https://www.google.com
+  params: 
+    - name: q
+      value: "{{ query }}"
+    - name: hl
+      value: "{{ lang }}"
+
+- log: request.body

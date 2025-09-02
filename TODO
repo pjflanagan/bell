@@ -1,4 +1,8 @@
 
+- [ ] TODO: CONSIDER: Maybe bell should start as a collection of yml files
+  - Users describe their requests as yml files
+
+
 - [ ] Split this into two parts (see where it makes sense)
   - [ ] 1: NPM Package for executing Bell files
   - [ ] 2: VSCode Extension
