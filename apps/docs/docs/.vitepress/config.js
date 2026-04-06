@@ -18,14 +18,20 @@ export default defineConfig({
   description: 'A simple script for describing and making API calls',
   
   head: [
-    ['link', { rel: 'icon', href: '/bell/favicon.png' }]
+    ['link', { rel: 'icon', href: '/bell/favicon.png' }],
+    ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:title', content: 'Bell' }],
+    ['meta', { property: 'og:description', content: 'A simple script for describing and making API calls' }],
+    ['meta', { property: 'og:image', content: 'https://pjflanagan.github.io/bell/bell-card.png' }],
+    ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+    ['meta', { name: 'twitter:image', content: 'https://pjflanagan.github.io/bell/bell-card.png' }]
   ],
 
   // Update this to match your GitHub repository name
   base: '/bell/',
 
   themeConfig: {
-    logo: '/favicon.png',
+    logo: '/logo.png',
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Guide', link: '/guide/' }

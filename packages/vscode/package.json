@@ -4,6 +4,7 @@
   "description": "A simple script for making http requests",
   "version": "0.0.1",
   "publisher": "pjflanagan",
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.85.0"
   },

@@ -2,14 +2,42 @@
  * Custom CSS for Bell documentation
  */
 
+@import url('https://fonts.googleapis.com/css2?family=Fugaz+One&display=swap');
+
 :root {
-  --vp-home-hero-name-color: #ff9800;
+  --vp-c-brand: #16da9b;
+  --vp-c-brand-1: var(--vp-c-brand);
+  --vp-c-brand-2: #12b881;
+  --vp-c-brand-3: #0e9668;
+  --vp-c-brand-soft: rgba(22, 218, 155, 0.16);
+  --vp-home-hero-name-color: #16da9b;
   --vp-home-hero-name-background: transparent;
+  --vp-home-hero-name-font-family: 'Fugaz One', sans-serif;
+  
+  /* Custom background color */
+  --vp-c-bg: #03140f;
+  --vp-c-bg-alt: #05211a;
+  --vp-c-bg-soft: #083126;
+}
+
+/* Apply Fugaz One to logo and h1 elements */
+.VPNavBarTitle .title,
+h1,
+.VPHero .name {
+  font-family: 'Fugaz One', sans-serif;
+  letter-spacing: 0.03em;
+}
+
+.VPNavBarTitle .logo {
+  height: 24px;
+  margin-right: 8px;
+  vertical-align: middle;
 }
 
 /* Target the homepage specifically */
 .VPHome {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/bell/bg.jpg');
+  background-color: var(--vp-c-bg);
+  background-image: linear-gradient(rgba(3, 20, 15, 0.8), rgba(3, 20, 15, 0.8)), url('/bell/bg.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -18,10 +46,11 @@
 
 /* Ensure content stands out */
 .VPFeature {
-  background-color: rgba(30, 30, 30, 0.8) !important;
+  background-color: rgba(8, 49, 38, 0.6) !important;
   backdrop-filter: blur(4px);
+  border-color: rgba(22, 218, 155, 0.1) !important;
 }
 
 .VPHero {
-  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.7);
 }
