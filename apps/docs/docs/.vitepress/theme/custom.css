@@ -1,0 +1,27 @@
+/**
+ * Custom CSS for Bell documentation
+ */
+
+:root {
+  --vp-home-hero-name-color: #ff9800;
+  --vp-home-hero-name-background: transparent;
+}
+
+/* Target the homepage specifically */
+.VPHome {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('/bell/bg.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* Ensure content stands out */
+.VPFeature {
+  background-color: rgba(30, 30, 30, 0.8) !important;
+  backdrop-filter: blur(4px);
+}
+
+.VPHero {
+  text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+}
