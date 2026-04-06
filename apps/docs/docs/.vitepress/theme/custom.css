@@ -28,6 +28,11 @@ h1,
   letter-spacing: 0.03em;
 }
 
+.VPNavBarTitle .title {
+    font-size: 1.4em;
+    margin-left: 2px;
+}
+
 .VPNavBarTitle .logo {
   height: 24px;
   margin-right: 8px;
