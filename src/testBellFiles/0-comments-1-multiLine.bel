@@ -1,7 +1,0 @@
-
-###
-multiline comment
-log 'invalid'
-###
-
-log 'valid'

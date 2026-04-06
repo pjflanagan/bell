@@ -1,8 +1,0 @@
-
-# a valid variable with a numbers
-
-$test1Variable2 = "valid"
-
-log $test1Variable2
-
-# expect "valid"

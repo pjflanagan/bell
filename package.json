@@ -1,58 +1,12 @@
 {
-  "name": "bel",
-  "displayName": "Bell",
-  "description": "A simple script for making http requests",
+  "name": "bell-monorepo",
   "version": "0.0.1",
+  "private": true,
   "engines": {
     "vscode": "^1.85.0"
   },
-  "categories": [
-    "Programming Languages"
-  ],
-  "scripts": {
-    "build-lexer": "antlr4ts -visitor ./src/grammar/BellLexer.g4",
-    "build-parser": "antlr4ts -visitor ./src/grammar/BellParser.g4",
-    "build-js": "antlr4 -Dlanguage=Javascript ./src/grammar/BellParser.g4",
-    "main": "npx ts-node ./src/main.ts",
-    "test": "jest",
-    "jest": "jest"
-  },
-  "contributes": {
-    "languages": [
-      {
-        "id": "bel",
-        "aliases": [
-          "Bell",
-          "bell",
-          "bel"
-        ],
-        "extensions": [
-          ".bel"
-        ],
-        "configuration": "./language-configuration.json",
-        "icon": {
-          "light": "./icons/bell-light.png",
-          "dark": "./icons/bell-dark.png"
-        }
-      }
-    ],
-    "grammars": [
-      {
-        "language": "bel",
-        "scopeName": "source.bel",
-        "path": "./syntaxes/bel.tmLanguage.json"
-      }
-    ]
-  },
-  "devDependencies": {
-    "@types/jest": "^29.5.11",
-    "@types/node": "^20.11.0",
-    "antlr4ts-cli": "^0.5.0-alpha.4",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.1.1"
-  },
-  "dependencies": {
-    "antlr4": "^4.13.2",
-    "antlr4ts": "^0.5.0-alpha.4"
-  }
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ]
 }

@@ -1,6 +1,0 @@
-
-testVariable = 999
-
-log $variableThatDoesNotExist
-
-# expect error: no variable found

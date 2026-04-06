@@ -1,6 +1,13 @@
+url "http://www.google.com"
 
-url http://www.example.com
+lng = -40.1268
 
 param lat 30.1234
+param lng
+param output = "normal"
+param "out" "normal"
+param "fullstring=value"
 
-log response.data.weather
+GET
+
+log response.status

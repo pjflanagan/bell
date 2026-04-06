@@ -1,0 +1,88 @@
+{
+  "name": "bell",
+  "displayName": "Bell",
+  "description": "A simple script for making http requests",
+  "version": "0.0.1",
+  "publisher": "pjflanagan",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onLanguage:bel"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "bell.runFile",
+        "title": "Bell: Run current file",
+        "icon": "$(play)"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "when": "resourceExtname == .bel",
+          "command": "bell.runFile",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "when": "resourceExtname == .bel",
+          "command": "bell.runFile",
+          "group": "inline"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "bell.runFile",
+        "key": "ctrl+alt+r",
+        "mac": "cmd+alt+r",
+        "when": "editorTextFocus && editorLangId == bel"
+      }
+    ],
+    "languages": [
+      {
+        "id": "bel",
+        "aliases": [
+          "Bell",
+          "bell",
+          "bel"
+        ],
+        "extensions": [
+          ".bel"
+        ],
+        "configuration": "./language-configuration.json",
+        "icon": {
+          "light": "./icons/bell-light.png",
+          "dark": "./icons/bell-dark.png"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "bel",
+        "scopeName": "source.bel",
+        "path": "./syntaxes/bel.tmLanguage.json"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/node": "20.x",
+    "@types/vscode": "^1.110.0",
+    "typescript": "^5.3.3"
+  }
+}

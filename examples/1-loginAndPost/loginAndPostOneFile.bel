@@ -1,10 +1,8 @@
+url "http://localhost:4000/login/"
 
-url localhost:4000/login/
-
-body
-{
-  username: "testuser",
-  password: "testpass"
+body {
+  "username": "testuser",
+  "password": "testpass"
 }
 
 POST
@@ -18,35 +16,26 @@ the login POST request will not be logged
 token = response.body.token
 
 # start a new request
-url localhost:4000/post/
+url "http://localhost:4000/post/"
 
 # use the token in the headers
-headers
-{
-  Authorization: `Bearer: ${token}`
+headers {
+  "Authorization": `Bearer: ${token}`
 } 
 
 title = input("Write a title")
 
 # use the input("Prompt") to prompt the user and wait for input
-body
-{
-  title: title,
-  message: input('Write a message')
+body {
+  "title": title,
+  "message": input('Write a message')
 }
 
 POST
 
 # response is a reserved constant (like "this" and "super")
 # response is set to the latest response
-# legacy-todo: body should not be blue here, only response
 log response.body.status
 
-# this is the same as the above the command
-log response[1].body.status
-
-# you can still access the first response
-log response[0].body.token
-
 # you can also log the url
-log url 
+log url

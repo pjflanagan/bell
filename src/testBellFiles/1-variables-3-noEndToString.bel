@@ -1,8 +1,0 @@
-
-# an invalid string
-
-$testInvalidString = "invalid'
-
-log "error"
-
-# expect error, no matching enclosing quote

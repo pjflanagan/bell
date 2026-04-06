@@ -1,4 +1,0 @@
-# variable set to variable
-$test1 = 999
-$test2 = $test1
-log $test2

@@ -1,4 +1,3 @@
-
 import requestBody from "./request.json"
 
 # Bell can be a good place to store TS files that
@@ -10,7 +9,7 @@ import { EndpointRequestBody, EndpointResponseBody } from "./format.ts"
 # this can be useful for testing
 validate requestBody as EndpointRequestBody
 
-url /post
+url "https://httpbin.org/post"
 body requestBody
 POST
 
@@ -20,5 +19,9 @@ POST
 # but also this is a way further down the line feature, so maybe don't worry about it
 validate response.body as EndpointResponseBody
 
+# Log body status for debugging
+log response.body.json.status
+
 # Bell can also run expect for testing
-expect response.body.status === "Valid"
+# httpbin.org returns the request body in response.json
+expect response.body.json.status === "Valid"

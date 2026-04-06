@@ -1,0 +1,7 @@
+url "http://www.example.com"
+
+param lat 30.1234
+
+GET
+
+log response.data.weather

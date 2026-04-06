@@ -1,7 +1,45 @@
-.DS_Store
-node_modules
-.antlr
+# Dependencies
+node_modules/
 
-# legacy-todo: remove after testing, only here because it has an API key
-*weather*
+# Build Outputs
+**/dist/
+**/out/
+**/build/
+*.tsbuildinfo
+
+# VitePress Artifacts
+**/.vitepress/dist/
+**/.vitepress/cache/
+
+# ANTLR Generated Files
+**/*.tokens
+**/*.interp
+# Generated TypeScript logic
+**/src/grammar/BellLexer.ts
+**/src/grammar/BellParser.ts
+**/src/grammar/BellParserListener.ts
+**/src/grammar/BellParserVisitor.ts
+
+# OS Specific
+.DS_Store
+Thumbs.db
+
+# IDE Specific
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Test
+coverage/
+.jest/
+
+# Legacy / Temp
 .bell
+# Keep weather files if they are in examples
+!examples/*weather*
