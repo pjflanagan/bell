@@ -1,0 +1,3 @@
+id = 42
+url `http://localhost/post/{id}`
+GET

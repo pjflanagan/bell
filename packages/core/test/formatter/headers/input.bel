@@ -1,0 +1,5 @@
+url "https://api.example.com/data"
+header "Authorization" `Bearer {token}`
+header "Content-Type" "application/json"
+header "Accept" "application/json"
+GET

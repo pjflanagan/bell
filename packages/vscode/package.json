@@ -71,7 +71,22 @@
         "scopeName": "source.bel",
         "path": "./syntaxes/bel.tmLanguage.json"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Bell",
+      "properties": {
+        "bell.formatOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically format .bel files on save."
+        },
+        "bell.executablePath": {
+          "type": "string",
+          "default": "bell",
+          "description": "Path to the bell executable. Defaults to 'bell' (assumes it is on PATH)."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

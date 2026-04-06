@@ -1,0 +1,6 @@
+# search request
+url "https://api.example.com/search"
+param "q" "sushi" # inline comment
+# page param
+param "page" 1
+GET # get it

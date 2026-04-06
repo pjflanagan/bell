@@ -8,6 +8,7 @@ import { BellLexer } from './grammar/BellLexer';
 import { BellParser } from './grammar/BellParser';
 import { BellVisitor } from './interpreter/BellVisitor';
 import { convertPostmanToBell } from './converters/postman';
+import { formatBellFile } from './formatter/BellFormatter';
 
 const program = new Command();
 
@@ -86,6 +87,44 @@ program
       if (options.verbose) {
         console.error(err);
       }
+      process.exit(1);
+    }
+  });
+
+program
+  .command('format')
+  .description('Format a .bel file in-place')
+  .argument('<file>', 'Path to the .bel file')
+  .option('--check', 'Exit with code 1 if the file would be changed, without writing')
+  .option('--stdout', 'Print formatted output to stdout instead of writing the file')
+  .action((file, options) => {
+    const filePath = path.resolve(file);
+    if (!fs.existsSync(filePath)) {
+      console.error(chalk.red(`Error: File not found: ${filePath}`));
+      process.exit(1);
+    }
+    try {
+      const original = fs.readFileSync(filePath, 'utf8');
+      const formatted = formatBellFile(filePath);
+      if (options.stdout) {
+        process.stdout.write(formatted);
+      } else if (options.check) {
+        if (original !== formatted) {
+          console.error(chalk.red(`✘ ${path.basename(filePath)} would be reformatted`));
+          process.exit(1);
+        }
+        console.log(chalk.green(`✔ ${path.basename(filePath)} is properly formatted`));
+      } else {
+        fs.writeFileSync(filePath, formatted, 'utf8');
+        if (original !== formatted) {
+          console.log(chalk.green(`✔ Formatted: ${chalk.bold(path.basename(filePath))}`));
+        } else {
+          console.log(chalk.gray(`  Unchanged: ${path.basename(filePath)}`));
+        }
+      }
+    } catch (err: any) {
+      console.error(chalk.red(`✖ Error formatting file:`));
+      console.error(chalk.red(err.message));
       process.exit(1);
     }
   });

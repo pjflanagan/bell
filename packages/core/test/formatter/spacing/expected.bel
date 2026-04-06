@@ -1,0 +1,14 @@
+url "http://localhost/login"
+body {
+  "user": "admin",
+  "pass": "secret"
+}
+POST
+
+token = response.body.token
+
+url "http://localhost/posts"
+header "Authorization" `Bearer {token}`
+GET
+
+log response.body

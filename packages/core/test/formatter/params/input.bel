@@ -1,0 +1,5 @@
+url "https://api.example.com/search"
+param "q" "sushi"
+param "location" "NY"
+param "page" 1
+GET
