@@ -23,7 +23,7 @@ expect response.status === 200
 
 ## Features
 
-- **Declarative**: Focus on what you want to send, not how to send it.
-- **Collaborative**: Store `.bel` files in your repo for team access.
+- **Declarative**: Readable files don't hide anything in menus or workspaces.
+- **Collaborative**: Store `.bel` files in your team's repo and manage them with git.
+- **Integrated**: Works from your terminal and directly in VSCode, no software to subscribe to.
 - **Environment Aware**: Easily switch between development, staging, and production.
-- **Integrated**: Works from your terminal and directly in VSCode.
