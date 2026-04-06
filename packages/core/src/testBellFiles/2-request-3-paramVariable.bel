@@ -1,0 +1,8 @@
+
+url https://subdomain.domain.com:1234/page
+
+$var1 = "param"
+$var2 = 30
+param $var1 $var2
+
+GET

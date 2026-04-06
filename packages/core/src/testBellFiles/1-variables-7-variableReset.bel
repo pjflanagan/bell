@@ -1,0 +1,7 @@
+
+# variable reset
+
+$test1 = 999
+$test1 = "reset"
+
+log $test1

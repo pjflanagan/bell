@@ -12,6 +12,7 @@ node_modules/
 **/.vitepress/cache/
 
 # ANTLR Generated Files
+**/.antlr/
 **/*.tokens
 **/*.interp
 # Generated TypeScript logic

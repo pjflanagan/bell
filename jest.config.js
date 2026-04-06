@@ -1,10 +1,9 @@
-/** @type {import('ts-jest').JestConfigWithTsJest} */
 module.exports = {
-  preset: 'ts-jest',
   testEnvironment: 'node',
-  moduleDirectories: [
-    'node_modules',
-    'src'
-  ],
-  // setupFiles: ["<rootDir>/.jest/testEnv.js"],
+  roots: ['<rootDir>/packages'],
+  transform: {
+    '^.+\\.ts$': 'ts-jest',
+  },
+  testMatch: ['**/test/**/*.test.ts'],
+  moduleFileExtensions: ['ts', 'js', 'json', 'node'],
 };

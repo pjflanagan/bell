@@ -1,0 +1,7 @@
+
+url https://subdomain.domain.com:1234/page
+
+param number 0
+param boolean true
+
+GET
