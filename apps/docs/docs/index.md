@@ -4,7 +4,7 @@ layout: home
 hero:
   name: Bell
   text: A simple script for describing and making API calls.
-  tagline: Readable, collaborative, and fast.
+  tagline: Readable, collaborative, and FREE.
   actions:
     - theme: brand
       text: Get Started
@@ -18,9 +18,9 @@ hero:
 
 features:
   - title: Human (and AI) Readable
-    details: Bell files are easy to read and understand, unlike Postman collections buried in menus.
+    details: Bell files are easy to read and understand. Nothing is buried in menus or obscured by UI.
   - title: Git Friendly
-    details: Keep your API scripts in your repository and track changes over time.
-  - title: Multi-Platform
-    details: Run from your CLI or directly within VSCode with a single click.
+    details: Collaborate and track your API scripts in the same repository you work in.
+  - title: Platform Agnostic
+    details: Run from your CLI or with our VSCode extension. No need for expensive software or cloud subscriptions.
 ---
