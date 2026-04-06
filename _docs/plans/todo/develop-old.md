@@ -6,6 +6,7 @@ The project is divided into three parts
 - Command Line Tool
   - Capable of executing Bell files
   - v2: Capable of running individual commands (like Python Shell)
+  - v2: capable of importing postman files
 - VSCode plugin
   - with syntax highlighting
   - a simple GUI

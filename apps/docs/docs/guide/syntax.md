@@ -38,7 +38,7 @@ param output = "json"
 ### `header`
 Adds an HTTP header to the request.
 ```bel
-header "Authorization" "Bearer " + apiKey
+header "Authorization" "Bearer {apiKey}"
 header "Content-Type" "application/json"
 ```
 

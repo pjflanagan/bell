@@ -10,7 +10,7 @@ Here's how a typical Bell file looks:
 url "https://api.example.com"
 token = "my-secret-token"
 
-header "Authorization" "Bearer " + token
+header "Authorization" "Bearer {token}"
 
 # Make a request
 path "/users/123"

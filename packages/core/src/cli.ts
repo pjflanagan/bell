@@ -7,6 +7,7 @@ import { CharStreams, CommonTokenStream } from 'antlr4ts';
 import { BellLexer } from './grammar/BellLexer';
 import { BellParser } from './grammar/BellParser';
 import { BellVisitor } from './interpreter/BellVisitor';
+import { convertPostmanToBell } from './converters/postman';
 
 const program = new Command();
 
@@ -14,6 +15,31 @@ program
   .name('bell')
   .description('A simple script for describing and making API calls')
   .version('0.0.1');
+
+program
+  .command('convert')
+  .description('Convert a Postman collection to Bell files')
+  .argument('<postman-json>', 'Path to the exported Postman collection JSON')
+  .option('-o, --output <dir>', 'Output directory for the .bel files', './bell-scripts')
+  .action((postmanJson, options) => {
+    const postmanPath = path.resolve(postmanJson);
+    if (!fs.existsSync(postmanPath)) {
+      console.error(chalk.red(`Error: Postman collection file not found: ${postmanPath}`));
+      process.exit(1);
+    }
+
+    try {
+      console.log(chalk.blue(`🔄 Converting Postman collection: ${chalk.bold(path.basename(postmanPath))}...`));
+      convertPostmanToBell(postmanPath, path.resolve(options.output));
+      console.log(chalk.green(`
+✔ Conversion complete! Files saved to: ${chalk.bold(options.output)}`));
+    } catch (err: any) {
+      console.error(chalk.red(`
+✖ Error during conversion:`));
+      console.error(chalk.red(err.message));
+      process.exit(1);
+    }
+  });
 
 program
   .command('run')

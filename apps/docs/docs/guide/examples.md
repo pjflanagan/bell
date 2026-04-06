@@ -7,11 +7,6 @@ A simple example of setting a URL and parameters, then executing a GET request a
 
 <<< @/../../../examples/0-basicGetRequest/post.GET.bel
 
-## Full Feature Example
-Shows how to use variables, multiple parameters, and access response data.
-
-<<< @/../../../examples/fullExample.bel
-
 ## Login and POST (Workflow)
 Demonstrates a multi-step workflow in a single file.
 

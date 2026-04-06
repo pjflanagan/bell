@@ -41,7 +41,7 @@ You can run the CLI directly using `ts-node`:
 
 ```bash
 cd packages/core
-npx ts-node src/cli.ts run ../../examples/fullExample.bel
+npx ts-node src/cli.ts run ../../examples/0-basicGetRequest/post.GET.bel
 ```
 
 ## Running Tests
