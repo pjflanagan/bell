@@ -14,7 +14,14 @@
   --vp-home-hero-name-background: transparent;
   --vp-home-hero-name-font-family: 'Fugaz One', sans-serif;
   
-  /* Custom background color */
+  /* Light mode colors */
+  --vp-c-bg: #ffffff;
+  --vp-c-bg-alt: #f6f6f7;
+  --vp-c-bg-soft: #f1f1f2;
+}
+
+.dark {
+  /* Dark mode colors */
   --vp-c-bg: #03140f;
   --vp-c-bg-alt: #05211a;
   --vp-c-bg-soft: #083126;
@@ -42,20 +49,31 @@ h1,
 /* Target the homepage specifically */
 .VPHome {
   background-color: var(--vp-c-bg);
+  min-height: 100vh;
+}
+
+.dark .VPHome {
   background-image: linear-gradient(rgba(3, 20, 15, 0.8), rgba(3, 20, 15, 0.8)), url('/bell/bg.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  min-height: 100vh;
 }
 
 /* Ensure content stands out */
 .VPFeature {
-  background-color: rgba(8, 49, 38, 0.6) !important;
+  background-color: var(--vp-c-bg-soft) !important;
   backdrop-filter: blur(4px);
   border-color: rgba(22, 218, 155, 0.1) !important;
 }
 
+.dark .VPFeature {
+  background-color: rgba(8, 49, 38, 0.6) !important;
+}
+
 .VPHero {
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.dark .VPHero {
   text-shadow: 0 2px 10px rgba(0,0,0,0.7);
 }
