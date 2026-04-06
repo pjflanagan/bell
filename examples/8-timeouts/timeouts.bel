@@ -17,6 +17,6 @@ POST
 # this is useful if the backend has some processing time
 wait 5 * 1000
 
-url "<urlToCheckStatus>/<response.id>"
+url {urlToCheckStatus}/{response.id}
 
 GET

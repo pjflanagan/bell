@@ -76,13 +76,9 @@ Validate     : 'validate';
 As           : 'as';
 Warn         : 'warn';
 
-// Variables
+FullUrl : 'http' 's'? '://' ~[\r\n\t ]+;
 
-Response     : 'response';
-
-fragment NamedVariableCharacter: [a-zA-Z_0-9]+;
-
-Identifier   : [a-zA-Z_] NamedVariableCharacter*;
+RelativeUrl : '/' [a-zA-Z0-9_\-/]*;
 
 // String Literals
 
@@ -96,6 +92,12 @@ StringLiteral
   | '`' (~['`'])* '`'
   ;
 
-RelativeUrl : '/' [a-zA-Z0-9_\-/]*;
+// Variables
+
+Response     : 'response';
+
+fragment NamedVariableCharacter: [a-zA-Z_0-9]+;
+
+Identifier   : [a-zA-Z_] NamedVariableCharacter*;
 
 LineTerminator      : [\r\n\u2028\u2029]+;

@@ -1,6 +1,6 @@
 
 
-url "preprod.bell.com/restaurants/search?page=2"
+url preprod.bell.com/restaurants/search?page=2
 
 # You can add params at any time
 # Even when they are specified in the @url

@@ -3,8 +3,8 @@
 id = 123456
 
 # setup a request by defining a url
-# anything in ${} will be replaced with a variable
-url "http://localhost:4000/post/${id}"
+# anything in {} will be replaced with a variable
+url http://localhost:4000/post/{id}
 
 # write the HTTP method to send the request
 GET

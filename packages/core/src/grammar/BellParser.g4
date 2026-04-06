@@ -5,7 +5,7 @@ options {
 }
 
 program
-  : (sourceElements | LineTerminator | EOF)*
+  : (sourceElements | LineTerminator)* EOF
   ;
 
 sourceElements
@@ -32,6 +32,25 @@ eos
 
 identifier
   : Identifier
+  | Body
+  | Url
+  | Path
+  | Param
+  | Header
+  | Headers
+  | Log
+  | Assert
+  | Expect
+  | Env
+  | Input
+  | Warn
+  | Response
+  | Require
+  | Request
+  | Import
+  | From
+  | Validate
+  | As
   ;
 
 memberIdentifier
@@ -49,6 +68,12 @@ memberIdentifier
   | Input
   | Warn
   | Response
+  | Require
+  | Request
+  | Import
+  | From
+  | Validate
+  | As
   ;
 
 expression
@@ -63,6 +88,7 @@ expression
   | NullLiteral                     # NullLiteralExpression
   | Response                        # ResponseExpression
   | RelativeUrl                     # RelativeUrlExpression
+  | FullUrl                         # FullUrlExpression
   | inputCall                       # InputCallExpression
   | objectLiteral                   # ObjectLiteralExpression
   | arrayLiteral                    # ArrayLiteralExpression
@@ -73,15 +99,15 @@ inputCall
   ;
 
 objectLiteral
-  : LBrace (propertyAssignment (Comma propertyAssignment)* Comma?)? RBrace
+  : LBrace LineTerminator* (propertyAssignment (LineTerminator* Comma LineTerminator* propertyAssignment)* LineTerminator* Comma? LineTerminator*)? RBrace
   ;
 
 propertyAssignment
-  : (identifier | StringLiteral) Colon expression
+  : (identifier | StringLiteral) LineTerminator* Colon LineTerminator* expression
   ;
 
 arrayLiteral
-  : LBracket (expression (Comma expression)* Comma?)? RBracket
+  : LBracket LineTerminator* (expression (LineTerminator* Comma LineTerminator* expression)* LineTerminator* Comma? LineTerminator*)? RBracket
   ;
 
 // Assignment

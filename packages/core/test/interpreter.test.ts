@@ -23,9 +23,7 @@ describe('Bell Interpreter', () => {
   };
 
   beforeEach(() => {
-    axiosStub = sinon.stub(axios, 'get' as any).callsFake(() => Promise.resolve({ status: 200, statusText: 'OK', data: {} }));
-    // The visitor uses axios(config), which is the default export as a function
-    // In Sinon we might need to stub the whole module or the specific call pattern
+    axiosStub = sinon.stub(axios, 'request').resolves({ status: 200, statusText: 'OK', data: {} });
   });
 
   afterEach(() => {
@@ -38,11 +36,10 @@ describe('Bell Interpreter', () => {
   });
 
   it('should parse basic HTTP statements', async () => {
-      // Just verifying it doesn't throw and reaches the request logic
-      // Stubbing axios as a function is tricky with sinon, so we'll just check if it parses
       await runCode(`
         url "http://example.com"
         GET
       `);
+      expect(axiosStub.calledOnce).to.be.true;
   });
 });

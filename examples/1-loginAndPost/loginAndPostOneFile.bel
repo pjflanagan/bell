@@ -1,4 +1,4 @@
-url "http://localhost:4000/login/"
+url http://localhost:4000/login/
 
 body {
   "username": "testuser",
@@ -16,11 +16,11 @@ the login POST request will not be logged
 token = response.body.token
 
 # start a new request
-url "http://localhost:4000/post/"
+url http://localhost:4000/post/
 
 # use the token in the headers
 headers {
-  "Authorization": `Bearer: ${token}`
+  "Authorization": `Bearer: {token}`
 } 
 
 title = input("Write a title")

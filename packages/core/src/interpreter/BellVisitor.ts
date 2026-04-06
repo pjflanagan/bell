@@ -15,6 +15,7 @@ import {
   ParamStatementContext,
   ProgramContext,
   RelativeUrlExpressionContext,
+  FullUrlExpressionContext,
   RequestStatementContext,
   ResponseExpressionContext,
   SourceElementContext,
@@ -75,11 +76,11 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
   }
 
   private resolveInterpolation(str: string): string {
-    return str.replace(/\${([^}]+)}/g, (_, name) => {
+    return str.replace(/{([^}]+)}/g, (_, name) => {
       if (this.variables.has(name)) {
         return this.variables.get(name);
       }
-      return `\${${name}}`;
+      return `{${name}}`;
     });
   }
 
@@ -175,7 +176,7 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     this.requestConfig.method = ctx.text.trim().toUpperCase();
     console.log(chalk.cyan(`➤ [${this.requestConfig.method}] ${chalk.bold(this.requestConfig.url)}`));
     try {
-      const response = await axios(this.requestConfig);
+      const response = await axios.request(this.requestConfig);
       this.lastResponse = response;
       this.responses.push(response);
       const statusColor = response.status >= 200 && response.status < 300 ? chalk.green : chalk.yellow;
@@ -347,6 +348,10 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
 
   async visitRelativeUrlExpression(ctx: RelativeUrlExpressionContext) {
     return ctx.text;
+  }
+
+  async visitFullUrlExpression(ctx: FullUrlExpressionContext) {
+    return this.resolveInterpolation(ctx.text);
   }
 
   async visitInputCallExpression(ctx: InputCallExpressionContext) {

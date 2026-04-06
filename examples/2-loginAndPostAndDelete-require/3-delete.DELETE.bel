@@ -2,11 +2,11 @@
 require token
 require id
 
-url localhost:4000/post/<id>
+url localhost:4000/post/{id}
 
 headers
 {
-  Authorization: `Bearer: ${token}`
+  Authorization: `Bearer: {token}`
 } 
 
 DELETE

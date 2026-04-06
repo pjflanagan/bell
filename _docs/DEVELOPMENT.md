@@ -16,41 +16,39 @@ This is a monorepo managed with `npm workspaces`:
 - Node.js (v18+)
 - Java (Required for Antlr grammar generation)
 
-## Setup
+## setup
 
-1. **Install dependencies at the root:**
+1. **install dependencies at the root:**
    ```bash
    npm install
    ```
 
-2. **Generate Antlr Lexer/Parser:**
+2. **generate antlr lexer/parser:**
    ```bash
    npm run build-lexer -w @bell/core
    npm run build-parser -w @bell/core
    ```
 
-3. **Build Core:**
+3. **build core:**
    ```bash
-   cd packages/core
-   npm run build # or just tsc
+   npm run build -w @bell/core
    ```
 
-## Running the CLI
+## running the cli
 
-You can run the CLI directly using `ts-node`:
+you can run the cli directly using `ts-node` from the root:
 
 ```bash
-cd packages/core
-npx ts-node src/cli.ts run ../../examples/0-basicGetRequest/post.GET.bel
+npx ts-node packages/core/src/cli.ts run examples/0-basicGetRequest/post.GET.bel
 ```
 
-## Running Tests
+## running tests
 
-Tests are located in `packages/core/test` and use Mocha/Chai.
+tests are located in `packages/core/test` and use mocha/chai.
 
 ```bash
-# From the root
-npm test -w @bell/core
+# run all tests from the root
+npm test
 ```
 
 ## VSCode Extension Development
