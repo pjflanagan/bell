@@ -3,10 +3,7 @@ import { Command } from 'commander';
 import * as fs from 'fs';
 import * as path from 'path';
 import chalk from 'chalk';
-import { CharStreams, CommonTokenStream } from 'antlr4ts';
-import { BellLexer } from './grammar/BellLexer';
-import { BellParser } from './grammar/BellParser';
-import { BellVisitor } from './interpreter/BellVisitor';
+import { runSource } from './interpreter/run';
 import { convertPostmanToBell } from './converters/postman';
 import { formatBellFile } from './formatter/BellFormatter';
 
@@ -14,8 +11,10 @@ const program = new Command();
 
 program
   .name('bell')
+  .usage('[file.bel] [options]')
   .description('A simple script for describing and making API calls')
-  .version('0.0.1');
+  .version('0.0.1')
+  .option('-c <code>', 'Execute Bell code directly (use \\n for newlines)');
 
 program
   .command('convert')
@@ -56,33 +55,12 @@ program
     }
 
     try {
-      const sourceCode = fs.readFileSync(filePath, 'utf8');
-      
-      // Create the lexer and parser
-      const inputStream = CharStreams.fromString(sourceCode);
-      const lexer = new BellLexer(inputStream);
-      const tokenStream = new CommonTokenStream(lexer);
-      const parser = new BellParser(tokenStream);
-
-      // Parse the input
-      const tree = parser.program();
-
-      if (parser.numberOfSyntaxErrors > 0) {
-        console.error(chalk.red(`Found ${parser.numberOfSyntaxErrors} syntax errors.`));
-        process.exit(1);
-      }
-
       console.log(chalk.blue(`🔔 Running Bell file: ${chalk.bold(path.basename(filePath))}`));
-      
-      // Execute using Visitor
-      const visitor = new BellVisitor(filePath, options.env);
-      await visitor.visit(tree);
-      
-      console.log(chalk.green(`
-✔ Execution finished successfully.`));
+      const source = fs.readFileSync(filePath, 'utf8');
+      await runSource(source, filePath, { env: options.env });
+      console.log(chalk.green(`\n✔ Execution finished successfully.`));
     } catch (err: any) {
-      console.error(chalk.red(`
-✖ Error during execution:`));
+      console.error(chalk.red(`\n✖ Error during execution:`));
       console.error(chalk.red(err.message));
       if (options.verbose) {
         console.error(err);
@@ -129,4 +107,27 @@ program
     }
   });
 
-program.parse(process.argv);
+// Python-style: `bell -c <code>` — inline execution (handled before commander)
+const cFlagIdx = process.argv.indexOf('-c');
+if (cFlagIdx !== -1 && cFlagIdx + 1 < process.argv.length) {
+  const source = process.argv[cFlagIdx + 1].replace(/\\n/g, '\n');
+  const basePath = path.join(process.cwd(), '<inline>');
+  (async () => {
+    try {
+      await runSource(source, basePath);
+    } catch (err: any) {
+      console.error(chalk.red(`\n✖ Error during execution:`));
+      console.error(chalk.red(err.message));
+      process.exit(1);
+    }
+  })();
+} else {
+  // Python-style: `bell <file.bel> [options]` — direct file invocation
+  const knownSubcommands = new Set(['run', 'convert', 'format', 'help']);
+  const firstArg = process.argv[2];
+  if (firstArg && !firstArg.startsWith('-') && !knownSubcommands.has(firstArg) && firstArg.endsWith('.bel')) {
+    // Rewrite argv so commander sees it as `bell run <file> [rest...]`
+    process.argv.splice(2, 0, 'run');
+  }
+  program.parse(process.argv);
+}

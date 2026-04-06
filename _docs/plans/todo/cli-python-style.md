@@ -82,20 +82,20 @@ The REPL is line-buffered but handles multi-line constructs (object/array litera
 
 ## Implementation Plan
 
-### Phase 1 — Direct file invocation (`bell <file>`)
+### Phase 1 — Direct file invocation (`bell <file>`) ✓
 
-- [ ] In `src/cli.ts`, before `program.parse()`, inspect `process.argv[2]`:
+- [x] In `src/cli.ts`, before `program.parse()`, inspect `process.argv[2]`:
   - If it exists, is not a known subcommand name (`run`, `convert`, `format`), and ends with `.bel` (or is a path to a `.bel` file), re-route to the `run` command action
   - All remaining argv flags are passed through unchanged
-- [ ] Update help text to show `bell <file> [options]` as the primary usage line
+- [x] Update help text to show `bell <file> [options]` as the primary usage line
 
 This is a small change — no new files needed.
 
-### Phase 2 — Inline execution (`bell -c`)
+### Phase 2 — Inline execution (`bell -c`) ✓
 
-- [ ] Add `-c, --code <code>` option to the root `program` in `src/cli.ts`
-- [ ] When `-c` is present, unescape `\n` → newline, then run through the same parse + visit pipeline as `bell run`, using `process.cwd()` as the base path for relative resolution
-- [ ] Error output mirrors `bell run` (syntax error count, execution errors)
+- [x] Add `-c, --code <code>` option to the root `program` in `src/cli.ts`
+- [x] When `-c` is present, unescape `\n` → newline, then run through the same parse + visit pipeline as `bell run`, using `process.cwd()` as the base path for relative resolution
+- [x] Error output mirrors `bell run` (syntax error count, execution errors)
 
 ### Phase 3 — REPL (`src/repl/BellRepl.ts`)
 

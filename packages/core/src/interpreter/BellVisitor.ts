@@ -160,9 +160,13 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     this.requestConfig.data = body;
   }
 
+  private resetRequestConfig(): void {
+    this.requestConfig = { method: 'GET', url: '', params: {}, headers: {}, data: null };
+  }
+
   async visitRequestStatement(ctx: RequestStatementContext): Promise<void> {
     this.requestConfig.method = ctx.text.trim().toUpperCase();
-    console.log(chalk.cyan(`➤ [${this.requestConfig.method}] ${chalk.bold(this.requestConfig.url)}`));
+    console.log(chalk.cyan(`➤ [${this.requestConfig.method}] ${chalk.bold(this.requestConfig.url)}`))
     try {
       const response = await axios.request(this.requestConfig);
       this.lastResponse = response;
@@ -176,7 +180,7 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
         const status = error.response.status;
         const statusText = error.response.statusText;
         console.log(chalk.red(`✘ ${status} ${statusText}`));
-        
+
         if (status === 404) {
           console.error(chalk.red(`  └─ The requested URL was not found on the server.`));
         } else if (status === 401) {
@@ -207,6 +211,8 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
         console.error(chalk.bgRed(` Request failed: `), chalk.red(error.message));
         throw error;
       }
+    } finally {
+      this.resetRequestConfig();
     }
   }
 
