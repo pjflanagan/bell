@@ -24,6 +24,7 @@ statement
   | importStatement
   | validateStatement
   | warnStatement
+  | exportStatement
   ;
 
 eos
@@ -51,6 +52,7 @@ identifier
   | From
   | Validate
   | As
+  | Export
   ;
 
 memberIdentifier
@@ -74,6 +76,7 @@ memberIdentifier
   | From
   | Validate
   | As
+  | Export
   ;
 
 expression
@@ -90,12 +93,17 @@ expression
   | RelativeUrl                     # RelativeUrlExpression
   | FullUrl                         # FullUrlExpression
   | inputCall                       # InputCallExpression
+  | warnCall                        # WarnCallExpression
   | objectLiteral                   # ObjectLiteralExpression
   | arrayLiteral                    # ArrayLiteralExpression
   ;
 
 inputCall
   : Input LParen expression? RParen
+  ;
+
+warnCall
+  : Warn expression
   ;
 
 objectLiteral
@@ -114,6 +122,10 @@ arrayLiteral
 
 variableDeclaration
     : identifier Assign expression
+    ;
+
+exportStatement
+    : Export identifier (Comma identifier)*
     ;
 
 // HTTP Request Statements
@@ -137,39 +149,39 @@ requestBuildingStatement
   ;
 
 urlStatement
-  : Url expression
+  : Url LineTerminator* expression
   ;
 
 pathStatement
-  : Path expression
+  : Path LineTerminator* expression
   ;
 
 paramStatement
-  : Param expression (Assign? expression)?
+  : Param LineTerminator* expression (LineTerminator* Assign? LineTerminator* expression)?
   ;
 
 headerStatement
-  : Header expression expression
+  : Header LineTerminator* expression LineTerminator* expression
   ;
 
 headersStatement
-  : Headers expression
+  : Headers LineTerminator* expression
   ;
 
 bodyStatement
-  : Body expression
+  : Body LineTerminator* expression
   ;
 
 requireStatement
-  : Require expression
+  : Require LineTerminator* expression
   ;
 
 requestStatementBuilding
-  : Request expression
+  : Request LineTerminator* expression
   ;
 
 envStatement
-  : Env (expression (Pipe expression)*)?
+  : Env (LineTerminator* expression (LineTerminator* Pipe LineTerminator* expression)*)?
   ;
 
 // Command Statements

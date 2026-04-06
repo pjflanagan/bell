@@ -5,6 +5,7 @@ lexer grammar BellLexer;
 MultiLineComment    : '###' .*? '###'                 -> channel(HIDDEN);
 SingleLineComment   : '#' ~[\r\n\u2028\u2029]*        -> channel(HIDDEN);
 WhiteSpaces         : [\t\u000B\u000C\u0020\u00A0]+   -> channel(HIDDEN);
+Semicolon           : ';'                             -> channel(HIDDEN);
 
 
 // Special tokens
@@ -75,10 +76,11 @@ From         : 'from';
 Validate     : 'validate';
 As           : 'as';
 Warn         : 'warn';
+Export       : 'export';
 
 FullUrl : 'http' 's'? '://' ~[\r\n\t ]+;
 
-RelativeUrl : '/' [a-zA-Z0-9_\-/]*;
+RelativeUrl : ('.' | '..')? '/' [a-zA-Z0-9_\-./]*;
 
 // String Literals
 

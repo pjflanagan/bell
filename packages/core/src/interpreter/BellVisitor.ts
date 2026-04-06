@@ -31,7 +31,9 @@ import {
   EnvStatementContext,
   ValidateStatementContext,
   WarnStatementContext,
+  ExportStatementContext,
   InputCallExpressionContext,
+  WarnCallExpressionContext,
   ObjectLiteralExpressionContext,
   ArrayLiteralExpressionContext,
   AdditiveExpressionContext,
@@ -185,9 +187,38 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
       if (error.response) {
         this.lastResponse = error.response;
         this.responses.push(error.response);
-        console.log(chalk.red(`✘ ${error.response.status} ${error.response.statusText}`));
+        const status = error.response.status;
+        const statusText = error.response.statusText;
+        console.log(chalk.red(`✘ ${status} ${statusText}`));
+        
+        if (status === 404) {
+          console.error(chalk.red(`  └─ The requested URL was not found on the server.`));
+        } else if (status === 401) {
+          console.error(chalk.red(`  └─ Unauthorized: Please check your credentials or token.`));
+        } else if (status === 403) {
+          console.error(chalk.red(`  └─ Forbidden: You do not have permission to access this resource.`));
+        } else if (status >= 500) {
+          console.error(chalk.red(`  └─ Server Error: The server encountered an internal error.`));
+        }
+      } else if (error.code) {
+        console.error(chalk.bgRed(` Network Error: `), chalk.red(error.message));
+        switch (error.code) {
+          case 'ECONNREFUSED':
+            console.error(chalk.red(`  └─ Connection refused: Is the server running at ${this.requestConfig.url}?`));
+            break;
+          case 'ENOTFOUND':
+            console.error(chalk.red(`  └─ DNS Error: Could not resolve the host. Check the URL and your internet connection.`));
+            break;
+          case 'ETIMEDOUT':
+          case 'ECONNABORTED':
+            console.error(chalk.red(`  └─ Timeout: The request took too long to respond.`));
+            break;
+          default:
+            console.error(chalk.red(`  └─ Error Code: ${error.code}`));
+        }
+        throw error;
       } else {
-        console.error(chalk.bgRed(`Request failed:`), chalk.red(error.message));
+        console.error(chalk.bgRed(` Request failed: `), chalk.red(error.message));
         throw error;
       }
     }
@@ -210,6 +241,40 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
   async visitWarnStatement(ctx: WarnStatementContext): Promise<void> {
     const val = await this.visit(ctx.expression());
     console.log(chalk.yellow(`  ⚠ Warning: ${val}`));
+    const answers = await inquirer.prompt([
+        {
+            type: 'confirm',
+            name: 'confirm',
+            message: 'Proceed?',
+            default: false
+        }
+    ]);
+    if (!answers.confirm) {
+        console.log(chalk.red('  ✖ Cancelled by user.'));
+        process.exit(0);
+    }
+    if (ctx.identifier()) {
+      const id = ctx.identifier()!.text;
+      this.variables.set(id, val);
+    }
+  }
+
+  async visitWarnCallExpression(ctx: WarnCallExpressionContext) {
+    const val = await this.visit(ctx.warnCall().expression());
+    console.log(chalk.yellow(`  ⚠ Warning: ${val}`));
+    const answers = await inquirer.prompt([
+        {
+            type: 'confirm',
+            name: 'confirm',
+            message: 'Proceed?',
+            default: false
+        }
+    ]);
+    if (!answers.confirm) {
+        console.log(chalk.red('  ✖ Cancelled by user.'));
+        process.exit(0);
+    }
+    return val;
   }
 
   async visitImportFromStatement(ctx: ImportFromStatementContext): Promise<void> {
@@ -311,6 +376,11 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     } else {
       console.log(chalk.green(`  ✔ Validation Passed: ${chalk.bold(ctx.expression().text)} as ${typeId}`));
     }
+  }
+
+  async visitExportStatement(ctx: ExportStatementContext): Promise<void> {
+    // Currently variables are already persistent in this.variables
+    // but we can log them or do something if needed in the future.
   }
 
   // Expressions

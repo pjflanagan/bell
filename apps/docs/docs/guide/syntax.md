@@ -16,15 +16,33 @@ baseUrl = "https://api.example.com"
 Use these keywords to build your HTTP request.
 
 ### `url`
-Sets the full base URL for the request.
+Sets the full base URL for the request. Bell supports both quoted and unquoted absolute URLs.
 ```bel
 url "https://api.example.com"
+url https://api.example.com
 ```
 
 ### `path`
 Appends a path to the base URL (if an environment or URL is set).
 ```bel
 path "/users/123"
+```
+
+### `input`
+Prompts the user for a value during execution.
+```bel
+id = input("Enter user ID")
+url https://api.example.com/users/{id}
+```
+
+### `warn`
+Displays a warning message and requires user confirmation before proceeding.
+```bel
+# Prompts for confirmation and returns the value if confirmed
+prodUrl = warn "production.com"
+
+# Can also be used as a statement
+warn "You are about to modify production data!"
 ```
 
 ### `param`
@@ -43,7 +61,7 @@ header "Content-Type" "application/json"
 ```
 
 ### `body`
-Sets the request body (usually used with POST or PUT).
+Sets the request body (usually used with POST or PUT). Supports multi-line declarations.
 ```bel
 body {
   "name": "John Doe",
@@ -51,71 +69,11 @@ body {
 }
 ```
 
-## HTTP Methods
+## Keywords as Identifiers
 
-Execute the request by simply typing the method in uppercase.
+You can use Bell keywords (like `url`, `body`, `headers`) as variables in expressions.
 
 ```bel
-GET
-POST
-PUT
-DELETE
-PATCH
-```
-
-## Response Handling
-
-Once a request is executed, the `response` object becomes available.
-
-### `log`
-Prints a value to the console.
-```bel
-log response.status
-log response.body.id
-```
-
-### `expect` / `assert`
-Tests a value or condition.
-```bel
-expect response.status === 200
-assert response.body.success === true
-```
-
-### `validate`
-Performs a basic check that a value exists (can be expanded for type validation).
-```bel
-validate response.body as UserProfile
-```
-
-## Environment Management
-
-Bell has built-in support for multiple environments.
-
-### `import` (Environments)
-Load environment configurations from a JSON file.
-```bel
-import "envConfig.json"
-```
-
-### `env`
-Selects an environment. If no name is provided, the CLI will prompt you.
-```bel
-env "prod"
-env "dev" | "staging" # Prompt user between these two
-env                   # Prompt user between all loaded environments
-```
-
-## Imports and Sub-requests
-
-### `import` (Data)
-Load data from a JSON file into a variable.
-```bel
-import userData from "./user.json"
-```
-
-### `request`
-Executes another `.bel` file and returns to the current file.
-```bel
-request "./login.bel"
-GET
+log url
+token = response.body.token
 ```

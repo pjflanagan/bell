@@ -21,3 +21,18 @@ Shows how to import JSON data, validate it against a type, and perform expectati
 Shows how to load environment configurations and switch between them.
 
 <<< @/../../../examples/6-environment/environment.GET.bel
+
+## User Input
+Prompt the user for data during execution.
+
+<<< @/../../../examples/0-basicGetRequest/postWithUserInput.GET.bel
+
+## Security Warnings
+Prompt for confirmation before performing sensitive operations.
+
+<<< @/../../../examples/7-securityWarnings/deleteUserProdWarning.bel
+
+## Multi-file Organization
+Split your scripts into reusable components.
+
+<<< @/../../../examples/2-loginAndPostAndDelete-require/loginAndPostImport.bel
