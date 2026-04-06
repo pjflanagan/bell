@@ -30,12 +30,11 @@ Create a new file named `hello.bel` and add the following content:
 
 ```bel
 url "https://httpbin.org/get"
-param name "Bell User"
+param userId "12345"
 
 GET
 
-log response.body.args.name
-expect response.status === 200
+log response.body.user.name
 ```
 
 ## 4. Run it

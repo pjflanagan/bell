@@ -13,6 +13,8 @@ import {
   ImportFromStatementContext,
   ImportNamedFromStatementContext,
   ImportAnonymousStatementContext,
+  ParamKeyValueStatementContext,
+  ParamVariableStatementContext,
 } from '../grammar/BellParser';
 import * as fs from 'fs';
 import { formatExpr, formatString } from './formatExpr';
@@ -220,8 +222,13 @@ function formatRequestBuilding(rbs: RequestBuildingStatementContext): FormattedI
 
   const param = rbs.paramStatement();
   if (param) {
-    const key = formatExpr(param.expression(0));
-    const value = formatExpr(param.expression(1));
+    if (param instanceof ParamVariableStatementContext) {
+      const name = param.Identifier().text;
+      return { kind: 'param', comments: [], text: `param ${name}` };
+    }
+    const kv = param as ParamKeyValueStatementContext;
+    const key = formatExpr(kv.expression(0));
+    const value = formatExpr(kv.expression(1));
     return { kind: 'param', comments: [], text: '', paramKey: key, paramValue: value };
   }
 
@@ -361,9 +368,15 @@ function processGroups(items: FormattedItem[]): FormattedItem[] {
     const item = items[i];
 
     if (item.kind === 'param') {
-      // A comment within a param group breaks it into separate groups
+      // Shorthand params (`param varName`) pass through as-is — no alignment
+      if (!item.paramKey) {
+        result.push(item);
+        i++;
+        continue;
+      }
+      // A comment or shorthand param within a key-value group breaks it
       const group: FormattedItem[] = [];
-      while (i < items.length && items[i].kind === 'param' && items[i].comments.length === 0) {
+      while (i < items.length && items[i].kind === 'param' && items[i].paramKey && items[i].comments.length === 0) {
         group.push(items[i++]);
       }
       if (group.length > 0) {
@@ -376,28 +389,16 @@ function processGroups(items: FormattedItem[]): FormattedItem[] {
     }
 
     if (item.kind === 'header') {
-      // A comment within a header group breaks it
+      // A comment within a header group breaks it into separate groups
       const group: FormattedItem[] = [];
       while (i < items.length && items[i].kind === 'header' && items[i].comments.length === 0) {
         group.push(items[i++]);
       }
-      if (group.length === 0) {
-        // This header has a leading comment — keep as single header statement
-        const h = items[i++];
-        result.push({
-          kind: 'header',
-          comments: h.comments,
-          text: `header ${h.headerKey} ${h.headerValue}`,
-        });
-      } else if (group.length === 1) {
-        const h = group[0];
-        result.push({ kind: 'header', comments: h.comments, text: `header ${h.headerKey} ${h.headerValue}` });
+      if (group.length > 0) {
+        result.push(...alignHeaderTable(group));
       } else {
-        const props = group.map((h, idx) => {
-          const comma = idx < group.length - 1 ? ',' : '';
-          return `  ${h.headerKey}: ${h.headerValue}${comma}`;
-        });
-        result.push({ kind: 'headers', comments: group[0].comments, text: `headers {\n${props.join('\n')}\n}` });
+        // This header has a leading comment — flush it as a single-item group
+        result.push(...alignHeaderTable([items[i++]]));
       }
       continue;
     }
@@ -415,5 +416,14 @@ function alignParamTable(group: FormattedItem[]): FormattedItem[] {
     kind: 'param' as ItemKind,
     comments: p.comments,
     text: `param ${p.paramKey!.padEnd(maxKeyLen)}  ${p.paramValue}`,
+  }));
+}
+
+function alignHeaderTable(group: FormattedItem[]): FormattedItem[] {
+  const maxKeyLen = Math.max(...group.map(h => h.headerKey!.length));
+  return group.map(h => ({
+    kind: 'header' as ItemKind,
+    comments: h.comments,
+    text: `header ${h.headerKey!.padEnd(maxKeyLen)}  ${h.headerValue}`,
   }));
 }

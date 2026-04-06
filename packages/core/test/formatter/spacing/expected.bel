@@ -8,7 +8,7 @@ POST
 token = response.body.token
 
 url "http://localhost/posts"
-header "Authorization" `Bearer {token}`
+header "Authorization"  `Bearer {token}`
 GET
 
 log response.body

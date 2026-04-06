@@ -33,17 +33,29 @@ describe('Bell Formatter', () => {
     });
   });
 
-  describe('header collapsing', () => {
-    it('converts multiple consecutive headers to a headers block', () => {
+  describe('header table alignment', () => {
+    it('aligns consecutive header keys to the same width', () => {
       const result = formatBellSource(fixture('headers', 'input.bel'));
       expect(result).to.equal(fixture('headers', 'expected.bel'));
     });
 
-    it('keeps a single header as a header statement', () => {
+    it('keeps a single header with no extra padding', () => {
       const source = 'url "https://api.example.com"\nheader "X-Api-Key" "abc"\nGET\n';
       const result = formatBellSource(source);
-      expect(result).to.include('header "X-Api-Key" "abc"');
-      expect(result).not.to.include('headers {');
+      expect(result).to.include('header "X-Api-Key"  "abc"');
+    });
+
+    it('breaks alignment groups at comments', () => {
+      const source = [
+        'url "https://api.example.com"',
+        'header "Authorization" "Bearer x"',
+        '# separate',
+        'header "X-Long-Key" "val"',
+        'GET',
+      ].join('\n') + '\n';
+      const result = formatBellSource(source);
+      expect(result).to.include('header "Authorization"  "Bearer x"');
+      expect(result).to.include('# separate\nheader "X-Long-Key"  "val"');
     });
   });
 

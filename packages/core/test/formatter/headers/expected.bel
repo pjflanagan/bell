@@ -1,7 +1,5 @@
 url "https://api.example.com/data"
-headers {
-  "Authorization": `Bearer {token}`,
-  "Content-Type": "application/json",
-  "Accept": "application/json"
-}
+header "Authorization"  `Bearer {token}`
+header "Content-Type"   "application/json"
+header "Accept"         "application/json"
 GET

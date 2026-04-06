@@ -16,10 +16,9 @@ baseUrl = "https://api.example.com"
 Use these keywords to build your HTTP request.
 
 ### `url`
-Sets the full base URL for the request. Bell supports both quoted and unquoted absolute URLs.
+Sets the full base URL for the request.
 ```bel
 url "https://api.example.com"
-url https://api.example.com
 ```
 
 ### `path`
@@ -28,11 +27,57 @@ Appends a path to the base URL (if an environment or URL is set).
 path "/users/123"
 ```
 
+### `param`
+Adds a query parameter to the URL.
+```bel
+param "lat"    30.1234
+param "lng"    -40.1268
+param "output" "json"
+```
+
+Can also set a param just using a variable. This will yield `?variableName=<variableValue>`.
+```bel
+param variableName
+```
+
+### `header` and `headers`
+Adds an HTTP header to the request.
+```bel
+header "Authorization"  "Bearer {token}"
+header "Content-Type"   "application/json"
+```
+
+Or sets the headers outright
+```bel
+headers {
+  "Authorization": "Bearer {token}"
+}
+```
+
+### `body`
+Sets the request body (usually used with POST or PUT). Supports multi-line declarations.
+```bel
+body {
+  "name": "John Doe",
+  "email": "john@example.com"
+}
+```
+
+## Sending a Request
+
+When bell encounters `GET`, `POST`, `PATCH` or other HTTP method, it sends the currently built request.
+
+```bel
+POST
+```
+
+## User Interaction
+
 ### `input`
 Prompts the user for a value during execution.
 ```bel
 id = input("Enter user ID")
-url https://api.example.com/users/{id}
+url "https://api.example.com/users/{id}"
 ```
 
 ### `warn`
@@ -45,28 +90,11 @@ prodUrl = warn "production.com"
 warn "You are about to modify production data!"
 ```
 
-### `param`
-Adds a query parameter to the URL.
+## `expect`
+Bell files can be used as test files with the `expect` command.
 ```bel
-param lat 30.1234
-param lng -40.1268
-param output = "json"
-```
-
-### `header`
-Adds an HTTP header to the request.
-```bel
-header "Authorization" "Bearer {apiKey}"
-header "Content-Type" "application/json"
-```
-
-### `body`
-Sets the request body (usually used with POST or PUT). Supports multi-line declarations.
-```bel
-body {
-  "name": "John Doe",
-  "email": "john@example.com"
-}
+url "example.com"
+expect response.code === 200
 ```
 
 ## Keywords as Identifiers
@@ -75,5 +103,5 @@ You can use Bell keywords (like `url`, `body`, `headers`) as variables in expres
 
 ```bel
 log url
-token = response.body.token
+log body.data.entry
 ```

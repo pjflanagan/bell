@@ -12,7 +12,8 @@ import {
   LogStatementContext,
   MemberIndexExpressionContext,
   NullLiteralExpressionContext,
-  ParamStatementContext,
+  ParamKeyValueStatementContext,
+  ParamVariableStatementContext,
   ProgramContext,
   RequestStatementContext,
   ResponseExpressionContext,
@@ -136,10 +137,16 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     this.requestConfig.url = fullUrl;
   }
 
-  async visitParamStatement(ctx: ParamStatementContext): Promise<void> {
+  async visitParamKeyValueStatement(ctx: ParamKeyValueStatementContext): Promise<void> {
     const key = await this.visit(ctx.expression(0));
     const value = await this.visit(ctx.expression(1));
     this.requestConfig.params[key] = value;
+  }
+
+  async visitParamVariableStatement(ctx: ParamVariableStatementContext): Promise<void> {
+    const name = ctx.Identifier().text;
+    const value = this.variables.get(name);
+    this.requestConfig.params[name] = value;
   }
 
   async visitHeaderStatement(ctx: HeaderStatementContext): Promise<void> {

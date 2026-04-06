@@ -155,7 +155,8 @@ pathStatement
   ;
 
 paramStatement
-  : Param LineTerminator* expression LineTerminator* expression
+  : Param LineTerminator* expression LineTerminator* expression   # ParamKeyValueStatement
+  | Param LineTerminator* Identifier                              # ParamVariableStatement
   ;
 
 headerStatement
