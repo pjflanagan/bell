@@ -1,26 +1,15 @@
 
-import { preprodDomain } from './domains';
+# import your environments
+import "envConfig.json"
 
-# scheme without ://
-scheme "https"
+# prompt the user to select an environment (sets the base URL)
+env
 
-domain preprodDomain
+# path is combined with the base URL from the selected environment
+path "/restaurant/search"
 
-# port number without including 
-port 4001
-
-# path can have or omit leading and ending /
-path "restaurant/search"
-
-# add as many params as you'd like
-#  v2: figure out how arrays would work
-# param filter = ["Open Now", "$$"]
-param query = "Sushi"
-param "location=NY/New_York"
-
-fragment "option1"
-
-# https://pp.bell.com:4001/restaurant/search?query=Sushi&location=NY/New_York#option1
-log url
+# add params with: param <key> <value>
+param "query" "Sushi"
+param "location" "NY/New_York"
 
 GET

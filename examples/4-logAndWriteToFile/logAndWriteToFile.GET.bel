@@ -1,5 +1,5 @@
 
-url localhost:4000/post/123456
+url "http://localhost:4000/post/123456"
 GET
 
 # response is a reserved word

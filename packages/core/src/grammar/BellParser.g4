@@ -90,8 +90,6 @@ expression
   | BooleanLiteral                  # BooleanLiteralExpression
   | NullLiteral                     # NullLiteralExpression
   | Response                        # ResponseExpression
-  | RelativeUrl                     # RelativeUrlExpression
-  | FullUrl                         # FullUrlExpression
   | inputCall                       # InputCallExpression
   | warnCall                        # WarnCallExpression
   | objectLiteral                   # ObjectLiteralExpression
@@ -157,7 +155,7 @@ pathStatement
   ;
 
 paramStatement
-  : Param LineTerminator* expression (LineTerminator* Assign? LineTerminator* expression)?
+  : Param LineTerminator* expression LineTerminator* expression
   ;
 
 headerStatement

@@ -1,11 +1,8 @@
 
+url "https://preprod.bell.com/restaurants/search"
 
-url preprod.bell.com/restaurants/search?page=2
-
-# You can add params at any time
-# Even when they are specified in the @url
-# You can use @param to add 1
-# or @params to add a string
-params "?query=Sushi&location=NY/New_York"
+param "page" 2
+param "query" "Sushi"
+param "location" "NY/New_York"
 
 GET

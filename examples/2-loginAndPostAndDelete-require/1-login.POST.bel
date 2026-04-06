@@ -3,7 +3,7 @@
 import { username, password } from './cred.bel'
 
 # define the route
-url http://localhost:4000/login
+url "http://localhost:4000/login"
 
 # username: define username in a "./priv.bell" file, DO NOT commit to git
 # password: see username error

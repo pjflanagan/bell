@@ -14,8 +14,6 @@ import {
   NullLiteralExpressionContext,
   ParamStatementContext,
   ProgramContext,
-  RelativeUrlExpressionContext,
-  FullUrlExpressionContext,
   RequestStatementContext,
   ResponseExpressionContext,
   SourceElementContext,
@@ -139,21 +137,9 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
   }
 
   async visitParamStatement(ctx: ParamStatementContext): Promise<void> {
-    const keyExpr = ctx.expression(0);
-    const key = await this.visit(keyExpr);
-    
-    if (ctx.childCount === 2) {
-        if (typeof key === 'string' && key.includes('=')) {
-            const [k, v] = key.split('=');
-            this.requestConfig.params[k] = v;
-        } else {
-            this.requestConfig.params[key] = this.variables.get(key);
-        }
-    } else {
-        const valExpr = ctx.expression(1);
-        const value = await this.visit(valExpr);
-        this.requestConfig.params[key] = value;
-    }
+    const key = await this.visit(ctx.expression(0));
+    const value = await this.visit(ctx.expression(1));
+    this.requestConfig.params[key] = value;
   }
 
   async visitHeaderStatement(ctx: HeaderStatementContext): Promise<void> {
@@ -414,14 +400,6 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
 
   async visitResponseExpression(ctx: ResponseExpressionContext) {
     return this.lastResponse;
-  }
-
-  async visitRelativeUrlExpression(ctx: RelativeUrlExpressionContext) {
-    return ctx.text;
-  }
-
-  async visitFullUrlExpression(ctx: FullUrlExpressionContext) {
-    return this.resolveInterpolation(ctx.text);
   }
 
   async visitInputCallExpression(ctx: InputCallExpressionContext) {

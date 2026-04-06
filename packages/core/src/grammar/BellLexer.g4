@@ -78,10 +78,6 @@ As           : 'as';
 Warn         : 'warn';
 Export       : 'export';
 
-FullUrl : 'http' 's'? '://' ~[\r\n\t ]+;
-
-RelativeUrl : ('.' | '..')? '/' [a-zA-Z0-9_\-./]*;
-
 // String Literals
 
 fragment DoubleStringCharacter: ~["\\\r\n];

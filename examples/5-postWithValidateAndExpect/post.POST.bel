@@ -9,7 +9,7 @@ import { EndpointRequestBody, EndpointResponseBody } from "./format.ts"
 # this can be useful for testing
 validate requestBody as EndpointRequestBody
 
-url https://httpbin.org/post
+url "https://httpbin.org/post"
 body requestBody
 POST
 
