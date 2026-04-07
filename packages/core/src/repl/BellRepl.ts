@@ -33,7 +33,7 @@ export async function startRepl(): Promise<void> {
     input: process.stdin,
     output: process.stdout,
     terminal: true,
-    prompt: '>>> ',
+    prompt: 'bell> ',
   });
 
   console.log(chalk.bold(`Bell ${VERSION}`) + chalk.gray(`  (type 'exit' or Ctrl+D to quit)`));
@@ -49,7 +49,7 @@ export async function startRepl(): Promise<void> {
     buffer = '';
     braceDepth = 0;
     bracketDepth = 0;
-    rl.setPrompt('>>> ');
+    rl.setPrompt('bell> ');
     rl.prompt();
   };
 
@@ -107,7 +107,7 @@ export async function startRepl(): Promise<void> {
       console.error(chalk.red(`  ✖ ${err.message}`));
     } finally {
       rl.resume();
-      rl.setPrompt('>>> ');
+      rl.setPrompt('bell> ');
       rl.prompt();
     }
   });
