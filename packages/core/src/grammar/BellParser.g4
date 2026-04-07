@@ -176,7 +176,7 @@ requireStatement
   ;
 
 requestStatementBuilding
-  : Request LineTerminator* expression
+  : Request LineTerminator* StringLiteral
   ;
 
 envStatement
