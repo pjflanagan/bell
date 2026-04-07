@@ -44,3 +44,5 @@ coverage/
 .bell
 # Keep weather files if they are in examples
 !examples/*weather*
+
+**/*.vsix

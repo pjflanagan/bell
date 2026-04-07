@@ -11,7 +11,7 @@ Bell is a simple scripting language for describing and making API calls.
 ## Links
 
 - [Documentation](https://pjflanagan.github.io/bell/)
-- [NPM](#) (Coming soon)
+- [NPM](https://www.npmjs.com/package/bell-lang)
 - [GitHub](https://github.com/pjflanagan/bell)
 
 ## Quick Start

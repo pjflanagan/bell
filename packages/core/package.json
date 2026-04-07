@@ -1,10 +1,11 @@
 {
   "name": "bell-lang",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A simple script for making http requests",
   "type": "commonjs",
+  "main": "./dist/src/interpreter/run.js",
   "bin": {
-    "bell": "./dist/cli.js"
+    "bell": "./dist/src/cli.js"
   },
   "files": [
     "dist",

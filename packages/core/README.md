@@ -1,6 +1,6 @@
 # Bell (bell-lang)
 
-<img width="600" alt="Bell Share Card" src="../../_docs/images/bell-card.png">
+<img width="600" alt="Bell Share Card" src="https://github.com/pjflanagan/bell/raw/main/_docs/images/bell-card.png">
 
 Bell is a simple scripting language for describing and making API calls. 
 
@@ -11,7 +11,6 @@ Bell is a simple scripting language for describing and making API calls.
 ## Links
 
 - [Documentation](https://pjflanagan.github.io/bell/)
-- [NPM](https://www.npmjs.com/package/bell-lang)
 - [GitHub](https://github.com/pjflanagan/bell)
 
 ## Quick Start
@@ -22,7 +21,7 @@ Install the CLI:
 npm install -g bell-lang
 ```
 
-Create a `.bel` file (e.g., `get_user.GET.bel`):
+Create a `.bel` file (e.g., `getUser.GET.bel`):
 
 ```bel
 id = 1
@@ -34,5 +33,5 @@ log response.body.name
 Run it:
 
 ```bash
-bell run get_user.GET.bel
+bell run getUser.GET.bel
 ```
