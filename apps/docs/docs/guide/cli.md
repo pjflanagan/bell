@@ -7,7 +7,7 @@ Bell provides a powerful command-line interface to execute scripts, convert Post
 If you're using Bell as a package, you can run it via `npx`:
 
 ```bash
-npx @bell/core <command>
+npx bell-lang <command>
 ```
 
 ## Basic Usage

@@ -1,6 +1,6 @@
 {
-  "name": "@bell/core",
-  "version": "0.0.1",
+  "name": "bell-lang",
+  "version": "0.0.2",
   "description": "A simple script for making http requests",
   "type": "commonjs",
   "bin": {

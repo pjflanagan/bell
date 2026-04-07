@@ -7,7 +7,7 @@ Follow these steps to get Bell up and running on your machine.
 The Bell CLI is the core engine used to execute `.bel` files. You can install it globally via npm:
 
 ```bash
-npm install -g @bell/core
+npm install -g bell-lang
 ```
 
 Verify the installation:
