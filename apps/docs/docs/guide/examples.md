@@ -28,6 +28,12 @@ A multi-step workflow in a single file: log in, save the token, then make an aut
 
 ## Multi-file Organization
 
+Bell runs each file in order at the time it is called. If you need to login before executing a file,
+you can simply `import` the `login.bel` file then run a new request.
+
+To ensure that necessary variables are set, you can `require` them in files and `export` them in files run before. If the required variable
+is not present then the execution stops.
+
 Split scripts into reusable files. The main file uses `request` to run each step; exported variables carry over between files.
 
 ::: code-group
