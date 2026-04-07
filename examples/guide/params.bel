@@ -1,0 +1,12 @@
+url "https://api.example.com/restaurants/search"
+
+# param adds a query parameter: ?page=2&query=Sushi&location=NY
+param "page"     2
+param "query"    "Sushi"
+param "location" "NY"
+
+# param can also use a variable directly: ?userId=<value>
+userId = "abc123"
+param userId
+
+GET

@@ -1,0 +1,8 @@
+# request runs another Bell file inline
+# exported variables from that file become available here
+request "./request-sub.bel"
+
+# token is now available from the sub-file's export
+url "https://api.example.com/posts"
+header "Authorization" "Bearer {token}"
+GET

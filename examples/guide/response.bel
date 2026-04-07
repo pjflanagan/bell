@@ -1,0 +1,26 @@
+url "https://api.example.com/users/1"
+GET
+
+# Access the full response body
+log response.body
+
+# Reach into nested properties
+log response.body.name
+log response.body.address.city
+
+# Access the HTTP status code
+log response.status
+
+# Access response headers
+log response.headers
+
+# When multiple requests are made, index into past responses
+url "https://api.example.com/login"
+POST
+
+url "https://api.example.com/data"
+GET
+
+# response[0] is the login response, response[1] is the data response
+log response[0].status
+log response[1].body

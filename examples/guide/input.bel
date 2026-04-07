@@ -1,0 +1,15 @@
+url "https://api.example.com/users"
+
+# input() prompts the user for a value at runtime
+id = input("Enter user ID")
+path "/{id}"
+
+GET
+
+# input() can also be used inline in body or headers
+url "https://api.example.com/posts"
+body {
+  "title": input("Post title"),
+  "body":  input("Post body")
+}
+POST

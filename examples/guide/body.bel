@@ -1,0 +1,9 @@
+url "https://api.example.com/users"
+
+body {
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "role": "admin"
+}
+
+POST

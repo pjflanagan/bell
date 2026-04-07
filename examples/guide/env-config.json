@@ -1,0 +1,10 @@
+{
+  "dev": {
+    "url": "https://dev.api.example.com",
+    "apiKey": "dev-key-123"
+  },
+  "prod": {
+    "url": "https://api.example.com",
+    "apiKey": "prod-key-456"
+  }
+}

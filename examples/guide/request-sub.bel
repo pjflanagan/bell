@@ -1,0 +1,11 @@
+url "https://api.example.com/login"
+
+body {
+  "username": "testuser",
+  "password": "secret"
+}
+
+POST
+
+token = response.body.token
+export token
