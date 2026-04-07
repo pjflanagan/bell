@@ -46,3 +46,5 @@ coverage/
 !examples/*weather*
 
 **/*.vsix
+
+.env

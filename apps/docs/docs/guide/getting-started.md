@@ -21,7 +21,7 @@ To get the best experience with syntax highlighting and integrated execution, in
 
 1. Open VSCode.
 2. Go to the Extensions view (`Ctrl+Shift+X`).
-3. Search for **"Bell"**.
+3. Search for **"Bell Lang: Syntax and UI"** and look for the Bell logo.
 4. Click **Install**.
 
 ## 3. Your First Bell File
@@ -30,7 +30,7 @@ Create a new file named `hello.bel` and add the following content:
 
 ```bel
 url "https://httpbin.org/get"
-param userId "12345"
+param "userId" "12345"
 
 GET
 
