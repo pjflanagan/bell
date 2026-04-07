@@ -6,6 +6,7 @@ import chalk from 'chalk';
 import { runSource } from './interpreter/run';
 import { convertPostmanToBell } from './converters/postman';
 import { formatBellFile } from './formatter/BellFormatter';
+import { startRepl } from './repl/BellRepl';
 
 const program = new Command();
 
@@ -121,6 +122,9 @@ if (cFlagIdx !== -1 && cFlagIdx + 1 < process.argv.length) {
       process.exit(1);
     }
   })();
+} else if (process.argv.length === 2) {
+  // No arguments — start the REPL
+  startRepl();
 } else {
   // Python-style: `bell <file.bel> [options]` — direct file invocation
   const knownSubcommands = new Set(['run', 'convert', 'format', 'help']);

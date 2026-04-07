@@ -167,7 +167,7 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     this.requestConfig.data = body;
   }
 
-  private resetRequestConfig(): void {
+  resetRequestConfig(): void {
     this.requestConfig = { method: 'GET', url: '', params: {}, headers: {}, data: null };
   }
 
