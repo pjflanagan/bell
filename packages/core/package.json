@@ -2,6 +2,7 @@
   "name": "bell-lang",
   "version": "0.0.4",
   "description": "A simple script for making http requests",
+  "license": "MIT",
   "type": "commonjs",
   "main": "./dist/src/interpreter/run.js",
   "bin": {
@@ -9,7 +10,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ],
   "scripts": {
     "build-lexer": "antlr4ts -visitor ./src/grammar/BellLexer.g4",

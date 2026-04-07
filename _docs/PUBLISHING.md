@@ -1,55 +1,80 @@
-# Publishing TODOs
+# Publishing
 
 Steps to publish Bell components to NPM and the VS Code Marketplace.
 
-## 📦 NPM: bell-lang
+---
 
-The core engine and CLI needs to be published first.
+## NPM: `bell-lang`
 
-- [x] **Account Setup**: 
-  - Ensure access to an npm account.
-  - Run `npm login`.
-  - **Note**: Package renamed to `bell-lang` (was bell-cli/core).
-- [x] **Final Build & Test**:
-  - Run `npm run build` in `packages/core`.
-  - Ensure all tests pass: `npm test`.
-- [x] **Package Verification**:
-  - Check `packages/core/package.json` for correct `bin`, `main`, and `files` fields.
-  - Ensure `#! /usr/bin/env node` is at the top of `dist/cli.js`.
-- [x] **Versioning**:
-  - Decide on version (current: `0.0.1`). Use `npm version patch`.
-- [x] **Publish**:
-  - Run `npm publish --access public` in `packages/core`.
-  - **Live Package**: [npmjs.com/package/bell-lang](https://www.npmjs.com/package/bell-lang)
+Publish the core package first, since the VS Code extension depends on the CLI being available via `npx`/global install.
 
-## 🧩 VS Code: Bell Extension
+**Prerequisites**
+- An npm account with publish access to `bell-lang`
+- Run `npm login` if not already authenticated
 
-The extension depends on the CLI being available.
+**Steps** (run from `packages/core/`)
 
-- [x] **Tooling**:
-  - Install `vsce`: `npm install -g @vscode/vsce`.
-- [x] **Account Setup**:
-  - Create/Verify a Publisher on the [Visual Studio Marketplace](https://marketplace.visualstudio.com/manage).
-  - Current publisher in `package.json` is `bell`.
-  - **How to get a PAT**:
-    1. Log in to [Azure DevOps](https://dev.azure.com/).
-    2. Click the user icon (top right) -> **Personal access tokens**.
-    3. Click **New Token**.
-    4. Set **Organization** to `All accessible organizations`.
-    5. Set **Scopes** to `Marketplace` -> `Publish` (or `Custom defined` -> `Marketplace (Publish)`).
-    6. Copy the token immediately! It will not be shown again.
-- [x] **Assets**:
-  - Ensure `icon.png` and `icons/` are high quality and meet VS Code requirements.
-  - Added `README.md` and `CHANGELOG.md` directly in `packages/vscode`.
-  - Added `.vscodeignore` to prevent `vsce` from looking outside the package root.
-- [x] **Packaging**:
-  - Run `npm run compile` in `packages/vscode`.
-  - Run `vsce package --no-dependencies` within the `packages/vscode` directory.
-  - **Note**: The `--no-dependencies` flag is required in this monorepo to avoid "invalid relative path" errors caused by `vsce` following workspace symlinks.
-- [x] **Publish**:
-  - Run `vsce publish --no-dependencies` or upload the `.vsix` manually.
+1. Build and verify tests pass:
+   ```bash
+   npm run build
+   npm test
+   ```
 
-## 🚀 Post-Publish
+2. Confirm `package.json` has correct `bin`, `main`, and `files` fields, and that `dist/src/cli.js` starts with `#!/usr/bin/env node`.
 
-- [ ] Update `apps/docs/docs/guide/getting-started.md` with the official installation commands once live.
-- [ ] Tag the release in Git: `git tag v0.1.0 && git push --tags`.
+3. Bump the version:
+   ```bash
+   npm version patch   # or minor / major
+   ```
+
+4. Publish:
+   ```bash
+   npm publish --access public
+   ```
+
+Live package: https://www.npmjs.com/package/bell-lang
+
+---
+
+## VS Code: Bell Extension
+
+**Prerequisites**
+- `vsce` installed: `npm install -g @vscode/vsce`
+- A publisher account on the [Visual Studio Marketplace](https://marketplace.visualstudio.com/manage) — current publisher ID is `bell`
+- A Personal Access Token (PAT) from Azure DevOps:
+  1. Go to [dev.azure.com](https://dev.azure.com) and sign in
+  2. Click your profile icon (top right) → **Personal access tokens**
+  3. Click **New Token**
+  4. Set **Organization** to `All accessible organizations`
+  5. Under **Scopes**, select `Marketplace` → `Publish`
+  6. Copy the token immediately — it will not be shown again
+
+**Steps** (run from `packages/vscode/`)
+
+1. Compile the extension:
+   ```bash
+   npm run compile
+   ```
+
+2. Package:
+   ```bash
+   vsce package --no-dependencies
+   ```
+   > The `--no-dependencies` flag is required in this monorepo to prevent `vsce` from following workspace symlinks and throwing "invalid relative path" errors.
+
+3. Publish:
+   ```bash
+   vsce publish --no-dependencies
+   ```
+   Or upload the generated `.vsix` manually via the Marketplace dashboard.
+
+---
+
+## Post-Publish
+
+- Update `apps/docs/docs/guide/getting-started.md` with the correct installation commands.
+- Tag the release in git:
+  ```bash
+  git tag v<version>
+  git push --tags
+  ```

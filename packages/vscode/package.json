@@ -3,6 +3,7 @@
   "displayName": "Bell",
   "description": "A simple script for making http requests",
   "version": "0.0.1",
+  "license": "MIT",
   "publisher": "bell",
   "icon": "icon.png",
   "repository": {
