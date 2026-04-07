@@ -1,27 +1,20 @@
 import requestBody from "./request.json"
 
-# Bell can be a good place to store TS files that
-# match the format of the request and response.
-# But you can also import them from wherever
-import { EndpointRequestBody, EndpointResponseBody } from "./format.ts"
+# Import Zod schemas for request and response validation
+import { EndpointRequestBody, EndpointResponseBody } from "./schemas.ts"
 
-# Bell can validate that the request in your json file matches the expected
-# this can be useful for testing
+# Validate the request body matches the schema before sending
 validate requestBody as EndpointRequestBody
 
 url "https://httpbin.org/post"
 body requestBody
 POST
 
-# Bell can validate the response matches the body, this can be useful
-# for monitoring API changes and staying up to date
-# TODO v2: figure out how to make types show up in the language
-# but also this is a way further down the line feature, so maybe don't worry about it
+# Validate the response shape — catches API contract changes early
 validate response.body as EndpointResponseBody
 
 # Log body status for debugging
 log response.body.json.status
 
-# Bell can also run expect for testing
-# httpbin.org returns the request body in response.json
+# Assert the value is what we expect
 expect response.body.json.status === "Valid"

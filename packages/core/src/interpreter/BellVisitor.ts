@@ -309,6 +309,17 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     return val;
   }
 
+  private loadModule(fullPath: string): any {
+    try {
+      const mod = require(fullPath);
+      return mod;
+    } catch (err: any) {
+      console.log(chalk.yellow(`  ⚠ Could not load module: ${path.basename(fullPath)}`));
+      console.log(chalk.yellow(`    ${err.message}`));
+      return null;
+    }
+  }
+
   async visitImportFromStatement(ctx: ImportFromStatementContext): Promise<void> {
     const id = ctx.identifier().text;
     const relPath = ctx.StringLiteral().text.slice(1, -1);
@@ -322,10 +333,17 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
       const parsed = this.parseDotEnv(fs.readFileSync(fullPath, 'utf8'));
       this.variables.set(id, parsed);
     } else if (fullPath.endsWith('.json')) {
-        const content = fs.readFileSync(fullPath, 'utf8');
-        this.variables.set(id, JSON.parse(content));
+      const content = fs.readFileSync(fullPath, 'utf8');
+      this.variables.set(id, JSON.parse(content));
+    } else if (fullPath.endsWith('.ts') || fullPath.endsWith('.js')) {
+      const mod = this.loadModule(fullPath);
+      if (mod !== null) {
+        // Use default export if available, otherwise the whole module
+        this.variables.set(id, mod.default ?? mod);
+        console.log(chalk.gray(`  Loaded: ${id} from ${path.basename(fullPath)}`));
+      }
     } else {
-        this.variables.set(id, { __file: fullPath });
+      this.variables.set(id, { __file: fullPath });
     }
   }
 
@@ -343,10 +361,20 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
         const id = idCtx.text;
         this.variables.set(id, parsed[id] ?? null);
       });
-    } else {
-      ctx.identifier().forEach(idCtx => {
+    } else if (fullPath.endsWith('.ts') || fullPath.endsWith('.js')) {
+      const mod = this.loadModule(fullPath);
+      if (mod !== null) {
+        ctx.identifier().forEach(idCtx => {
           const id = idCtx.text;
-          this.variables.set(id, { __type: id, __file: fullPath });
+          const exported = mod[id] ?? mod.default?.[id] ?? null;
+          this.variables.set(id, exported);
+          console.log(chalk.gray(`  Loaded: ${id} from ${path.basename(fullPath)}`));
+        });
+      }
+    } else {
+      // Unsupported file type — store marker
+      ctx.identifier().forEach(idCtx => {
+        this.variables.set(idCtx.text, null);
       });
     }
   }
@@ -440,11 +468,27 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
   async visitValidateStatement(ctx: ValidateStatementContext): Promise<void> {
     const val = await this.visit(ctx.expression());
     const typeId = ctx.identifier().text;
-    
-    if (val === undefined || val === null) {
-      console.log(chalk.red(`  ✘ Validation Failed: ${chalk.bold(ctx.expression().text)} as ${typeId}`));
+    const schema = this.variables.get(typeId);
+    const label = `${chalk.bold(ctx.expression().text)} as ${chalk.bold(typeId)}`;
+
+    if (schema && typeof schema.safeParse === 'function') {
+      // Zod schema — call safeParse for detailed field-level errors
+      const result = schema.safeParse(val);
+      if (result.success) {
+        console.log(chalk.green(`  ✔ Validation Passed: ${label}`));
+      } else {
+        console.log(chalk.red(`  ✘ Validation Failed: ${label}`));
+        for (const issue of result.error.issues) {
+          const fieldPath = issue.path.length > 0 ? issue.path.join('.') + ': ' : '';
+          console.log(chalk.red(`     ${fieldPath}${issue.message}`));
+        }
+      }
+    } else if (val === undefined || val === null) {
+      console.log(chalk.red(`  ✘ Validation Failed: ${label} (value is null or undefined)`));
     } else {
-      console.log(chalk.green(`  ✔ Validation Passed: ${chalk.bold(ctx.expression().text)} as ${typeId}`));
+      console.log(chalk.yellow(`  ⚠ Cannot validate ${label}: ${typeId} is not a Zod schema`));
+      console.log(chalk.yellow(`     Import a Zod schema to enable validation:`));
+      console.log(chalk.yellow(`     import ${typeId} from "./schema.ts"`));
     }
   }
 

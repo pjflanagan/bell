@@ -6,6 +6,12 @@ import { BellVisitor } from '../src/interpreter/BellVisitor';
 import axios from 'axios';
 import * as path from 'path';
 import * as sinon from 'sinon';
+import { z } from 'zod';
+
+// Register ts-node so the test suite can load .ts fixture files via require()
+try {
+  require('ts-node').register({ transpileOnly: true, skipProject: true, compilerOptions: { module: 'commonjs' } });
+} catch { /* ok */ }
 
 describe('Bell Interpreter', () => {
   let axiosStub: sinon.SinonStub;
@@ -112,5 +118,67 @@ describe('Bell Interpreter', () => {
     const visitor = await runCode(`env "dev" | "prod"`, prompter);
     expect(prompter.prompt.calledOnce).to.be.true;
     expect((visitor as any).selectedEnv).to.equal('prod');
+  });
+
+  describe('Zod validation', () => {
+    const UserSchema = z.object({ id: z.number(), name: z.string() });
+
+    const runWithSchema = async (code: string, schemaName: string, schema: any) => {
+      const visitor = await runCode('') as any;
+      visitor.variables.set(schemaName, schema);
+      // parse and visit just the validate statement
+      const inputStream = CharStreams.fromString(code);
+      const lexer = new BellLexer(inputStream);
+      const tokenStream = new CommonTokenStream(lexer);
+      const parser = new BellParser(tokenStream);
+      const tree = parser.program();
+      // re-use visitor with schema already set
+      const v2 = new BellVisitor(path.join(__dirname, 'test.bel'));
+      (v2 as any).variables.set(schemaName, schema);
+      await v2.visit(tree);
+      return v2;
+    };
+
+    it('should pass validation for a valid object', async () => {
+      const visitor = new BellVisitor(path.join(__dirname, 'test.bel')) as any;
+      visitor.variables.set('UserSchema', UserSchema);
+      visitor.variables.set('data', { id: 1, name: 'Alice' });
+
+      const inputStream = CharStreams.fromString(`validate data as UserSchema`);
+      const lexer = new BellLexer(inputStream);
+      const tree = new BellParser(new CommonTokenStream(lexer)).program();
+      await visitor.visit(tree);
+      // no throw = passed
+    });
+
+    it('should fail validation for an invalid object', async () => {
+      const logs: string[] = [];
+      const originalLog = console.log;
+      console.log = (...args: any[]) => logs.push(args.join(' '));
+
+      const visitor = new BellVisitor(path.join(__dirname, 'test.bel')) as any;
+      visitor.variables.set('UserSchema', UserSchema);
+      visitor.variables.set('data', { id: 'not-a-number', name: 'Alice' });
+
+      const inputStream = CharStreams.fromString(`validate data as UserSchema`);
+      const lexer = new BellLexer(inputStream);
+      const tree = new BellParser(new CommonTokenStream(lexer)).program();
+      await visitor.visit(tree);
+
+      console.log = originalLog;
+      expect(logs.some(l => l.includes('Validation Failed'))).to.be.true;
+      expect(logs.some(l => l.includes('id'))).to.be.true;
+    });
+
+    it('should load a .ts schema file and validate with it', async () => {
+      // __dirname is dist/test/ at runtime; source fixtures are two levels up at test/fixtures/
+      const schemaPath = path.resolve(__dirname, '../../test/fixtures/user.schema.ts').replace(/\\/g, '/');
+      const visitor = await runCode(`import UserSchema from "${schemaPath}"`);
+      const schema = (visitor as any).variables.get('UserSchema');
+      expect(schema).to.not.be.null;
+      expect(typeof schema.safeParse).to.equal('function');
+      expect(schema.safeParse({ id: 1, name: 'Bob' }).success).to.be.true;
+      expect(schema.safeParse({ id: 'bad', name: 'Bob' }).success).to.be.false;
+    });
   });
 });
