@@ -108,6 +108,50 @@ program
     }
   });
 
+const INIT_EXAMPLE = `\
+# Bell starter file
+# Run this with: bell run bell/example.GET.bel
+
+# Fetch a post from a public API
+url "https://jsonplaceholder.typicode.com/posts/1"
+GET
+
+# Try changing the id, or swap in your own URL:
+#
+#   id = 42
+#   url "https://jsonplaceholder.typicode.com/posts/{id}"
+#   GET
+#
+# Add headers:
+#   header "Authorization" "Bearer <token>"
+#
+# Send a POST:
+#   url "https://jsonplaceholder.typicode.com/posts"
+#   body { "title": "hello", "body": "world", "userId": 1 }
+#   POST
+`;
+
+program
+  .command('init')
+  .description('Create a bell/ folder with a starter example file')
+  .action(() => {
+    const dir = path.resolve('bell');
+    const file = path.join(dir, 'example.GET.bel');
+
+    if (fs.existsSync(dir)) {
+      console.error(chalk.red(`✖ Directory already exists: ${chalk.bold(dir)}`));
+      process.exit(1);
+    }
+
+    fs.mkdirSync(dir);
+    fs.writeFileSync(file, INIT_EXAMPLE, 'utf8');
+
+    console.log(chalk.green(`✔ Created ${chalk.bold('bell/example.GET.bel')}`));
+    console.log('');
+    console.log(`  Run it:  ${chalk.cyan('bell run bell/example.GET.bel')}`);
+    console.log(`  Or open ${chalk.bold('bell/example.GET.bel')} and make it your own.`);
+  });
+
 // Python-style: `bell -c <code>` — inline execution (handled before commander)
 const cFlagIdx = process.argv.indexOf('-c');
 if (cFlagIdx !== -1 && cFlagIdx + 1 < process.argv.length) {
@@ -127,7 +171,7 @@ if (cFlagIdx !== -1 && cFlagIdx + 1 < process.argv.length) {
   startRepl();
 } else {
   // Python-style: `bell <file.bel> [options]` — direct file invocation
-  const knownSubcommands = new Set(['run', 'convert', 'format', 'help']);
+  const knownSubcommands = new Set(['run', 'convert', 'format', 'init', 'help']);
   const firstArg = process.argv[2];
   if (firstArg && !firstArg.startsWith('-') && !knownSubcommands.has(firstArg) && firstArg.endsWith('.bel')) {
     // Rewrite argv so commander sees it as `bell run <file> [rest...]`
