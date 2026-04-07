@@ -61,6 +61,7 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
   private currentFilePath: string;
   private environments: any = null;
   private selectedEnv: string | null = null;
+  private dotEnvBaseUrl: string | null = null;
 
   constructor(filePath: string, initialEnv: string | null = null) {
     super();
@@ -90,7 +91,30 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
         const env = this.environments[this.selectedEnv];
         return env.url || env.domain || '';
     }
-    return '';
+    return this.dotEnvBaseUrl ?? '';
+  }
+
+  private isDotEnvFile(fullPath: string): boolean {
+    const basename = path.basename(fullPath);
+    return basename === '.env' || basename.startsWith('.env.');
+  }
+
+  private parseDotEnv(content: string): Record<string, string> {
+    const vars: Record<string, string> = {};
+    for (const line of content.split(/\r?\n/)) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      const eqIdx = trimmed.indexOf('=');
+      if (eqIdx === -1) continue;
+      const key = trimmed.slice(0, eqIdx).trim();
+      let val = trimmed.slice(eqIdx + 1).trim();
+      if ((val.startsWith('"') && val.endsWith('"')) ||
+          (val.startsWith("'") && val.endsWith("'"))) {
+        val = val.slice(1, -1);
+      }
+      vars[key] = val;
+    }
+    return vars;
   }
 
   async visitProgram(ctx: ProgramContext): Promise<void> {
@@ -281,7 +305,14 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     const relPath = ctx.StringLiteral().text.slice(1, -1);
     const fullPath = this.resolvePath(relPath);
 
-    if (fullPath.endsWith('.json')) {
+    if (this.isDotEnvFile(fullPath)) {
+      if (!fs.existsSync(fullPath)) {
+        console.log(chalk.yellow(`  ⚠ .env file not found: ${path.basename(fullPath)}`));
+        return;
+      }
+      const parsed = this.parseDotEnv(fs.readFileSync(fullPath, 'utf8'));
+      this.variables.set(id, parsed);
+    } else if (fullPath.endsWith('.json')) {
         const content = fs.readFileSync(fullPath, 'utf8');
         this.variables.set(id, JSON.parse(content));
     } else {
@@ -292,17 +323,44 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
   async visitImportNamedFromStatement(ctx: ImportNamedFromStatementContext): Promise<void> {
     const relPath = ctx.StringLiteral().text.slice(1, -1);
     const fullPath = this.resolvePath(relPath);
-    
-    ctx.identifier().forEach(idCtx => {
+
+    if (this.isDotEnvFile(fullPath)) {
+      if (!fs.existsSync(fullPath)) {
+        console.log(chalk.yellow(`  ⚠ .env file not found: ${path.basename(fullPath)}`));
+        return;
+      }
+      const parsed = this.parseDotEnv(fs.readFileSync(fullPath, 'utf8'));
+      ctx.identifier().forEach(idCtx => {
         const id = idCtx.text;
-        this.variables.set(id, { __type: id, __file: fullPath });
-    });
+        this.variables.set(id, parsed[id] ?? null);
+      });
+    } else {
+      ctx.identifier().forEach(idCtx => {
+          const id = idCtx.text;
+          this.variables.set(id, { __type: id, __file: fullPath });
+      });
+    }
   }
 
   async visitImportAnonymousStatement(ctx: ImportAnonymousStatementContext): Promise<void> {
     const relPath = ctx.StringLiteral().text.slice(1, -1);
     const fullPath = this.resolvePath(relPath);
-    if (fullPath.endsWith('.json')) {
+
+    if (this.isDotEnvFile(fullPath)) {
+      if (!fs.existsSync(fullPath)) {
+        console.log(chalk.yellow(`  ⚠ .env file not found: ${path.basename(fullPath)}`));
+        return;
+      }
+      const parsed = this.parseDotEnv(fs.readFileSync(fullPath, 'utf8'));
+      for (const [key, val] of Object.entries(parsed)) {
+        if (key === 'BELL_URL') {
+          this.dotEnvBaseUrl = val;
+        } else {
+          this.variables.set(key, val);
+        }
+      }
+      console.log(chalk.gray(`  Loaded .env: ${path.basename(fullPath)}`));
+    } else if (fullPath.endsWith('.json')) {
         const content = fs.readFileSync(fullPath, 'utf8');
         this.environments = JSON.parse(content);
         console.log(chalk.gray(`  Loaded environments from: ${path.basename(fullPath)}`));

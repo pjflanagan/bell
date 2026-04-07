@@ -92,6 +92,22 @@ Bell supports three import forms.
 
 <<< @/../../../examples/guide/import.bel
 
+## .env Files
+
+Bell can load standard `.env` files directly. All three import forms work with `.env` files (detected by filename, not extension).
+
+::: code-group
+
+<<< @/../../../examples/guide/dotenv.bel [dotenv.bel]
+
+<<< @/../../../examples/guide/sample.env [.env]
+
+:::
+
+The special key `BELL_URL` sets the base URL so that `path` statements work without an explicit `url` call — the same role the `"url"` key plays in a JSON environment config.
+
+Bell prints a warning if the `.env` file is not found, since it is commonly gitignored.
+
 ## Environments
 
 Environments let you switch between configurations (dev, staging, prod) without changing your Bell files. Define them in a JSON config and load it with an anonymous import.

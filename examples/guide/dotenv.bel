@@ -1,0 +1,14 @@
+# Anonymous import — all KEY=VALUE pairs become Bell variables.
+# BELL_URL sets the base URL so path statements work without an explicit url call.
+import ".env"
+
+header "Authorization" "Bearer {API_KEY}"
+path "/users/{USER_ID}"
+GET
+
+# Named import — pull specific keys from the .env file
+import { API_KEY, USER_ID } from ".env"
+
+# Default import — get all vars as a single object
+import env from ".env"
+log env.API_KEY
