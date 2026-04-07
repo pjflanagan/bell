@@ -1,6 +1,6 @@
 {
   "name": "bell-vscode",
-  "displayName": "Bell",
+  "displayName": "Bell Lang: Syntax and UI",
   "description": "A simple script for making http requests",
   "version": "0.0.1",
   "license": "MIT",
