@@ -22,6 +22,8 @@ LParen            : '(';
 RParen            : ')';
 Pipe              : '|';
 Plus              : '+';
+Multiply          : '*';
+Divide            : '/';
 
 // Comparison Operators
 Eq                : '==';
@@ -77,6 +79,8 @@ Validate     : 'validate';
 As           : 'as';
 Warn         : 'warn';
 Export       : 'export';
+Timeout      : 'timeout';
+Wait         : 'wait';
 
 // String Literals
 

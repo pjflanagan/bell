@@ -25,6 +25,8 @@ statement
   | validateStatement
   | warnStatement
   | exportStatement
+  | timeoutStatement
+  | waitStatement
   ;
 
 eos
@@ -53,6 +55,8 @@ identifier
   | Validate
   | As
   | Export
+  | Timeout
+  | Wait
   ;
 
 memberIdentifier
@@ -77,11 +81,14 @@ memberIdentifier
   | Validate
   | As
   | Export
+  | Timeout
+  | Wait
   ;
 
 expression
   : expression Dot memberIdentifier     # MemberIndexExpression
   | expression Dot LBracket expression RBracket # ArrayAccessExpression
+  | expression (Multiply | Divide) expression # MultiplicativeExpression
   | expression Plus expression          # AdditiveExpression
   | expression (Eq | StrictEq | NotEq | StrictNotEq | Lt | Gt | Le | Ge) expression # BinaryExpression
   | identifier                      # IdentifierExpression
@@ -215,4 +222,12 @@ validateStatement
 
 warnStatement
   : Warn expression (As identifier)?
+  ;
+
+timeoutStatement
+  : Timeout expression
+  ;
+
+waitStatement
+  : Wait expression
   ;

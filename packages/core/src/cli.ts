@@ -1,4 +1,16 @@
 #!/usr/bin/env node
+
+// Register ts-node so Bell can require() user's .ts schema/type files at runtime
+try {
+  require('ts-node').register({
+    transpileOnly: true,   // skip type-checking for speed
+    skipProject: true,     // don't inherit the user's tsconfig
+    compilerOptions: { module: 'commonjs' },
+  });
+} catch {
+  // ts-node unavailable — .ts imports will fall back to { __file } marker
+}
+
 import { Command } from 'commander';
 import * as fs from 'fs';
 import * as path from 'path';

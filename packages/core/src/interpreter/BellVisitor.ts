@@ -37,6 +37,8 @@ import {
   ArrayLiteralExpressionContext,
   AdditiveExpressionContext,
   ArrayAccessExpressionContext,
+  TimeoutStatementContext,
+  WaitStatementContext,
   BellParser,
 } from '../grammar/BellParser';
 import axios, { AxiosResponse } from 'axios';
@@ -55,6 +57,7 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     params: {},
     headers: {},
     data: null,
+    timeout: 0,
   };
   private lastResponse: AxiosResponse | null = null;
   private responses: AxiosResponse[] = [];
@@ -62,11 +65,13 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
   private environments: any = null;
   private selectedEnv: string | null = null;
   private dotEnvBaseUrl: string | null = null;
+  private prompter: typeof inquirer;
 
-  constructor(filePath: string, initialEnv: string | null = null) {
+  constructor(filePath: string, initialEnv: string | null = null, prompter?: typeof inquirer) {
     super();
     this.currentFilePath = path.resolve(filePath);
     this.selectedEnv = initialEnv;
+    this.prompter = prompter ?? inquirer;
   }
 
   protected defaultResult() {
@@ -192,7 +197,19 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
   }
 
   resetRequestConfig(): void {
-    this.requestConfig = { method: 'GET', url: '', params: {}, headers: {}, data: null };
+    this.requestConfig = { method: 'GET', url: '', params: {}, headers: {}, data: null, timeout: 0 };
+  }
+
+  async visitTimeoutStatement(ctx: TimeoutStatementContext): Promise<void> {
+    const ms = await this.visit(ctx.expression());
+    this.requestConfig.timeout = ms;
+    console.log(chalk.gray(`  Timeout set to: ${ms}ms`));
+  }
+
+  async visitWaitStatement(ctx: WaitStatementContext): Promise<void> {
+    const ms = await this.visit(ctx.expression());
+    console.log(chalk.gray(`  Waiting ${ms}ms...`));
+    await new Promise(resolve => setTimeout(resolve, ms));
   }
 
   async visitRequestStatement(ctx: RequestStatementContext): Promise<void> {
@@ -261,14 +278,13 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     }
   }
 
-  async visitWarnStatement(ctx: WarnStatementContext): Promise<void> {
-    const val = await this.visit(ctx.expression());
-    console.log(chalk.yellow(`  ⚠ Warning: ${val}`));
-    const answers = await inquirer.prompt([
+  private async confirmOrExit(message: string): Promise<void> {
+    console.log(chalk.yellow(`  ⚠  ${message}`));
+    const answers = await this.prompter.prompt([
         {
             type: 'confirm',
             name: 'confirm',
-            message: 'Proceed?',
+            message: chalk.yellow('Proceed?'),
             default: false
         }
     ]);
@@ -276,6 +292,11 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
         console.log(chalk.red('  ✖ Cancelled by user.'));
         process.exit(0);
     }
+  }
+
+  async visitWarnStatement(ctx: WarnStatementContext): Promise<void> {
+    const val = await this.visit(ctx.expression());
+    await this.confirmOrExit(String(val));
     if (ctx.identifier()) {
       const id = ctx.identifier()!.text;
       this.variables.set(id, val);
@@ -284,20 +305,19 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
 
   async visitWarnCallExpression(ctx: WarnCallExpressionContext) {
     const val = await this.visit(ctx.warnCall().expression());
-    console.log(chalk.yellow(`  ⚠ Warning: ${val}`));
-    const answers = await inquirer.prompt([
-        {
-            type: 'confirm',
-            name: 'confirm',
-            message: 'Proceed?',
-            default: false
-        }
-    ]);
-    if (!answers.confirm) {
-        console.log(chalk.red('  ✖ Cancelled by user.'));
-        process.exit(0);
-    }
+    await this.confirmOrExit(String(val));
     return val;
+  }
+
+  private loadModule(fullPath: string): any {
+    try {
+      const mod = require(fullPath);
+      return mod;
+    } catch (err: any) {
+      console.log(chalk.yellow(`  ⚠ Could not load module: ${path.basename(fullPath)}`));
+      console.log(chalk.yellow(`    ${err.message}`));
+      return null;
+    }
   }
 
   async visitImportFromStatement(ctx: ImportFromStatementContext): Promise<void> {
@@ -313,10 +333,17 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
       const parsed = this.parseDotEnv(fs.readFileSync(fullPath, 'utf8'));
       this.variables.set(id, parsed);
     } else if (fullPath.endsWith('.json')) {
-        const content = fs.readFileSync(fullPath, 'utf8');
-        this.variables.set(id, JSON.parse(content));
+      const content = fs.readFileSync(fullPath, 'utf8');
+      this.variables.set(id, JSON.parse(content));
+    } else if (fullPath.endsWith('.ts') || fullPath.endsWith('.js')) {
+      const mod = this.loadModule(fullPath);
+      if (mod !== null) {
+        // Use default export if available, otherwise the whole module
+        this.variables.set(id, mod.default ?? mod);
+        console.log(chalk.gray(`  Loaded: ${id} from ${path.basename(fullPath)}`));
+      }
     } else {
-        this.variables.set(id, { __file: fullPath });
+      this.variables.set(id, { __file: fullPath });
     }
   }
 
@@ -334,10 +361,20 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
         const id = idCtx.text;
         this.variables.set(id, parsed[id] ?? null);
       });
-    } else {
-      ctx.identifier().forEach(idCtx => {
+    } else if (fullPath.endsWith('.ts') || fullPath.endsWith('.js')) {
+      const mod = this.loadModule(fullPath);
+      if (mod !== null) {
+        ctx.identifier().forEach(idCtx => {
           const id = idCtx.text;
-          this.variables.set(id, { __type: id, __file: fullPath });
+          const exported = mod[id] ?? mod.default?.[id] ?? null;
+          this.variables.set(id, exported);
+          console.log(chalk.gray(`  Loaded: ${id} from ${path.basename(fullPath)}`));
+        });
+      }
+    } else {
+      // Unsupported file type — store marker
+      ctx.identifier().forEach(idCtx => {
+        this.variables.set(idCtx.text, null);
       });
     }
   }
@@ -381,7 +418,7 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     if (options.length === 1) {
         this.selectedEnv = options[0];
     } else if (options.length > 1) {
-        const answers = await inquirer.prompt([
+        const answers = await this.prompter.prompt([
             {
                 type: 'list',
                 name: 'env',
@@ -392,7 +429,7 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
         this.selectedEnv = answers.env;
     } else if (this.environments) {
         const envNames = Object.keys(this.environments);
-        const answers = await inquirer.prompt([
+        const answers = await this.prompter.prompt([
             {
                 type: 'list',
                 name: 'env',
@@ -401,8 +438,12 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
             }
         ]);
         this.selectedEnv = answers.env;
+    } else {
+        console.log(chalk.yellow(`  ⚠  env: no environment options provided and no environment config loaded.`));
+        console.log(chalk.yellow(`     Use 'import "env-config.json"' to load environments, or 'env "dev" | "prod"' to specify options.`));
+        return;
     }
-    
+
     console.log(chalk.gray(`  Environment set to: ${chalk.bold(this.selectedEnv)}`));
   }
 
@@ -427,11 +468,27 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
   async visitValidateStatement(ctx: ValidateStatementContext): Promise<void> {
     const val = await this.visit(ctx.expression());
     const typeId = ctx.identifier().text;
-    
-    if (val === undefined || val === null) {
-      console.log(chalk.red(`  ✘ Validation Failed: ${chalk.bold(ctx.expression().text)} as ${typeId}`));
+    const schema = this.variables.get(typeId);
+    const label = `${chalk.bold(ctx.expression().text)} as ${chalk.bold(typeId)}`;
+
+    if (schema && typeof schema.safeParse === 'function') {
+      // Zod schema — call safeParse for detailed field-level errors
+      const result = schema.safeParse(val);
+      if (result.success) {
+        console.log(chalk.green(`  ✔ Validation Passed: ${label}`));
+      } else {
+        console.log(chalk.red(`  ✘ Validation Failed: ${label}`));
+        for (const issue of result.error.issues) {
+          const fieldPath = issue.path.length > 0 ? issue.path.join('.') + ': ' : '';
+          console.log(chalk.red(`     ${fieldPath}${issue.message}`));
+        }
+      }
+    } else if (val === undefined || val === null) {
+      console.log(chalk.red(`  ✘ Validation Failed: ${label} (value is null or undefined)`));
     } else {
-      console.log(chalk.green(`  ✔ Validation Passed: ${chalk.bold(ctx.expression().text)} as ${typeId}`));
+      console.log(chalk.yellow(`  ⚠ Cannot validate ${label}: ${typeId} is not a Zod schema`));
+      console.log(chalk.yellow(`     Import a Zod schema to enable validation:`));
+      console.log(chalk.yellow(`     import ${typeId} from "./schema.ts"`));
     }
   }
 
@@ -479,7 +536,7 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     if (inputCall.expression()) {
         prompt = await this.visit(inputCall.expression()!);
     }
-    const answers = await inquirer.prompt([
+    const answers = await this.prompter.prompt([
         {
             type: 'input',
             name: 'val',
@@ -519,6 +576,13 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     const left = await this.visit(ctx.expression(0));
     const right = await this.visit(ctx.expression(1));
     return left + right;
+  }
+
+  async visitMultiplicativeExpression(ctx: any) {
+    const left = await this.visit(ctx.expression(0));
+    const right = await this.visit(ctx.expression(1));
+    const op = ctx.getChild(1).text;
+    return op === '*' ? left * right : left / right;
   }
 
   async visitArrayAccessExpression(ctx: ArrayAccessExpressionContext) {
