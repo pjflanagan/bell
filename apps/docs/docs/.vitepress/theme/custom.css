@@ -77,3 +77,19 @@ h1,
 .dark .VPHero {
   text-shadow: 0 2px 10px rgba(0,0,0,0.7);
 }
+
+/* On mobile: stack code block below the hero text */
+@media (max-width: 959px) {
+  .VPHomeHero .container {
+    flex-direction: column;
+  }
+  .VPHomeHero .main {
+    order: 1;
+  }
+  .VPHomeHero .image {
+    order: 2;
+    margin: 32px auto 0;
+    max-width: 480px;
+    width: 100%;
+  }
+}
