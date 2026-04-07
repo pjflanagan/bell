@@ -1,0 +1,15 @@
+token = "my-token"
+
+url "https://api.example.com/data"
+
+# Add individual headers
+header "Authorization" "Bearer {token}"
+header "Accept"        "application/json"
+
+# Or set all headers at once with an object
+headers {
+  "Authorization": "Bearer {token}",
+  "Accept": "application/json"
+}
+
+GET

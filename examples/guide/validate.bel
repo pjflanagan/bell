@@ -1,0 +1,11 @@
+import requestBody from "./request-body.json"
+import { UserRequest, UserResponse } from "./types.ts"
+
+# validate checks that a value matches a TypeScript type at runtime
+validate requestBody as UserRequest
+
+url "https://api.example.com/users"
+body requestBody
+POST
+
+validate response.body as UserResponse

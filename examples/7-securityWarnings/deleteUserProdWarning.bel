@@ -1,5 +1,5 @@
 
-# @warn will prompt the user to validate before sending each request
+# warn will prompt the user to validate before sending each request
 # that contains the prodUrl variable
 prodUrl = warn "production.com"
 

@@ -1,0 +1,22 @@
+url "https://api.example.com/users"
+
+# GET — retrieve a resource
+GET
+
+# POST — create a resource
+body { "name": "Jane" }
+POST
+
+# PUT — replace a resource
+path "/users/1"
+body { "name": "Jane Doe" }
+PUT
+
+# PATCH — update fields on a resource
+path "/users/1"
+body { "name": "Jane D." }
+PATCH
+
+# DELETE — remove a resource
+path "/users/1"
+DELETE

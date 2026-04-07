@@ -1,0 +1,15 @@
+url "https://api.example.com/login"
+
+body {
+  "username": "testuser",
+  "password": "secret"
+}
+
+POST
+
+# Save the token from the response
+token = response.body.token
+userId = response.body.userId
+
+# export makes these variables available to files that request this one
+export token, userId

@@ -1,0 +1,13 @@
+url "https://api.example.com/users/1"
+GET
+
+# Log a value or expression
+log response.status
+log response.body.name
+
+# Log a variable
+count = 42
+log count
+
+# Log the current URL
+log url

@@ -1,0 +1,8 @@
+# url sets the full base URL for the request
+url "https://api.example.com"
+
+# path appends a segment to the base URL
+# result: https://api.example.com/users/123
+path "/users/123"
+
+GET

@@ -167,7 +167,7 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     this.requestConfig.data = body;
   }
 
-  private resetRequestConfig(): void {
+  resetRequestConfig(): void {
     this.requestConfig = { method: 'GET', url: '', params: {}, headers: {}, data: null };
   }
 
@@ -349,7 +349,7 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
   }
 
   async visitRequestStatementBuilding(ctx: RequestStatementBuildingContext): Promise<void> {
-    const relPath = await this.visit(ctx.expression());
+    const relPath = ctx.StringLiteral().text.slice(1, -1);
     const fullPath = this.resolvePath(relPath);
     
     console.log(chalk.gray(`  Loading request file: ${fullPath}`));

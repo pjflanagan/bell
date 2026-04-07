@@ -1,0 +1,12 @@
+# warn as an expression — prompts for confirmation and returns the value
+# execution stops if the user declines
+prodUrl = warn "production.example.com"
+
+url "https://{prodUrl}/users"
+GET
+
+# warn as a statement — shows a message and asks the user to confirm
+warn "You are about to delete a user. Proceed?"
+
+url "https://api.example.com/users/1"
+DELETE

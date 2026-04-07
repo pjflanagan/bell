@@ -249,7 +249,7 @@ function formatRequestBuilding(rbs: RequestBuildingStatementContext): FormattedI
   if (require_) return { kind: 'require', comments: [], text: `require ${formatExpr(require_.expression())}` };
 
   const reqFile = rbs.requestStatementBuilding();
-  if (reqFile) return { kind: 'request-file', comments: [], text: `request ${formatExpr(reqFile.expression())}` };
+  if (reqFile) return { kind: 'request-file', comments: [], text: `request ${reqFile.StringLiteral().text}` };
 
   const env = rbs.envStatement();
   if (env) {

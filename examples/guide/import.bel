@@ -1,0 +1,9 @@
+# Import a default export from a JSON file
+import requestBody from "./request-body.json"
+
+# Import named exports from a TypeScript file
+import { UserRequest, UserResponse } from "./types.ts"
+
+# Import a JSON environment config file (anonymous import)
+# This loads environment definitions (dev, prod, etc.)
+import "./env-config.json"
