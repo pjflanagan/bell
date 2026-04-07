@@ -1,12 +1,20 @@
 {
-  "name": "bell",
+  "name": "bell-vscode",
   "displayName": "Bell",
   "description": "A simple script for making http requests",
   "version": "0.0.1",
-  "publisher": "pjflanagan",
+  "publisher": "bell",
   "icon": "icon.png",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pjflanagan/bell.git"
+  },
+  "homepage": "https://pjflanagan.github.io/bell/",
+  "bugs": {
+    "url": "https://github.com/pjflanagan/bell/issues"
+  },
   "engines": {
-    "vscode": "^1.85.0"
+    "vscode": "^1.110.0"
   },
   "categories": [
     "Programming Languages"

@@ -1,0 +1,15 @@
+.vscode/**
+.vscode-test/**
+out/**
+node_modules/**
+src/**
+.gitignore
+tsconfig.json
+vsc-extension-quickstart.md
+packages/vscode/node_modules/**
+**/node_modules/**
+../../package.json
+../../package-lock.json
+../../node_modules/**
+../../packages/core/**
+../../apps/**
