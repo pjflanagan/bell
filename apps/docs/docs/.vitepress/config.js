@@ -43,6 +43,7 @@ export default defineConfig({
           { text: 'Introduction', link: '/guide/' },
           { text: 'Getting Started', link: '/guide/getting-started' },
           { text: 'Syntax', link: '/guide/syntax' },
+          { text: 'CLI', link: '/guide/cli' },
           { text: 'Examples', link: '/guide/examples' }
         ]
       }

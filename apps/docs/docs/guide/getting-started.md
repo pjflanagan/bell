@@ -45,6 +45,8 @@ Open your terminal and run:
 bell run hello.bel
 ```
 
+See the [CLI Guide](/guide/cli) for more detailed usage.
+
 ### Via VSCode
 1. Open `hello.bel`.
 2. Click the **Play** button in the top-right corner of the editor.

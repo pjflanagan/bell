@@ -120,6 +120,23 @@ program
     }
   });
 
+program
+  .command('help [command]')
+  .description('Display help for a command')
+  .action((command) => {
+    if (command) {
+      const cmd = program.commands.find(c => c.name() === command);
+      if (cmd) {
+        cmd.outputHelp();
+      } else {
+        console.error(chalk.red(`Unknown command: ${command}`));
+        program.outputHelp();
+      }
+    } else {
+      program.outputHelp();
+    }
+  });
+
 const INIT_EXAMPLE = `\
 # Bell starter file
 # Run this with: bell run bell/example.GET.bel
