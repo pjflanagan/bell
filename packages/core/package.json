@@ -1,11 +1,15 @@
 {
   "name": "bell-lang",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A simple script for making http requests",
   "type": "commonjs",
   "bin": {
     "bell": "./dist/cli.js"
   },
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build-lexer": "antlr4ts -visitor ./src/grammar/BellLexer.g4",
     "build-parser": "antlr4ts -visitor ./src/grammar/BellParser.g4",
