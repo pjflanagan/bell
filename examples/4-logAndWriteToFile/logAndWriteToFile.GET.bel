@@ -1,10 +1,10 @@
 
-url "http://localhost:4000/post/123456"
+url "https://httpbin.org/get?id=123456"
 GET
 
 # response is a reserved word
 # to log one part of the response, reach into the response to get the contents
-log response.body.message
+log response.body.args.id
 log response.headers
 log response.status
 

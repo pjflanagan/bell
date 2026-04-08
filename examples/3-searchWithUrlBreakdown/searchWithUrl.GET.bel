@@ -1,5 +1,5 @@
 
-url "https://preprod.bell.com/restaurants/search"
+url "https://httpbin.org/get"
 
 param "page" 2
 param "query" "Sushi"

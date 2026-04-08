@@ -1,15 +1,17 @@
-url "https://api.example.com/login"
+url "https://httpbin.org/post"
 
 body {
   "username": "testuser",
-  "password": "secret"
+  "password": "secret",
+  "token": "fake-token",
+  "userId": 42
 }
 
 POST
 
-# Save the token from the response
-token = response.body.token
-userId = response.body.userId
+# Save values from the response
+token = response.body.json.token
+userId = response.body.json.userId
 
 # export makes these variables available to files that request this one
 export token, userId

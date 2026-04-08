@@ -1,6 +1,6 @@
 token = "my-token"
 
-url "https://api.example.com/data"
+url "https://httpbin.org/get"
 
 # Add individual headers
 header "Authorization" "Bearer {token}"

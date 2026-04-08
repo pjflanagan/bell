@@ -1,13 +1,13 @@
-url "https://api.example.com/users"
+url "https://httpbin.org/get"
 
 # input() prompts the user for a value at runtime
 id = input("Enter user ID")
-path "/{id}"
+param "id" id
 
 GET
 
 # input() can also be used inline in body or headers
-url "https://api.example.com/posts"
+url "https://httpbin.org/post"
 body {
   "title": input("Post title"),
   "body":  input("Post body")

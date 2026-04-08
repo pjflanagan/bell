@@ -1,10 +1,10 @@
 {
   "dev": {
-    "url": "https://dev.api.example.com",
+    "url": "https://httpbin.org",
     "apiKey": "dev-key-123"
   },
   "prod": {
-    "url": "https://api.example.com",
+    "url": "https://httpbin.org",
     "apiKey": "prod-key-456"
   }
 }

@@ -1,4 +1,4 @@
-url "https://api.example.com/restaurants/search"
+url "https://httpbin.org/get"
 
 # param adds a query parameter: ?page=2&query=Sushi&location=NY
 param "page"     2

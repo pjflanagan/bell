@@ -1,11 +1,11 @@
 {
   "dev": {
-    "url": "localhost:4001"
+    "url": "httpbin.org"
   },
   "preprod": {
-    "url": "preprod.com"
+    "url": "httpbin.org"
   },
   "prod": {
-    "url": "prod.com"
+    "url": "httpbin.org"
   }
 }

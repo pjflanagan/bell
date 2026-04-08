@@ -1,22 +1,24 @@
-url "https://api.example.com/users"
+url "https://httpbin.org"
 
 # GET — retrieve a resource
+path "/get"
 GET
 
 # POST — create a resource
+path "/post"
 body { "name": "Jane" }
 POST
 
 # PUT — replace a resource
-path "/users/1"
+path "/put"
 body { "name": "Jane Doe" }
 PUT
 
 # PATCH — update fields on a resource
-path "/users/1"
+path "/patch"
 body { "name": "Jane D." }
 PATCH
 
 # DELETE — remove a resource
-path "/users/1"
+path "/delete"
 DELETE

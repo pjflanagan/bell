@@ -68,6 +68,9 @@ Live package: https://www.npmjs.com/package/bell-lang
    ```
    Or upload the generated `.vsix` manually via the Marketplace dashboard.
 
+4. Dashboard:
+   https://marketplace.visualstudio.com/manage/publishers/bell
+
 ---
 
 ## Post-Publish

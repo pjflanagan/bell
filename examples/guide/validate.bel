@@ -4,7 +4,7 @@ import { UserRequest, UserResponse } from "./types.ts"
 # validate checks that a value matches a TypeScript type at runtime
 validate requestBody as UserRequest
 
-url "https://api.example.com/users"
+url "https://httpbin.org/post"
 body requestBody
 POST
 

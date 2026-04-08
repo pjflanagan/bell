@@ -3,7 +3,7 @@ apiKey = "my-secret-token"
 userId = 42
 
 # Use variables inside strings with {variableName}
-url "https://api.example.com/users/{userId}"
+url "https://httpbin.org/get?id={userId}"
 header "Authorization" "Bearer {apiKey}"
 
 GET

@@ -1,4 +1,4 @@
-url "https://api.example.com/users"
+url "https://httpbin.org/post"
 
 body {
   "name": "Jane Doe",

@@ -3,6 +3,6 @@
 request "./request-sub.bel"
 
 # token is now available from the sub-file's export
-url "https://api.example.com/posts"
+url "https://httpbin.org/get"
 header "Authorization" "Bearer {token}"
 GET

@@ -3,7 +3,7 @@
 import { username, password } from './cred.bel'
 
 # define the route
-url "http://localhost:4000/login"
+url "https://httpbin.org/post"
 
 # username: define username in a "./priv.bell" file, DO NOT commit to git
 # password: see username error
@@ -17,5 +17,5 @@ body
 POST
 
 # extract data from the response and define it
-token = response.body.token
+token = response.body.json.username
 export token
