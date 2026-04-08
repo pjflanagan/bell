@@ -2,13 +2,12 @@
 # define a variable
 id = 123456
 
-# setup a request by defining a url
-# anything in {} will be replaced with a variable
-url "http://localhost:4000/post/{id}"
+# setup a request by defining a url and a param
+url "https://httpbin.org/get"
+param "id" 1245
 
 # write the HTTP method to send the request
 GET
 
-# if the request is the last line of the file,
-# then Bell will log the response (writing: "log response" is unnecessary)
+# if the request is the last line of the file, then Bell will log the response
 # bell will not log a response if you do anything after

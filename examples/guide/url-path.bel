@@ -1,8 +1,8 @@
 # url sets the full base URL for the request
-url "https://api.example.com"
+url "https://httpbin.org"
 
 # path appends a segment to the base URL
-# result: https://api.example.com/users/123
-path "/users/123"
+# result: https://httpbin.org/get
+path "/get"
 
 GET

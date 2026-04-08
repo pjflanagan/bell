@@ -1,13 +1,13 @@
-url "https://api.example.com/users/1"
+url "https://httpbin.org/get?name=Jane+Doe"
 GET
 
 # expect asserts that an expression is truthy
 # the file exits with an error if it is not
 expect response.status === 200
-expect response.body.name === "Jane Doe"
+expect response.body.args.name === "Jane Doe"
 
-url "https://api.example.com/users"
+url "https://httpbin.org/post"
 body { "name": "New User" }
 POST
 
-expect response.status === 201
+expect response.status === 200

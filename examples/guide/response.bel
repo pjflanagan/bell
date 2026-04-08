@@ -1,12 +1,12 @@
-url "https://api.example.com/users/1"
+url "https://httpbin.org/get?name=Jane&city=NY"
 GET
 
 # Access the full response body
 log response.body
 
 # Reach into nested properties
-log response.body.name
-log response.body.address.city
+log response.body.args.name
+log response.body.args.city
 
 # Access the HTTP status code
 log response.status
@@ -15,12 +15,12 @@ log response.status
 log response.headers
 
 # When multiple requests are made, index into past responses
-url "https://api.example.com/login"
+url "https://httpbin.org/post"
 POST
 
-url "https://api.example.com/data"
+url "https://httpbin.org/get"
 GET
 
-# response[0] is the login response, response[1] is the data response
+# response[0] is the post response, response[1] is the get response
 log response[0].status
 log response[1].body

@@ -1,4 +1,4 @@
-url "http://localhost:4000/login/"
+url "https://httpbin.org/post"
 
 body {
   "username": "testuser",
@@ -13,10 +13,10 @@ the login POST request will not be logged
 ###
 
 # save a variable using the response
-token = response.body.token
+token = response.body.json.username
 
 # start a new request
-url "http://localhost:4000/post/"
+url "https://httpbin.org/post"
 
 # use the token in the headers
 headers {

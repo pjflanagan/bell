@@ -1,13 +1,13 @@
 
 # warn will prompt the user to validate before sending each request
 # that contains the prodUrl variable
-prodUrl = warn "production.com"
+prodUrl = warn "httpbin.org"
 
 id = 1234
 
-url "https://{prodUrl}/user/delete/{id}"
+url "https://{prodUrl}/delete?id={id}"
 
 # warning will look like:
-# Warning: you are about to send a POST request to prodUrl: [production.com]
+# Warning: you are about to send a POST request to prodUrl: [httpbin.org]
 # Please confirm before continuing (Y to continue, any other key to cancel)
 POST

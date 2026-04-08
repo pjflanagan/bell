@@ -3,7 +3,7 @@
 import ".env"
 
 header "Authorization" "Bearer {API_KEY}"
-path "/users/{USER_ID}"
+path "/get?id={USER_ID}"
 GET
 
 # Named import — pull specific keys from the .env file
