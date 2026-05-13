@@ -5,5 +5,8 @@ request "./1-login.POST.bel"
 # post requires token, set in login
 request "./2-post.POST.bel"
 
+# id would typically come from a prior response; set it here for the delete
+id = "123"
+
 # delete requires token and id
 request "./3-delete.DELETE.bel"

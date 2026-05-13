@@ -2,18 +2,11 @@
 # import your environments
 import "envConfig.json"
 
-# use env to prompt the user to choose an environment before running
-# this will set domain
-# this will also set specified vars
-env
+# prompt the user to choose an environment
+# the env's "url" key becomes the base URL for path statements
+env "dev" | "preprod" | "prod"
 
-# use env with delineators to give the user options
-env "dev" | "preprod" | "rc" 
-
-# or use env to set the environment
-env "preprod" 
-
-# env will set domain
+# path is combined with the base URL from the selected environment
 path "/post"
 
 POST

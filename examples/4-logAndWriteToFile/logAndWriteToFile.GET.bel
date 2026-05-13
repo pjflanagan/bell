@@ -1,5 +1,7 @@
 
-url "https://httpbin.org/get?id=123456"
+url "https://httpbin.org/get"
+param "id" "123456"
+
 GET
 
 # response is a reserved word
@@ -7,16 +9,3 @@ GET
 log response.body.args.id
 log response.headers
 log response.status
-
-# or you can log a variable
-log id
-
-# or it can be written to a file
-write ./out.json
-
-# you can write just one property or variable to a file
-write ./out.json response.body.message
-
-# you can also write to a formatted file name
-# the wildcard will be replaced with a number
-write ./out-*.json 

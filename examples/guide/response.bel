@@ -21,6 +21,6 @@ POST
 url "https://httpbin.org/get"
 GET
 
-# response[0] is the post response, response[1] is the get response
-log response[0].status
-log response[1].body
+# response.[0] is the post response, response.[1] is the get response
+log response.[0].status
+log response.[1].body

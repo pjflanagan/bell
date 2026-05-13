@@ -1,8 +1,8 @@
 url "https://httpbin.org/get?name=Jane+Doe"
 GET
 
-# expect asserts that an expression is truthy
-# the file exits with an error if it is not
+# expect checks that an expression is truthy and logs pass or fail
+# use assert instead if you want the file to exit on failure
 expect response.status === 200
 expect response.body.args.name === "Jane Doe"
 

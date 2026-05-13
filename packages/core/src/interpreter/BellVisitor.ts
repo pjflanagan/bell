@@ -1,6 +1,7 @@
 import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
 import { BellParserVisitor } from '../grammar/BellParserVisitor';
 import {
+  AssertStatementContext,
   BinaryExpressionContext,
   BodyStatementContext,
   BooleanLiteralExpressionContext,
@@ -11,11 +12,13 @@ import {
   IdentifierExpressionContext,
   LogStatementContext,
   MemberIndexExpressionContext,
+  MultiplicativeExpressionContext,
   NullLiteralExpressionContext,
   ParamKeyValueStatementContext,
   ParamVariableStatementContext,
   ProgramContext,
   RequestStatementContext,
+  RequireStatementContext,
   ResponseExpressionContext,
   SourceElementContext,
   SourceElementsContext,
@@ -83,11 +86,14 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
   }
 
   private resolveInterpolation(str: string): string {
+    if (/{[^}]*$/.test(str)) {
+      throw new Error(`Unclosed interpolation brace in string: "${str}"`);
+    }
     return str.replace(/{([^}]+)}/g, (_, name) => {
       if (this.variables.has(name)) {
-        return this.variables.get(name);
+        return String(this.variables.get(name));
       }
-      return `{${name}}`;
+      throw new Error(`Undefined variable in string interpolation: "${name}"`);
     });
   }
 
@@ -266,7 +272,12 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
 
   async visitLogStatement(ctx: LogStatementContext): Promise<void> {
     const val = await this.visit(ctx.expression());
-    console.log(chalk.gray('  log:'), val);
+    const display = val === null || val === undefined
+      ? String(val)
+      : typeof val === 'object'
+        ? JSON.stringify(val, null, 2)
+        : String(val);
+    console.log(chalk.gray('  log:'), display);
   }
 
   async visitExpectStatement(ctx: ExpectStatementContext): Promise<void> {
@@ -275,6 +286,26 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
       console.log(chalk.green(`  ✔ Expect Passed: ${chalk.bold(ctx.expression().text)}`));
     } else {
       console.log(chalk.red(`  ✘ Expect Failed: ${chalk.bold(ctx.expression().text)}`));
+    }
+  }
+
+  async visitAssertStatement(ctx: AssertStatementContext): Promise<void> {
+    const result = await this.visit(ctx.expression());
+    if (result) {
+      console.log(chalk.green(`  ✔ Assert Passed: ${chalk.bold(ctx.expression().text)}`));
+    } else {
+      console.error(chalk.red(`  ✘ Assert Failed: ${chalk.bold(ctx.expression().text)}`));
+      process.exit(1);
+    }
+  }
+
+  async visitRequireStatement(ctx: RequireStatementContext): Promise<void> {
+    const result = await this.visit(ctx.expression());
+    if (result) {
+      console.log(chalk.green(`  ✔ Require Passed: ${chalk.bold(ctx.expression().text)}`));
+    } else {
+      console.error(chalk.red(`  ✘ Require Failed: ${chalk.bold(ctx.expression().text)}`));
+      process.exit(1);
     }
   }
 
@@ -504,8 +535,10 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     if (this.variables.has(id)) {
         return this.variables.get(id);
     }
+    // These keywords appear in the identifier rule but need special handling
+    if (id === 'response') return this.lastResponse;
     if (id === 'url') return this.requestConfig.url;
-    return id;
+    throw new Error(`Undefined variable: "${id}"`);
   }
 
   async visitStringLiteralExpression(ctx: StringLiteralExpressionContext) {
@@ -578,7 +611,7 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     return left + right;
   }
 
-  async visitMultiplicativeExpression(ctx: any) {
+  async visitMultiplicativeExpression(ctx: MultiplicativeExpressionContext) {
     const left = await this.visit(ctx.expression(0));
     const right = await this.visit(ctx.expression(1));
     const op = ctx.getChild(1).text;

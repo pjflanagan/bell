@@ -16,12 +16,12 @@ Bell is a simple scripting language for describing and making API calls.
 
 ## Quick Start
 
-Create a `.bel` file (e.g., `get_user.GET.bel`):
+Create a `.bel` file (e.g., `getUser.GET.bel`):
 
 ```bel
-id = 1
+id = 1234
 url "https://jsonplaceholder.typicode.com/users/{id}"
 GET
-log response.body.name
+log response.body.username
 ```
 

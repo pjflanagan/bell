@@ -25,7 +25,11 @@ describe('Bell Interpreter', () => {
     const lexer = new BellLexer(inputStream);
     const tokenStream = new CommonTokenStream(lexer);
     const parser = new BellParser(tokenStream);
+    parser.removeErrorListeners();
     const tree = parser.program();
+    if (parser.numberOfSyntaxErrors > 0) {
+      throw new SyntaxError(`Found ${parser.numberOfSyntaxErrors} syntax error(s).`);
+    }
 
     const visitor = new BellVisitor(path.join(__dirname, 'test.bel'), null, prompter);
     await visitor.visit(tree);
@@ -118,6 +122,126 @@ describe('Bell Interpreter', () => {
     const visitor = await runCode(`env "dev" | "prod"`, prompter);
     expect(prompter.prompt.calledOnce).to.be.true;
     expect((visitor as any).selectedEnv).to.equal('prod');
+  });
+
+  describe('response access', () => {
+    it('should expose response.body (axios data)', async () => {
+      const visitor = await runCode(`
+        url "http://example.com"
+        POST
+        token = response.body.token
+      `);
+      expect((visitor as any).variables.get('token')).to.equal('abc123');
+    });
+
+    it('should expose response.status', async () => {
+      const visitor = await runCode(`
+        url "http://example.com"
+        GET
+        code = response.status
+      `);
+      expect((visitor as any).variables.get('code')).to.equal(200);
+    });
+
+    it('should access response by index for multiple requests', async () => {
+      const visitor = await runCode(`
+        url "http://example.com"
+        GET
+        url "http://example.com"
+        GET
+        first = response.[0].status
+      `);
+      expect((visitor as any).variables.get('first')).to.equal(200);
+    });
+
+    it('should reset request config between requests but keep variables', async () => {
+      await runCode(`
+        url "http://example.com"
+        param "a" "1"
+        GET
+        url "http://example.com"
+        GET
+      `);
+      // Second request should not carry over params from first
+      expect(axiosStub.callCount).to.equal(2);
+      expect(axiosStub.secondCall.args[0].params).to.deep.equal({});
+    });
+  });
+
+  describe('error handling', () => {
+    it('should throw on undefined variable reference', async () => {
+      try {
+        await runCode(`log undefinedVar`);
+        expect.fail('should have thrown');
+      } catch (err: any) {
+        expect(err.message).to.include('Undefined variable');
+        expect(err.message).to.include('undefinedVar');
+      }
+    });
+
+    it('should throw on undefined variable in string interpolation', async () => {
+      try {
+        await runCode(`x = "hello {missing}"`);
+        expect.fail('should have thrown');
+      } catch (err: any) {
+        expect(err.message).to.include('Undefined variable in string interpolation');
+        expect(err.message).to.include('missing');
+      }
+    });
+
+    it('should throw on unclosed interpolation brace', async () => {
+      try {
+        await runCode(`x = "hello {unclosed"`);
+        expect.fail('should have thrown');
+      } catch (err: any) {
+        expect(err.message).to.include('Unclosed interpolation brace');
+      }
+    });
+
+    it('should throw a SyntaxError on malformed source', async () => {
+      try {
+        await runCode(`x = "unclosed string`);
+        expect.fail('should have thrown');
+      } catch (err: any) {
+        expect(err).to.be.instanceOf(SyntaxError);
+      }
+    });
+  });
+
+  describe('assert statement', () => {
+    it('should log pass and continue when assertion is truthy', async () => {
+      const logs: string[] = [];
+      const orig = console.log;
+      console.log = (...args: any[]) => logs.push(args.join(' '));
+      await runCode(`assert true`);
+      console.log = orig;
+      expect(logs.some(l => l.includes('Assert Passed'))).to.be.true;
+    });
+
+    it('should exit when assertion is falsy', async () => {
+      const exitStub = sinon.stub(process, 'exit');
+      await runCode(`assert false`);
+      expect(exitStub.calledWith(1)).to.be.true;
+      exitStub.restore();
+    });
+  });
+
+  describe('require statement', () => {
+    it('should log pass and continue when condition is truthy', async () => {
+      const logs: string[] = [];
+      const orig = console.log;
+      console.log = (...args: any[]) => logs.push(args.join(' '));
+      await runCode(`require true`);
+      console.log = orig;
+      expect(logs.some(l => l.includes('Require Passed'))).to.be.true;
+    });
+
+    it('should exit when condition is falsy', async () => {
+      const exitStub = sinon.stub(process, 'exit');
+      await runCode(`require false`);
+      expect(exitStub.calledWith(1)).to.be.true;
+      exitStub.restore();
+    });
   });
 
   describe('Zod validation', () => {

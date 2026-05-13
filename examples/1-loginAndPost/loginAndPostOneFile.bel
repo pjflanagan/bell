@@ -1,31 +1,26 @@
-url "https://httpbin.org/post"
 
+# pretend authentication, the response will return a token that we can use in the next request
+url "https://httpbin.org/anything"
 body {
   "username": "testuser",
-  "password": "testpass"
+  "password": "testpass",
+  "token": "123456"
 }
-
 POST
 
-###
-because there are more commands afterward
-the login POST request will not be logged
-###
-
+# response is a reserved constant (like "this" and "super")
 # save a variable using the response
-token = response.body.json.username
+token = response.body.json.token
+log token
 
 # start a new request
-url "https://httpbin.org/post"
-
+url "https://httpbin.org/anything"
 # use the token in the headers
 headers {
   "Authorization": `Bearer: {token}`
 } 
-
+# use the input("prompt") to prompt the user and wait for input
 title = input("Write a title")
-
-# use the input("Prompt") to prompt the user and wait for input
 body {
   "title": title,
   "message": input('Write a message')
@@ -33,9 +28,5 @@ body {
 
 POST
 
-# response is a reserved constant (like "this" and "super")
 # response is set to the latest response
-log response.body.status
-
-# you can also log the url
-log url
+log response

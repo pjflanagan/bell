@@ -1,6 +1,6 @@
 
 url "https://subdomain.domain.com:1234/page"
 
-param name value
+param "name" "value"
 
 GET

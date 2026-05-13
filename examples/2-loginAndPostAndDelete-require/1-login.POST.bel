@@ -5,10 +5,9 @@ import { username, password } from './cred.bel'
 # define the route
 url "https://httpbin.org/post"
 
-# username: define username in a "./priv.bell" file, DO NOT commit to git
+# username: define username in a "./priv.bel" file, DO NOT commit to git
 # password: see username error
-body
-{
+body {
   username: username,
   password: password
 }
