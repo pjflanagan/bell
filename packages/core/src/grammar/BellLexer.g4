@@ -56,6 +56,8 @@ HTTPPost     : 'POST';
 HTTPDelete   : 'DELETE';
 HTTPPut      : 'PUT';
 HTTPPatch    : 'PATCH';
+HTTPOptions  : 'OPTIONS';
+HTTPHead     : 'HEAD';
 
 // Request Building Statements
 Url          : 'url';

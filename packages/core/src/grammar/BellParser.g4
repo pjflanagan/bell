@@ -136,7 +136,7 @@ exportStatement
 // HTTP Request Statements
 
 requestStatement
-  : (HTTPGet | HTTPPost | HTTPDelete | HTTPPut | HTTPPatch)
+  : (HTTPGet | HTTPPost | HTTPDelete | HTTPPut | HTTPPatch | HTTPOptions | HTTPHead)
   ;
 
 // Request Building Statements
