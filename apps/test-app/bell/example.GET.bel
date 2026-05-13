@@ -1,0 +1,20 @@
+# Bell starter file
+# Run this with: bell run bell/example.GET.bel
+
+# Fetch a post from a public API
+url "https://jsonplaceholder.typicode.com/posts/1"
+GET
+
+# Try changing the id, or swap in your own URL:
+#
+#   id = 42
+#   url "https://jsonplaceholder.typicode.com/posts/{id}"
+#   GET
+#
+# Add headers:
+#   header "Authorization" "Bearer <token>"
+#
+# Send a POST:
+#   url "https://jsonplaceholder.typicode.com/posts"
+#   body { "title": "hello", "body": "world", "userId": 1 }
+#   POST

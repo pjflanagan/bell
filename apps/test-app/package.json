@@ -1,14 +1,14 @@
 {
   "name": "bell-test-app",
   "version": "1.0.0",
-  "main": "index.js",
-  "directories": {
-    "doc": "docs"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "bun run server.ts",
+    "dev": "bun --watch run server.ts"
   },
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "A simple Bun server for manual Bell testing",
+  "devDependencies": {
+    "@types/bun": "^1.3.14"
+  }
 }

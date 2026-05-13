@@ -1,0 +1,6 @@
+id = "1"
+url "http://localhost:3000/users/{id}"
+GET
+
+log response.body
+expect response.status == 200

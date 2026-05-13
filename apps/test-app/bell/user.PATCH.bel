@@ -1,0 +1,7 @@
+id = "1"
+url "http://localhost:3000/users/{id}"
+body { "name": "Alice Updated" }
+PATCH
+
+log response.body
+expect response.status == 200

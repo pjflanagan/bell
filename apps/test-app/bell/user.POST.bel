@@ -1,0 +1,6 @@
+url "http://localhost:3000/users"
+body { "name": "Carol", "email": "carol@example.com" }
+POST
+
+log response.body
+expect response.status == 201

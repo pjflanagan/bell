@@ -60,7 +60,7 @@ npm run watch     # watch mode
 
 - Variables: `name = "value"` (string interpolation with `{var}`)
 - Request building: `url`, `path` (combined with env base URL), `param`, `header`, `headers`, `body`
-- HTTP dispatch: `GET`, `POST`, `PUT`, `PATCH`, `DELETE` (triggers the request)
+- HTTP dispatch: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `OPTIONS`, `HEAD` (triggers the request)
 - Response access: `response.body`, `response.status`, `response.[n]` for multiple responses
 - Imports: `import foo from "file.json"`, `import { Type } from "file.ts"`, `import "envConfig.json"` (anonymous, loads environments)
 - Environment: `env`, `env "dev" | "prod"` — prompts user or sets env; env JSON provides base URL via `url`/`domain` key

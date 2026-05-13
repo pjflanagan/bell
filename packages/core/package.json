@@ -17,7 +17,7 @@
     "build-lexer": "antlr4ts -visitor ./src/grammar/BellLexer.g4",
     "build-parser": "antlr4ts -visitor ./src/grammar/BellParser.g4",
     "build-js": "antlr4 -Dlanguage=Javascript ./src/grammar/BellParser.g4",
-    "build": "tsc",
+    "build": "tsc && cp src/skill/bell-skill.md dist/src/skill/bell-skill.md",
     "test": "tsc && npx mocha \"dist/test/**/*.test.js\"",
     "jest": "jest"
   },
