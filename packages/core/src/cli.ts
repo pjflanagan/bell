@@ -35,7 +35,7 @@ program
   .command('convert')
   .description('Convert a Postman collection to Bell files')
   .argument('<postman-json>', 'Path to the exported Postman collection JSON')
-  .option('-o, --output <dir>', 'Output directory for the .bel files', './bell-scripts')
+  .option('-o, --output <dir>', 'Output directory for the .bel files', './bell')
   .action((postmanJson, options) => {
     const postmanPath = path.resolve(postmanJson);
     if (!fs.existsSync(postmanPath)) {

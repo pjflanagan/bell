@@ -18,7 +18,7 @@ Run the `convert` command, pointing it at the exported JSON file:
 bell convert my-api.postman_collection.json
 ```
 
-This creates a `bell-scripts/` directory in your current folder containing one `.bel` file per request in the collection.
+This creates a `bell/` directory in your current folder containing one `.bel` file per request in the collection.
 
 To write the output to a specific directory, use the `-o` flag:
 
