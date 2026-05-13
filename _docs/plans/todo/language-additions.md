@@ -1,0 +1,1 @@
+- [ ] Add more request methods (PATCH, OPTIONS).

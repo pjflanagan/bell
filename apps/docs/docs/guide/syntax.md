@@ -76,9 +76,31 @@ Displays a confirmation prompt before continuing. As an expression, it returns t
 
 ### `expect`
 
-Asserts that an expression is truthy. If the assertion fails, the file exits with an error. Use Bell files as lightweight API test suites.
+Checks that an expression is truthy and logs the result. Execution continues whether the check passes or fails. Use `assert` if you want the file to stop on failure.
 
 <<< @/../../../examples/guide/expect.bel
+
+### `assert`
+
+Checks that an expression is truthy. If it fails, execution stops immediately with a non-zero exit code. Use this for post-condition checks after a request.
+
+```bel
+assert response.status === 200
+assert response.body.id !== null
+```
+
+### `require`
+
+Like `assert`, but used as a pre-condition guard placed before a request. If the required variable or expression is falsy, execution stops before the request is sent.
+
+```bel
+require token
+require id
+
+url "https://api.example.com/posts/{id}"
+header "Authorization" `Bearer {token}`
+DELETE
+```
 
 ### `validate`
 

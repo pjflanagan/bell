@@ -23,7 +23,7 @@ headers {
 title = input("Write a title")
 body {
   "title": title,
-  "message": input('Write a message')
+  "message": input("Write a message")
 }
 
 POST

@@ -170,9 +170,11 @@ Live httpbin.org run completed:
 - **guide/expect.bel**: corrected comment — `expect` logs pass/fail and continues;
   only `assert` exits on failure
 
-### 5.4 Ensure consistent style ⬜
+### 5.4 Ensure consistent style ✅
 
-Not yet audited. Deferred — no blocking issues found during 5.2/5.3 pass.
+- Single quotes → double quotes: `input('Write a message')` in `1-loginAndPost/loginAndPostOneFile.bel`
+- Quoted object keys: `Authorization:` and `test:` → `"Authorization":` / `"test":` in example 2's post and delete files; body keys in `1-login.POST.bel`
+- `headers { ... }` on one line (removed split `headers\n{`) in examples 2/3
 
 ---
 
@@ -185,10 +187,12 @@ complete login→post chained-request example, full language reference (variable
 requests, response, assertions, control flow, environments, imports, logging),
 CLI reference table (all 9 command forms), VS Code extension link.
 
-### 6.2 Verify documentation website ⬜
+### 6.2 Verify documentation website ✅
 
-Link at `https://pjflanagan.github.io/bell/` — not yet checked against current
-language features.
+Docs live in `apps/docs/`. All guide example files exist. Issues found and fixed:
+- `syntax.md` `expect` description was wrong: said "exits on error" — fixed to "logs and continues"
+- `assert` and `require` were implemented but entirely absent from the docs — added both with examples
+- CLI doc (`cli.md`), getting-started, and examples pages are accurate and up-to-date
 
 ---
 
@@ -224,10 +228,10 @@ Show parse errors and undefined variables as red squiggles in the editor.
 
 Autocomplete for keywords (`GET`, `POST`, `url`, `param`, etc.) and known variables.
 
-### 8.3 `bell init` command ⬜
+### 8.3 `bell init` command ✅
 
-The CLI has a stub for this. Scaffold a starter `.bel` file (and optionally an env
-config) in the current directory.
+Already fully implemented in `cli.ts`. Creates a `bell/` directory with
+`example.GET.bel` seeded with a commented starter template. Documented in `cli.md`.
 
 ---
 

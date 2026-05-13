@@ -4,9 +4,8 @@ require id
 
 url "https://httpbin.org/delete?id={id}"
 
-headers
-{
-  Authorization: `Bearer: {token}`
-} 
+headers {
+  "Authorization": `Bearer: {token}`
+}
 
 DELETE

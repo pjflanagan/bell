@@ -10,13 +10,12 @@ require token
 
 url "https://httpbin.org/post"
 
-headers
-{
-  Authorization: `Bearer: {token}`
-} 
+headers {
+  "Authorization": `Bearer: {token}`
+}
 
 body {
-  test: input("Write a post")
+  "test": input("Write a post")
 }
 
 POST

@@ -8,8 +8,8 @@ url "https://httpbin.org/post"
 # username: define username in a "./priv.bel" file, DO NOT commit to git
 # password: see username error
 body {
-  username: username,
-  password: password
+  "username": username,
+  "password": password
 }
 
 # send the request
