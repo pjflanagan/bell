@@ -24,9 +24,9 @@ jobs:
 
       - name: Build Core
         run: |
-          npm run build-lexer -w @bell/core
-          npm run build-parser -w @bell/core
-          npm run build -w @bell/core
+          npm run build-lexer -w bell-lang
+          npm run build-parser -w bell-lang
+          npm run build -w bell-lang
 
       - name: Run Tests
-        run: npm test -w @bell/core
+        run: npm test -w bell-lang
