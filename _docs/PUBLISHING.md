@@ -75,9 +75,8 @@ Live package: https://www.npmjs.com/package/bell-lang
 
 ## Post-Publish
 
-- Update `apps/docs/docs/guide/getting-started.md` with the correct installation commands.
-- Tag the release in git:
-  ```bash
-  git tag v<version>
-  git push --tags
-  ```
+Tag the release in git:
+```bash
+git tag v<version>
+git push --tags
+```
