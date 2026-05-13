@@ -9,6 +9,11 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const grammarPath = path.resolve(__dirname, '../../../../packages/vscode/syntaxes/bel.tmLanguage.json')
 const grammar = JSON.parse(fs.readFileSync(grammarPath, 'utf-8'))
 
+// Copy the Bell skill file to public/ so it can be downloaded
+const skillSrc = path.resolve(__dirname, '../../../../packages/core/src/skill/bell-skill.md')
+const skillDest = path.resolve(__dirname, '../public/bell-skill.md')
+fs.copyFileSync(skillSrc, skillDest)
+
 // Shiki uses the 'name' field as the language ID for highlighting
 grammar.name = 'bel'
 grammar.scopeName = 'source.bel'
@@ -44,7 +49,8 @@ export default defineConfig({
           { text: 'Getting Started', link: '/guide/getting-started' },
           { text: 'Syntax', link: '/guide/syntax' },
           { text: 'CLI', link: '/guide/cli' },
-          { text: 'Examples', link: '/guide/examples' }
+          { text: 'Examples', link: '/guide/examples' },
+          { text: 'AI Skill', link: '/guide/ai-skill' }
         ]
       }
     ],

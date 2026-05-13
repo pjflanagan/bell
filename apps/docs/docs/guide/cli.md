@@ -73,6 +73,15 @@ Creates a `bell/` folder with a starter example file to help you get started qui
 bell init
 ```
 
+### `skill`
+Prints the Bell language reference for AI assistants. With `--install`, writes it to `.claude/commands/bell.md` as a Claude Code slash command.
+
+```bash
+bell skill               # print to stdout
+bell skill --install     # install for Claude Code (project)
+bell skill --install --global  # install for Claude Code (global)
+```
+
 ### `help`
 Displays help information for the commands.
 

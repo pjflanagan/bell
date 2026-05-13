@@ -13,12 +13,14 @@ try {
 
 import { Command } from 'commander';
 import * as fs from 'fs';
+import * as os from 'os';
 import * as path from 'path';
 import chalk from 'chalk';
 import { runSource } from './interpreter/run';
 import { convertPostmanToBell } from './converters/postman';
 import { formatBellFile } from './formatter/BellFormatter';
 import { startRepl } from './repl/BellRepl';
+import { BELL_SKILL } from './skill/bellSkill';
 
 const program = new Command();
 
@@ -137,6 +139,35 @@ program
     }
   });
 
+const CLAUDE_SKILL_FILENAME = 'bell.md';
+
+program
+  .command('skill')
+  .description('Print the Bell language reference for AI assistants, or install it as a Claude Code slash command')
+  .option('--install', 'Install as a Claude Code slash command in .claude/commands/bell.md')
+  .option('--global', 'With --install: write to ~/.claude/commands/ instead of the local project')
+  .action((options) => {
+    if (options.install) {
+      const baseDir = options.global
+        ? path.join(os.homedir(), '.claude', 'commands')
+        : path.join(process.cwd(), '.claude', 'commands');
+      const dest = path.join(baseDir, CLAUDE_SKILL_FILENAME);
+
+      if (!fs.existsSync(baseDir)) {
+        fs.mkdirSync(baseDir, { recursive: true });
+      }
+
+      fs.writeFileSync(dest, BELL_SKILL, 'utf8');
+      const label = options.global ? 'global' : 'project';
+      console.log(chalk.green(`✔ Installed Bell skill as ${chalk.bold(label)} Claude Code slash command:`));
+      console.log(`  ${chalk.cyan(dest)}`);
+      console.log('');
+      console.log(`  Use it in Claude Code with: ${chalk.bold('/bell')}`);
+    } else {
+      process.stdout.write(BELL_SKILL);
+    }
+  });
+
 const INIT_EXAMPLE = `\
 # Bell starter file
 # Run this with: bell run bell/example.GET.bel
@@ -200,7 +231,7 @@ if (cFlagIdx !== -1 && cFlagIdx + 1 < process.argv.length) {
   startRepl();
 } else {
   // Python-style: `bell <file.bel> [options]` — direct file invocation
-  const knownSubcommands = new Set(['run', 'convert', 'format', 'init', 'help']);
+  const knownSubcommands = new Set(['run', 'convert', 'format', 'init', 'skill', 'help']);
   const firstArg = process.argv[2];
   if (firstArg && !firstArg.startsWith('-') && !knownSubcommands.has(firstArg) && firstArg.endsWith('.bel')) {
     // Rewrite argv so commander sees it as `bell run <file> [rest...]`
