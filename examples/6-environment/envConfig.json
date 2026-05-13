@@ -1,11 +1,11 @@
 {
   "dev": {
-    "url": "httpbin.org"
+    "url": "https://httpbin.org"
   },
   "preprod": {
-    "url": "httpbin.org"
+    "url": "https://httpbin.org"
   },
   "prod": {
-    "url": "httpbin.org"
+    "url": "https://httpbin.org"
   }
 }

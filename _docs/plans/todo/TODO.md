@@ -10,5 +10,3 @@
 - [ ] Set up GitHub Actions for automated testing (and publishing?)
 - [ ] Polish documentation with interactive code blocks.
 
-## Feature Ideas
-- [ ] See [Ideas](./_docs/plans/todo/ideas.md) for future vision.

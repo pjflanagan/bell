@@ -1,6 +1,6 @@
 {
   "name": "bell-lang",
-  "version": "0.0.4",
+  "version": "0.1.0",
   "description": "A simple script for making http requests",
   "license": "MIT",
   "type": "commonjs",
@@ -18,7 +18,6 @@
     "build-parser": "antlr4ts -visitor ./src/grammar/BellParser.g4",
     "build-js": "antlr4 -Dlanguage=Javascript ./src/grammar/BellParser.g4",
     "build": "tsc",
-    "main": "npx ts-node ./src/main.ts",
     "test": "tsc && npx mocha \"dist/test/**/*.test.js\"",
     "jest": "jest"
   },

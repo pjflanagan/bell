@@ -1,6 +1,6 @@
 
-# import variables from another bell file
-import { username, password } from './cred.bel'
+# load credentials from another Bell file (use request for .bel files, not import)
+request "./cred.bel"
 
 # define the route
 url "https://httpbin.org/post"

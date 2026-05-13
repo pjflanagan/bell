@@ -26,7 +26,7 @@ program
   .name('bell')
   .usage('[file.bel] [options]')
   .description('A simple script for describing and making API calls')
-  .version('0.0.1')
+  .version('0.1.0')
   .option('-c <code>', 'Execute Bell code directly (use \\n for newlines)');
 
 program
