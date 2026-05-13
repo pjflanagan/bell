@@ -1,0 +1,5 @@
+url "http://localhost:3000/health"
+GET
+
+log response.body
+expect response.status == 200

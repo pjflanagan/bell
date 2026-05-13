@@ -1,0 +1,6 @@
+id = "2"
+url "http://localhost:3000/users/{id}"
+DELETE
+
+log response.body
+expect response.status == 200
