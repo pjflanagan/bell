@@ -13,6 +13,7 @@
     "test": "npm test --workspaces",
     "dev-install": "npm run build -w packages/core && npm link -w packages/core && npm run compile -w packages/vscode && node scripts/link-vscode-ext.js",
     "dev-build": "npm run build -w packages/core && npm run compile -w packages/vscode",
-    "dev-reset": "npm unlink -g bell-lang && npm install -g bell-lang && node scripts/unlink-vscode-ext.js"
+    "dev-reset": "npm unlink -g bell-lang && npm install -g bell-lang && node scripts/unlink-vscode-ext.js",
+    "release": "node scripts/release.js"
   }
 }
