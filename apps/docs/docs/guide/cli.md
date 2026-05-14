@@ -53,7 +53,7 @@ bell convert <postman-json> [options]
 ```
 
 **Options:**
-- `-o, --output <dir>`: Output directory for the `.bel` files (default: `./bell-scripts`).
+- `-o, --output <dir>`: Output directory for the `.bel` files (default: `./bell`).
 
 ### `format`
 Formats a Bell file according to the language style.
