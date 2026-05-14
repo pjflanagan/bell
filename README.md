@@ -178,8 +178,8 @@ log `Status: {response.status}`
 | `bell format <file.bel>` | Format a Bell file in-place |
 | `bell format <file.bel> --check` | Exit with code 1 if file would be reformatted |
 | `bell format <file.bel> --stdout` | Print formatted output to stdout |
-| `bell convert <postman.json>` | Convert a Postman collection to Bell files |
-| `bell convert <postman.json> -o <dir>` | Convert and write to a specific directory |
+| `bell postman <collection.json>` | Convert a Postman collection to Bell files |
+| `bell postman <collection.json> -o <dir>` | Convert and write to a specific directory |
 | `bell openapi <spec.json>` | Convert an OpenAPI 3.x spec (JSON or YAML) to Bell files |
 | `bell openapi <spec.yaml> -o <dir>` | Convert an OpenAPI spec and write to a specific directory |
 | `bell -c "<code>"` | Execute Bell code inline (use `\n` for newlines) |
