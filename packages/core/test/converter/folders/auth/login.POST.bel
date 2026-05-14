@@ -1,0 +1,16 @@
+###
+Request: Login
+###
+
+url "https://api.example.com/auth/login"
+
+headers {
+  "Content-Type": "application/json"
+}
+
+body {
+  "username": "admin",
+  "password": "secret"
+}
+
+POST

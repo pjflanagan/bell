@@ -1,0 +1,24 @@
+{
+  "info": { "name": "Post Collection" },
+  "item": [
+    {
+      "name": "Create User",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\"name\": \"Alice\", \"email\": \"alice@example.com\"}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": {
+          "raw": "https://api.example.com/users",
+          "host": ["api", "example", "com"],
+          "path": ["users"]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "info": { "name": "Simple Collection" },
+  "item": [
+    {
+      "name": "Get Users",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.example.com/users",
+          "host": ["api", "example", "com"],
+          "path": ["users"]
+        }
+      }
+    }
+  ]
+}

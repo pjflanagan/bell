@@ -1,0 +1,11 @@
+###
+Request: Get Profile
+###
+
+url "https://api.example.com/profile"
+
+headers {
+  Authorization: "Bearer token123"
+}
+
+GET

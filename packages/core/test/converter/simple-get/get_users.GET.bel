@@ -1,0 +1,7 @@
+###
+Request: Get Users
+###
+
+url "https://api.example.com/users"
+
+GET

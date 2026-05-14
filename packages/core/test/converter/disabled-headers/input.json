@@ -1,0 +1,20 @@
+{
+  "info": { "name": "Headers Collection" },
+  "item": [
+    {
+      "name": "Get Profile",
+      "request": {
+        "method": "GET",
+        "header": [
+          { "key": "Authorization", "value": "Bearer token123" },
+          { "key": "X-Debug-Mode", "value": "true", "disabled": true }
+        ],
+        "url": {
+          "raw": "https://api.example.com/profile",
+          "host": ["api", "example", "com"],
+          "path": ["profile"]
+        }
+      }
+    }
+  ]
+}

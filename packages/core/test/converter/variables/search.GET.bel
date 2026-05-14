@@ -1,0 +1,11 @@
+###
+Request: Search
+###
+
+url "{baseUrl}/search"
+
+headers {
+  Authorization: `Bearer {token}`
+}
+
+GET

@@ -1,0 +1,16 @@
+###
+Request: Create User
+###
+
+url "https://api.example.com/users"
+
+headers {
+  "Content-Type": "application/json"
+}
+
+body {
+  "name": "Alice",
+  "email": "alice@example.com"
+}
+
+POST
