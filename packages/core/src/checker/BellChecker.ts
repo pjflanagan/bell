@@ -76,7 +76,7 @@ export function checkBellSource(source: string): BellDiagnostic[] {
 const HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS', 'HEAD'];
 
 function improveExpectingAssignError(diag: BellDiagnostic, tokens: Token[]): BellDiagnostic {
-  if (!diag.message.includes("expecting '='")) return diag;
+  if (!diag.message.includes("'='")) return diag;
 
   // Find the first non-whitespace, non-newline token on this line that is an Identifier
   const first = tokens.find(t =>
