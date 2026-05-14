@@ -1,5 +1,5 @@
 
-testVariable = 999
+var testVariable = 999
 
 log variableThatDoesNotExist
 

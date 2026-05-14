@@ -1,6 +1,6 @@
 
 # define a variable using user input
-id = input("Enter post id")
+var id = input("Enter post id")
 
 url "https://httpbin.org/get?id={id}"
 

@@ -6,7 +6,7 @@ run "./1-login.POST.bel"
 run "./2-post.POST.bel"
 
 # id would typically come from a prior response; set it here for the delete
-id = "123"
+var id = "123"
 
 # delete requires token and id
 run "./3-delete.DELETE.bel"

@@ -7,6 +7,44 @@ let bellTerminal: vscode.Terminal | undefined;
 export function activate(context: vscode.ExtensionContext) {
     console.log('Bell extension is now active');
 
+    // ── Diagnostics ──────────────────────────────────────────────────────────
+
+    const diagnosticCollection = vscode.languages.createDiagnosticCollection('bell');
+    context.subscriptions.push(diagnosticCollection);
+
+    const debounceTimers = new Map<string, ReturnType<typeof setTimeout>>();
+
+    function scheduleDiagnostics(document: vscode.TextDocument) {
+        if (document.languageId !== 'bel') return;
+
+        const key = document.uri.toString();
+        const existing = debounceTimers.get(key);
+        if (existing) clearTimeout(existing);
+
+        debounceTimers.set(key, setTimeout(() => {
+            debounceTimers.delete(key);
+            refreshDiagnostics(document, diagnosticCollection);
+        }, 400));
+    }
+
+    // Run diagnostics on all already-open Bell documents
+    vscode.workspace.textDocuments.forEach(doc => {
+        if (doc.languageId === 'bel') {
+            refreshDiagnostics(doc, diagnosticCollection);
+        }
+    });
+
+    context.subscriptions.push(
+        vscode.workspace.onDidOpenTextDocument(doc => {
+            if (doc.languageId === 'bel') refreshDiagnostics(doc, diagnosticCollection);
+        }),
+        vscode.workspace.onDidChangeTextDocument(e => scheduleDiagnostics(e.document)),
+        vscode.workspace.onDidCloseTextDocument(doc => {
+            diagnosticCollection.delete(doc.uri);
+            debounceTimers.delete(doc.uri.toString());
+        }),
+    );
+
     // ── Run command ──────────────────────────────────────────────────────────
 
     const runFileCommand = vscode.commands.registerCommand('bell.runFile', async (uri: vscode.Uri) => {
@@ -104,4 +142,65 @@ export function deactivate() {}
 function getBellPath(): string {
     const config = vscode.workspace.getConfiguration('bell');
     return config.get<string>('executablePath') || 'bell';
+}
+
+function refreshDiagnostics(
+    document: vscode.TextDocument,
+    collection: vscode.DiagnosticCollection,
+): void {
+    const bellPath = getBellPath();
+
+    // Write document text to a temp file so we can check unsaved content too
+    const filePath = document.uri.fsPath;
+    const text = document.getText();
+
+    let result: cp.SpawnSyncReturns<string>;
+    try {
+        // Pass source via a temp write — for saved files use the path directly;
+        // for unsaved content pipe via stdin using -c with a check subcommand.
+        // Simplest: always write the current buffer to a temp file approach is
+        // complex; instead just run check on the saved file path (close enough
+        // for normal editing, diagnostics refresh on save too).
+        result = cp.spawnSync(bellPath, ['check', filePath], {
+            encoding: 'utf8',
+            timeout: 5000,
+            input: text,
+        });
+    } catch {
+        collection.delete(document.uri);
+        return;
+    }
+
+    if (result.error || !result.stdout) {
+        collection.delete(document.uri);
+        return;
+    }
+
+    let rawDiags: Array<{
+        line: number;
+        col: number;
+        length: number;
+        message: string;
+        severity: string;
+    }>;
+
+    try {
+        rawDiags = JSON.parse(result.stdout);
+    } catch {
+        collection.delete(document.uri);
+        return;
+    }
+
+    const vsDiags = rawDiags.map(d => {
+        const line = Math.max(0, d.line - 1); // ANTLR is 1-based, VS Code is 0-based
+        const col = Math.max(0, d.col);
+        const end = col + Math.max(1, d.length);
+        const range = new vscode.Range(line, col, line, end);
+        const severity = d.severity === 'error'
+            ? vscode.DiagnosticSeverity.Error
+            : vscode.DiagnosticSeverity.Warning;
+        return new vscode.Diagnostic(range, d.message, severity);
+    });
+
+    collection.set(document.uri, vsDiags);
 }

@@ -58,7 +58,7 @@ npm run watch     # watch mode
 
 ### Bell language features
 
-- Variables: `name = "value"` (string interpolation with `{var}`)
+- Variables: `var name = "value"` (string interpolation with `{var}`)
 - Request building: `url`, `path` (combined with env base URL), `param`, `header`, `headers`, `body`
 - HTTP dispatch: `GET`, `POST`, `PUT`, `PATCH`, `DELETE`, `OPTIONS`, `HEAD` (triggers the request)
 - Response access: `response.body`, `response.status`, `response.[n]` for multiple responses

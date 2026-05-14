@@ -10,7 +10,7 @@ POST
 
 # response is a reserved constant (like "this" and "super")
 # save a variable using the response
-token = response.body.json.token
+var token = response.body.json.token
 log token
 
 # start a new request
@@ -20,7 +20,7 @@ headers {
   "Authorization": `Bearer: {token}`
 } 
 # use the input("prompt") to prompt the user and wait for input
-title = input("Write a title")
+var title = input("Write a title")
 body {
   "title": title,
   "message": input("Write a message")

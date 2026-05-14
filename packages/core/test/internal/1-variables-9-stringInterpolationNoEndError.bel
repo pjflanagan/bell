@@ -1,6 +1,6 @@
 
-inside = 10
-outside = "string has error {inside"
+var inside = 10
+var outside = "string has error {inside"
 
 # expect error
 

@@ -1,6 +1,6 @@
 
-inside = 10
-outside = "string has {inside} inside"
+var inside = 10
+var outside = "string has {inside} inside"
 
 log outside
 

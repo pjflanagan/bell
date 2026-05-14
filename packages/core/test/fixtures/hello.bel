@@ -1,2 +1,2 @@
-x = "hello"
+var x = "hello"
 log x

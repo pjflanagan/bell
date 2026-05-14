@@ -1,5 +1,5 @@
 
-username = "testuser"
-password = "secret"
+var username = "testuser"
+var password = "secret"
 
 export username, password

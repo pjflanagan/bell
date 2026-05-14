@@ -16,5 +16,5 @@ body {
 POST
 
 # extract data from the response and define it
-token = response.body.json.username
+var token = response.body.json.username
 export token

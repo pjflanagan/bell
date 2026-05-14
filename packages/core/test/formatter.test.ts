@@ -138,7 +138,7 @@ describe('Bell Formatter', () => {
   describe('import hoisting', () => {
     it('moves imports to the top before other statements', () => {
       const source = [
-        'token = "abc"',
+        'var token = "abc"',
         'import body from "./req.json"',
         'url "https://api.com"',
         'GET',
@@ -146,7 +146,7 @@ describe('Bell Formatter', () => {
       const result = formatBellSource(source);
       const lines = result.split('\n');
       const importLine = lines.findIndex(l => l.startsWith('import'));
-      const tokenLine = lines.findIndex(l => l.startsWith('token'));
+      const tokenLine = lines.findIndex(l => l.startsWith('var token'));
       expect(importLine).to.be.lessThan(tokenLine);
     });
   });
@@ -155,7 +155,7 @@ describe('Bell Formatter', () => {
     it('moves exports to the bottom after other statements', () => {
       const source = [
         'export token',
-        'token = response.body.token',
+        'var token = response.body.token',
         'url "http://api.com/login"',
         'POST',
       ].join('\n') + '\n';

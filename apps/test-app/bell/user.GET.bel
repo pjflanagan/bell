@@ -1,4 +1,4 @@
-id = "1"
+var id = "1"
 url "http://localhost:3000/users/{id}"
 GET
 

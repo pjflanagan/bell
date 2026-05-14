@@ -8,5 +8,5 @@ body {
 
 POST
 
-token = response.body.json.token
+var token = response.body.json.token
 export token

@@ -1,6 +1,10 @@
-id = "1"
-url "http://localhost:3000/users/{id}"
-body { "name": "Alice Updated" }
+var id = "1"
+url `http://localhost:3000/users/{id}`
+body {
+  "name": "Alice Updated"
+}
+param id
+
 PATCH
 
 log response.body

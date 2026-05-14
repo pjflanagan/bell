@@ -1,4 +1,4 @@
-id = "2"
+var id = "2"
 url "http://localhost:3000/users/{id}"
 DELETE
 

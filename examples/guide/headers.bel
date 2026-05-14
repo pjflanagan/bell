@@ -1,4 +1,4 @@
-token = "my-token"
+var token = "my-token"
 
 url "https://httpbin.org/get"
 

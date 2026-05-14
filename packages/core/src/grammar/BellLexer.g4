@@ -70,6 +70,7 @@ Body         : 'body';
 Env          : 'env';
 
 // Command Statements
+Var          : 'var';
 Log          : 'log';
 Input        : 'input';
 Assert       : 'assert';

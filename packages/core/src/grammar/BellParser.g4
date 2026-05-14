@@ -126,7 +126,7 @@ arrayLiteral
 // Assignment
 
 variableDeclaration
-    : identifier Assign expression
+    : Var identifier Assign expression
     ;
 
 exportStatement

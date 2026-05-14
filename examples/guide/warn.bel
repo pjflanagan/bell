@@ -1,6 +1,6 @@
 # warn as an expression — prompts for confirmation and returns the value
 # execution stops if the user declines
-prodUrl = warn "httpbin.org"
+var prodUrl = warn "httpbin.org"
 
 url "https://{prodUrl}/get"
 GET

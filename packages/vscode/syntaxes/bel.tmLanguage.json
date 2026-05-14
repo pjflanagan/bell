@@ -38,7 +38,7 @@
 				},
 				{
 					"name": "keyword.control.bel",
-					"match": "\\b(from|as|env)\\b"
+					"match": "\\b(var|from|as|env)\\b"
 				}
 			]
 		},

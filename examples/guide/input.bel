@@ -1,7 +1,7 @@
 url "https://httpbin.org/get"
 
 # input() prompts the user for a value at runtime
-id = input("Enter user ID")
+var id = input("Enter user ID")
 param "id" id
 
 GET

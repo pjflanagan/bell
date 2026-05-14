@@ -1,6 +1,6 @@
 # Assign a string to a variable
-apiKey = "my-secret-token"
-userId = 42
+var apiKey = "my-secret-token"
+var userId = 42
 
 # Use variables inside strings with {variableName}
 url "https://httpbin.org/get?id={userId}"
