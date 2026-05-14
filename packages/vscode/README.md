@@ -20,4 +20,5 @@ npm install -g bell-lang
 ## Links
 
 - [Documentation](https://pjflanagan.github.io/bell/)
+- [NPM](https://www.npmjs.com/package/bell-lang)
 - [GitHub](https://github.com/pjflanagan/bell)

@@ -93,6 +93,12 @@ h1,
   text-align: left;
 }
 
+.VPHero .actions {
+  display: inline-flex !important;
+  vertical-align: middle;
+}
+
+
 /* On mobile: stack code block below the hero text */
 @media (max-width: 959px) {
   .VPHomeHero .container {

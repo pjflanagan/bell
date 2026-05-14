@@ -9,12 +9,6 @@ hero:
     - theme: brand
       text: Get Started
       link: /guide/getting-started
-    - theme: alt
-      text: Install VSCode Extension
-      link: https://marketplace.visualstudio.com/items?itemName=bell.bell-vscode
-    - theme: alt
-      text: View on GitHub
-      link: https://github.com/pjflanagan/bell
 
 features:
   - title: Human (and AI) Readable

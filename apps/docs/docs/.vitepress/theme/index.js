@@ -2,6 +2,7 @@
 import { h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import HomeCodeBlock from './HomeCodeBlock.vue'
+import HeroIconLinks from './HeroIconLinks.vue'
 import './custom.css'
 
 export default {
@@ -9,6 +10,7 @@ export default {
   Layout() {
     return h(DefaultTheme.Layout, null, {
       'home-hero-image': () => h(HomeCodeBlock),
+      'home-hero-actions-after': () => h(HeroIconLinks),
     })
   },
 }
