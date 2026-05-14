@@ -15,6 +15,8 @@ import {
   ImportAnonymousStatementContext,
   ParamKeyValueStatementContext,
   ParamVariableStatementContext,
+  StringLiteralExpressionContext,
+  IdentifierExpressionContext,
 } from '../grammar/BellParser';
 import * as fs from 'fs';
 import { formatExpr, formatString } from './formatExpr';
@@ -23,7 +25,7 @@ type ItemKind =
   | 'import' | 'export' | 'variable'
   | 'url' | 'path' | 'env' | 'require'
   | 'param' | 'header' | 'headers' | 'body'
-  | 'method' | 'request-file'
+  | 'method' | 'run-file'
   | 'log' | 'expect' | 'warn' | 'validate' | 'assert';
 
 interface FormattedItem {
@@ -58,7 +60,7 @@ export function formatBellSource(source: string): string {
   const sourceElements = gatherSourceElements(tree);
   const allComments = extractCommentTokens(tokenStream);
 
-  const items = collectItems(tree, sourceElements, allComments);
+  const items = collectItems(sourceElements, allComments);
   const orphanComments = collectOrphanComments(sourceElements, allComments);
   return assemble(items, orphanComments);
 }
@@ -148,7 +150,6 @@ function gatherSourceElements(program: ProgramContext): SourceElementContext[] {
 }
 
 function collectItems(
-  program: ProgramContext,
   sourceElements: SourceElementContext[],
   allComments: CommentToken[],
 ): FormattedItem[] {
@@ -227,8 +228,18 @@ function formatRequestBuilding(rbs: RequestBuildingStatementContext): FormattedI
       return { kind: 'param', comments: [], text: `param ${name}` };
     }
     const kv = param as ParamKeyValueStatementContext;
-    const key = formatExpr(kv.expression(0));
-    const value = formatExpr(kv.expression(1));
+    const keyExpr = kv.expression(0);
+    const valExpr = kv.expression(1);
+    // Simplify `param "varName" varName` → `param varName`
+    if (
+      keyExpr instanceof StringLiteralExpressionContext &&
+      valExpr instanceof IdentifierExpressionContext &&
+      keyExpr.text.slice(1, -1) === valExpr.text
+    ) {
+      return { kind: 'param', comments: [], text: `param ${valExpr.text}` };
+    }
+    const key = formatExpr(keyExpr);
+    const value = formatExpr(valExpr);
     return { kind: 'param', comments: [], text: '', paramKey: key, paramValue: value };
   }
 
@@ -249,7 +260,7 @@ function formatRequestBuilding(rbs: RequestBuildingStatementContext): FormattedI
   if (require_) return { kind: 'require', comments: [], text: `require ${formatExpr(require_.expression())}` };
 
   const reqFile = rbs.requestStatementBuilding();
-  if (reqFile) return { kind: 'request-file', comments: [], text: `request ${reqFile.StringLiteral().text}` };
+  if (reqFile) return { kind: 'run-file', comments: [], text: `run ${reqFile.StringLiteral().text}` };
 
   const env = rbs.envStatement();
   if (env) {
@@ -334,6 +345,10 @@ function assemble(items: FormattedItem[], orphanComments: string[]): string {
       if (i < processed.length - 1) {
         addBlankIfNeeded(lines);
       }
+    }
+
+    if (item.kind === 'run-file' && i < processed.length - 1) {
+      addBlankIfNeeded(lines);
     }
   }
 

@@ -83,7 +83,7 @@ log count
 
 ## User Interaction
 
-`input("prompt")` — prompts the user at runtime; use as expression or inline:
+`input("prompt")` — prompts the user at runtime; use as expression or inline. Add `? default` to pre-fill a default the user can accept with Enter:
 
 ```bel
 id = input("Enter user ID")
@@ -215,7 +215,7 @@ validate response.body as UserResponse
 
 ## Multi-file Workflows
 
-`request "file.bel"` — runs another Bell file inline; exported variables become available:
+`run "file.bel"` — runs another Bell file inline; exported variables become available:
 
 ```bel
 # login.POST.bel
@@ -229,7 +229,7 @@ export token
 
 ```bel
 # main.bel
-request "./login.POST.bel"
+run "./login.POST.bel"
 
 # token is now available from the sub-file
 url "https://api.example.com/posts"

@@ -482,7 +482,7 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     const relPath = ctx.StringLiteral().text.slice(1, -1);
     const fullPath = this.resolvePath(relPath);
     
-    console.log(chalk.gray(`  Loading request file: ${fullPath}`));
+    console.log(chalk.gray(`  Running: ${fullPath}`));
     const sourceCode = fs.readFileSync(fullPath, 'utf8');
     const inputStream = CharStreams.fromString(sourceCode);
     const lexer = new BellLexer(inputStream);
@@ -565,15 +565,21 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
 
   async visitInputCallExpression(ctx: InputCallExpressionContext) {
     let prompt = 'Input value:';
+    let defaultValue: string | undefined;
     const inputCall = ctx.inputCall();
-    if (inputCall.expression()) {
-        prompt = await this.visit(inputCall.expression()!);
+    const exprs = inputCall.expression();
+    if (exprs.length >= 1) {
+      prompt = await this.visit(exprs[0]);
+    }
+    if (exprs.length >= 2) {
+      defaultValue = String(await this.visit(exprs[1]));
     }
     const answers = await this.prompter.prompt([
         {
             type: 'input',
             name: 'val',
-            message: prompt
+            message: prompt,
+            ...(defaultValue !== undefined ? { default: defaultValue } : {}),
         }
     ]);
     return answers.val;

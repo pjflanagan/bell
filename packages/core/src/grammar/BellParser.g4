@@ -49,7 +49,7 @@ identifier
   | Warn
   | Response
   | Require
-  | Request
+  | Run
   | Import
   | From
   | Validate
@@ -75,7 +75,7 @@ memberIdentifier
   | Warn
   | Response
   | Require
-  | Request
+  | Run
   | Import
   | From
   | Validate
@@ -104,7 +104,7 @@ expression
   ;
 
 inputCall
-  : Input LParen expression? RParen
+  : Input LParen expression? (QuestionMark expression)? RParen
   ;
 
 warnCall
@@ -183,7 +183,7 @@ requireStatement
   ;
 
 requestStatementBuilding
-  : Request LineTerminator* StringLiteral
+  : Run LineTerminator* StringLiteral
   ;
 
 envStatement

@@ -62,7 +62,7 @@ After a request is dispatched, the `response` object is set. Bell keeps a histor
 
 ### `input`
 
-Prompts the user for a value at runtime. The result can be assigned to a variable or used inline.
+Prompts the user for a value at runtime. The result can be assigned to a variable or used inline. Add `? defaultValue` so the user can press Enter to accept a default.
 
 <<< @/../../../examples/guide/input.bel
 
@@ -144,7 +144,7 @@ Use the `env` keyword to select an environment before running requests.
 
 ## Multi-file Workflows
 
-### `request`
+### `run`
 
 Runs another Bell file inline. Any variables the sub-file `export`s become available in the calling file.
 
@@ -158,7 +158,7 @@ Runs another Bell file inline. Any variables the sub-file `export`s become avail
 
 ### `export`
 
-Marks variables to be shared with any file that `request`s this one.
+Marks variables to be shared with any file that `run`s this one.
 
 <<< @/../../../examples/guide/export.bel
 

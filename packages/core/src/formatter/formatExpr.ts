@@ -56,8 +56,11 @@ export function formatExpr(ctx: ExpressionContext, indent: number = 0): string {
   }
   if (ctx instanceof InputCallExpressionContext) {
     const inputCall = ctx.inputCall();
-    const argExpr = inputCall.expression();
-    return argExpr ? `input(${formatExpr(argExpr, indent)})` : 'input()';
+    const exprs = inputCall.expression();
+    if (exprs.length >= 2) {
+      return `input(${formatExpr(exprs[0], indent)} ? ${formatExpr(exprs[1], indent)})`;
+    }
+    return exprs.length ? `input(${formatExpr(exprs[0], indent)})` : 'input()';
   }
   if (ctx instanceof WarnCallExpressionContext) {
     return `warn ${formatExpr(ctx.warnCall().expression(), indent)}`;

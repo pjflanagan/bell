@@ -111,6 +111,14 @@ describe('Bell Interpreter', () => {
     expect((visitor as any).variables.get('result')).to.equal('typed value');
   });
 
+  it('should pass default value to prompter when input has ? default', async () => {
+    const prompter = makePrompter({ val: 'default123' });
+    const visitor = await runCode(`result = input("Enter ID" ? "default123")`, prompter);
+    expect((visitor as any).variables.get('result')).to.equal('default123');
+    const callArgs = prompter.prompt.firstCall.args[0][0];
+    expect(callArgs.default).to.equal('default123');
+  });
+
   it('should set env without prompting when only one option given', async () => {
     const prompter = makePrompter({});
     await runCode(`env "dev"`, prompter);
@@ -630,9 +638,9 @@ describe('Bell Interpreter', () => {
     });
   });
 
-  describe('request keyword (inline composition)', () => {
+  describe('run (inline composition)', () => {
     it('executes another .bel file inline', async () => {
-      await runCode(`request "${fp('sub.bel')}"`);
+      await runCode(`run "${fp('sub.bel')}"`);
       expect(axiosStub.calledOnce).to.be.true;
       expect(axiosStub.firstCall.args[0].url).to.equal('http://sub.example.com');
     });
