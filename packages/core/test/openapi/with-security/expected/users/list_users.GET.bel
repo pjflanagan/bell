@@ -1,0 +1,9 @@
+### List users
+
+url "https://your-api.com/users"
+
+# header "Authorization" "Bearer YOUR_TOKEN"
+
+GET
+
+expect response.status === 200

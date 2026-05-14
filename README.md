@@ -180,6 +180,8 @@ log `Status: {response.status}`
 | `bell format <file.bel> --stdout` | Print formatted output to stdout |
 | `bell convert <postman.json>` | Convert a Postman collection to Bell files |
 | `bell convert <postman.json> -o <dir>` | Convert and write to a specific directory |
+| `bell openapi <spec.json>` | Convert an OpenAPI 3.x spec (JSON or YAML) to Bell files |
+| `bell openapi <spec.yaml> -o <dir>` | Convert an OpenAPI spec and write to a specific directory |
 | `bell -c "<code>"` | Execute Bell code inline (use `\n` for newlines) |
 | `bell` | Start the interactive REPL |
 

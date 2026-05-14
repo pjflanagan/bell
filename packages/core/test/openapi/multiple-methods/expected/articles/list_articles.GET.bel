@@ -1,0 +1,7 @@
+### List articles
+
+url "https://your-api.com/articles"
+
+GET
+
+expect response.status === 200

@@ -1,0 +1,10 @@
+### List all users
+
+import "../env.json"
+env "production" | "staging"
+
+path "/users"
+
+GET
+
+expect response.status === 200

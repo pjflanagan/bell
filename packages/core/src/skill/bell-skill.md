@@ -263,6 +263,7 @@ bell <file.bel>                   # shorthand (no subcommand needed)
 bell init                         # create a starter bell/ folder
 bell format <file.bel>            # format a file
 bell convert <postman.json>       # convert Postman collection
+bell openapi <spec.json|yaml>     # convert OpenAPI 3.x spec to Bell files
 bell skill                        # print this skill reference
 bell skill --install              # install as Claude Code slash command
 ```

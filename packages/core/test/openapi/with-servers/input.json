@@ -1,0 +1,19 @@
+{
+  "openapi": "3.0.0",
+  "info": { "title": "Test API", "version": "1.0.0" },
+  "servers": [
+    { "url": "https://api.example.com", "description": "Production" },
+    { "url": "https://staging.api.example.com", "description": "Staging" }
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "operationId": "listUsers",
+        "summary": "List all users",
+        "responses": {
+          "200": { "description": "Success" }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+### List all users
+
+url "https://your-api.com/users"
+
+GET
+
+expect response.status === 200

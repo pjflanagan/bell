@@ -24,6 +24,7 @@ npx ts-node ./src/main.ts           # hardcoded example runner
 bell run <file.bel>                  # via CLI (after build)
 bell run <file.bel> -e <env>         # with environment selection
 bell convert <postman.json> -o ./out # convert Postman collection
+bell openapi <spec.json> -o ./out    # convert OpenAPI 3.x spec (JSON or YAML)
 
 # Regenerate ANTLR grammar (after editing .g4 files)
 npm run build-lexer   # regenerates BellLexer.ts from BellLexer.g4

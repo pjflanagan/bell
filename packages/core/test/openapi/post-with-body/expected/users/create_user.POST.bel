@@ -1,0 +1,13 @@
+### Create a user
+
+url "https://your-api.com/users"
+
+body {
+  "name": "example",
+  "email": "user@example.com",
+  "age": 0
+}
+
+POST
+
+expect response.status === 201
