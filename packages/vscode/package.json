@@ -2,7 +2,7 @@
   "name": "bell-vscode",
   "displayName": "Bell Lang: Syntax and UI",
   "description": "A simple script for making http requests",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "license": "MIT",
   "publisher": "bell",
   "icon": "icon.png",

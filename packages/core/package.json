@@ -1,6 +1,6 @@
 {
   "name": "bell-lang",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A simple script for making http requests",
   "license": "MIT",
   "type": "commonjs",
