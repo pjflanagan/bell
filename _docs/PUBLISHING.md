@@ -4,9 +4,19 @@ Steps to publish Bell components to NPM and the VS Code Marketplace.
 
 ---
 
-## NPM: `bell-lang`
+## Docs Site (`apps/docs`)
 
-Publish the core package first, since the VS Code extension depends on the CLI being available via `npx`/global install.
+**Deploys automatically** via GitHub Actions (`.github/workflows/docs.yml`) on every merge to `main` that touches `apps/docs/**` or `packages/vscode/syntaxes/bel.tmLanguage.json`. No manual steps needed.
+
+Live site: https://pjflanagan.github.io/bell/
+
+---
+
+## NPM: `bell-lang` and VS Code Extension
+
+> **Preferred flow:** bump versions locally, push a `v*` tag, and CI (`.github/workflows/release.yml`) handles building and publishing both packages automatically. The manual steps below are a fallback.
+
+Publish core first — the VS Code extension depends on the CLI being available via `npx`/global install.
 
 **Prerequisites**
 - An npm account with publish access to `bell-lang`
@@ -29,6 +39,7 @@ Publish the core package first, since the VS Code extension depends on the CLI b
 
 4. Publish:
    ```bash
+   npm login
    npm publish --access public
    ```
 

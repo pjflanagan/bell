@@ -1,12 +1,12 @@
 {
   "name": "bell-lang",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A simple script for making http requests",
   "license": "MIT",
   "type": "commonjs",
   "main": "./dist/src/interpreter/run.js",
   "bin": {
-    "bell": "./dist/src/cli.js"
+    "bell": "dist/src/cli.js"
   },
   "files": [
     "dist",
