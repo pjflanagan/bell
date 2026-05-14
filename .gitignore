@@ -7,6 +7,9 @@ node_modules/
 **/build/
 *.tsbuildinfo
 
+# Generated from packages/core/src/skill/bell-skill.md
+apps/docs/docs/public/bell-skill.md
+
 # VitePress Artifacts
 **/.vitepress/dist/
 **/.vitepress/cache/

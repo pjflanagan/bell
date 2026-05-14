@@ -26,7 +26,7 @@
 			"patterns": [
 				{
 					"name": "support.function.bel",
-					"match": "\\b(log|validate|expect|assert|input|require|request|import|warn)\\b"
+					"match": "\\b(log|validate|expect|assert|input|require|run|export|import|warn)\\b"
 				}
 			]
 		},

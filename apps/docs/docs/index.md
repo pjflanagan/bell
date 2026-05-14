@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: Bell
-  text: A scripting language for API calls.
-  tagline: Replace Postman with Bell. It's readable, collaborative, and FREE.
+  text: Cleaner than Postman. Clearer than cURL. 
+  tagline: A scripting language for API calls. Readable, collaborative, and FREE.
   actions:
     - theme: brand
       text: Get Started

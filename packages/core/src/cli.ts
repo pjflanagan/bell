@@ -21,6 +21,7 @@ import { convertPostmanToBell } from './converters/postman';
 import { formatBellFile } from './formatter/BellFormatter';
 import { startRepl } from './repl/BellRepl';
 import { BELL_SKILL } from './skill/bellSkill';
+import { checkBellSource } from './checker/BellChecker';
 
 const program = new Command();
 
@@ -28,7 +29,7 @@ program
   .name('bell')
   .usage('[file.bel] [options]')
   .description('A simple script for describing and making API calls')
-  .version('0.1.0')
+  .version(require('../../package.json').version)
   .option('-c <code>', 'Execute Bell code directly (use \\n for newlines)');
 
 program
@@ -120,6 +121,34 @@ program
       console.error(chalk.red(err.message));
       process.exit(1);
     }
+  });
+
+program
+  .command('check')
+  .description('Check a .bel file for syntax and semantic errors (outputs JSON)')
+  .argument('<file>', 'Path to the .bel file')
+  .action((file) => {
+    const filePath = path.resolve(file);
+    if (!fs.existsSync(filePath)) {
+      process.stdout.write(JSON.stringify([{
+        line: 1, col: 0, length: 1,
+        message: `File not found: ${filePath}`,
+        severity: 'error',
+      }]));
+      process.exit(0);
+    }
+    try {
+      const source = fs.readFileSync(filePath, 'utf8');
+      const diags = checkBellSource(source);
+      process.stdout.write(JSON.stringify(diags));
+    } catch (err: any) {
+      process.stdout.write(JSON.stringify([{
+        line: 1, col: 0, length: 1,
+        message: `Check failed: ${err.message}`,
+        severity: 'error',
+      }]));
+    }
+    process.exit(0);
   });
 
 program

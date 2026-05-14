@@ -11,6 +11,7 @@ Semicolon           : ';'                             -> channel(HIDDEN);
 // Special tokens
 
 Assign            : '=';
+QuestionMark      : '?';
 Dot               : '.';
 Comma             : ',';
 Colon             : ':';
@@ -74,7 +75,7 @@ Input        : 'input';
 Assert       : 'assert';
 Expect       : 'expect';
 Require      : 'require';
-Request      : 'request';
+Run          : 'run';
 Import       : 'import';
 From         : 'from';
 Validate     : 'validate';

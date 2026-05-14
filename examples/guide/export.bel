@@ -13,5 +13,5 @@ POST
 token = response.body.json.token
 userId = response.body.json.userId
 
-# export makes these variables available to files that request this one
+# export makes these variables available to files that run this one
 export token, userId

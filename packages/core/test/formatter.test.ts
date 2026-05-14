@@ -59,10 +59,44 @@ describe('Bell Formatter', () => {
     });
   });
 
+  describe('param shorthand', () => {
+    it('preserves param varName shorthand', () => {
+      const source = 'url "http://api.com"\nparam userId\nGET\n';
+      const result = formatBellSource(source);
+      expect(result).to.include('param userId');
+    });
+
+    it('simplifies param "varName" varName to param varName', () => {
+      const source = 'url "http://api.com"\nparam "userId" userId\nGET\n';
+      const result = formatBellSource(source);
+      expect(result).to.include('param userId');
+      expect(result).not.to.include('"userId"');
+    });
+
+    it('does not simplify param when key and value name differ', () => {
+      const source = 'url "http://api.com"\nparam "q" userId\nGET\n';
+      const result = formatBellSource(source);
+      expect(result).to.include('param "q"');
+    });
+  });
+
   describe('blank line rules', () => {
     it('inserts a blank line after the HTTP method', () => {
       const result = formatBellSource(fixture('spacing', 'input.bel'));
       expect(result).to.equal(fixture('spacing', 'expected.bel'));
+    });
+
+    it('inserts a blank line after a request statement', () => {
+      const source = 'url "http://api.com"\nrun "auth.bel"\nparam "id" "1"\nGET\n';
+      const result = formatBellSource(source);
+      expect(result).to.include('run "auth.bel"\n\nparam');
+    });
+
+    it('does not add trailing blank line after request at end of file', () => {
+      const source = 'url "http://api.com"\nGET\nrun "sub.bel"\n';
+      const result = formatBellSource(source);
+      expect(result.trimEnd()).to.equal(result.trimEnd());
+      expect(result).not.to.match(/request "sub\.bel"\n\n$/);
     });
 
     it('inserts a blank line before a new url', () => {
