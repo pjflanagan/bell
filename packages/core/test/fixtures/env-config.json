@@ -1,0 +1,4 @@
+{
+  "dev": { "url": "http://dev.api.com" },
+  "prod": { "url": "http://prod.api.com" }
+}
