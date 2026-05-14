@@ -54,6 +54,7 @@ import * as inquirer from 'inquirer';
 
 export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellParserVisitor<any> {
   private variables: Map<string, any> = new Map();
+  private exportedNames: Set<string> = new Set();
   private requestConfig: any = {
     method: 'GET',
     url: '',
@@ -481,7 +482,7 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
   async visitRequestStatementBuilding(ctx: RequestStatementBuildingContext): Promise<void> {
     const relPath = ctx.StringLiteral().text.slice(1, -1);
     const fullPath = this.resolvePath(relPath);
-    
+
     console.log(chalk.gray(`  Running: ${fullPath}`));
     const sourceCode = fs.readFileSync(fullPath, 'utf8');
     const inputStream = CharStreams.fromString(sourceCode);
@@ -490,10 +491,19 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
     const parser = new BellParser(tokenStream);
     const tree = parser.program();
 
-    const oldPath = this.currentFilePath;
-    this.currentFilePath = fullPath;
-    await this.visit(tree);
-    this.currentFilePath = oldPath;
+    // Run the sub-file in an isolated child visitor so its variables and
+    // request state don't bleed into the caller. Only exported variables
+    // are copied back.
+    const child = new BellVisitor(fullPath, this.selectedEnv, this.prompter);
+    child.environments = this.environments;
+    child.dotEnvBaseUrl = this.dotEnvBaseUrl;
+    await child.visit(tree);
+
+    for (const name of child.exportedNames) {
+      if (child.variables.has(name)) {
+        this.variables.set(name, child.variables.get(name));
+      }
+    }
   }
 
   async visitValidateStatement(ctx: ValidateStatementContext): Promise<void> {
@@ -524,8 +534,9 @@ export class BellVisitor extends AbstractParseTreeVisitor<any> implements BellPa
   }
 
   async visitExportStatement(ctx: ExportStatementContext): Promise<void> {
-    // Currently variables are already persistent in this.variables
-    // but we can log them or do something if needed in the future.
+    for (const id of ctx.identifier()) {
+      this.exportedNames.add(id.text);
+    }
   }
 
   // Expressions

@@ -644,6 +644,18 @@ describe('Bell Interpreter', () => {
       expect(axiosStub.calledOnce).to.be.true;
       expect(axiosStub.firstCall.args[0].url).to.equal('http://sub.example.com');
     });
+
+    it('does not leak non-exported variables from sub-file into caller', async () => {
+      axiosStub.resolves({ status: 200, statusText: 'OK', data: { token: 'abc' } });
+      const visitor = await runCode(`run "${fp('sub-with-export.bel')}"`);
+      expect((visitor as any).variables.has('secret')).to.be.false;
+    });
+
+    it('copies exported variables from sub-file into caller', async () => {
+      axiosStub.resolves({ status: 200, statusText: 'OK', data: { token: 'abc' } });
+      const visitor = await runCode(`run "${fp('sub-with-export.bel')}"`);
+      expect((visitor as any).variables.get('token')).to.equal('abc');
+    });
   });
 
   describe('warn call expression', () => {

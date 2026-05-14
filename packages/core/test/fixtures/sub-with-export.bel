@@ -1,0 +1,6 @@
+url "http://sub.example.com"
+GET
+
+token = response.body.token
+secret = "should-not-leak"
+export token
