@@ -28,13 +28,15 @@ Special commands:
   exit   quit the REPL
 `.trim();
 
-export async function startRepl(): Promise<void> {
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    terminal: true,
-    prompt: 'bell> ',
-  });
+export async function startRepl(rl?: readline.Interface): Promise<void> {
+  if (!rl) {
+    rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+      terminal: true,
+      prompt: 'bell> ',
+    });
+  }
 
   console.log(chalk.bold(`Bell ${VERSION}`) + chalk.gray(`  (type 'exit' or Ctrl+D to quit)`));
 
