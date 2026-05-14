@@ -69,6 +69,7 @@ Live package: https://www.npmjs.com/package/bell-lang
 
 2. Package:
    ```bash
+   npm version patch # or minor / major
    vsce package --no-dependencies
    ```
    > The `--no-dependencies` flag is required in this monorepo to prevent `vsce` from following workspace symlinks and throwing "invalid relative path" errors.
