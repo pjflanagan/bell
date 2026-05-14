@@ -54,9 +54,31 @@ async function confirm(question) {
 
 // ─── Shell helpers ────────────────────────────────────────────────────────────
 
-function run(cmd, cwd = ROOT) {
+function run(cmd, cwd = ROOT, { failMsg } = {}) {
   const result = spawnSync(cmd, { shell: true, cwd, stdio: 'inherit' });
-  if (result.status !== 0) fail(`Command failed: ${cmd}`);
+  if (result.status !== 0) fail(failMsg || `Command failed: ${cmd}`);
+}
+
+function checkNpmAuth() {
+  const user = capture('npm whoami 2>/dev/null');
+  if (!user) {
+    log('\n' + c.yellow('  You are not logged in to npm.'));
+    log('  Run ' + c.bold('! npm login') + ' in this terminal, then rerun the release script.');
+    rl.close();
+    process.exit(1);
+  }
+  return user;
+}
+
+function checkVsceAuth() {
+  const result = spawnSync('vsce ls-publishers', { shell: true, stdio: 'pipe' });
+  if (result.status !== 0) {
+    log('\n' + c.yellow('  You are not logged in to vsce.'));
+    log('  Run ' + c.bold('! vsce login bell') + ' with a Personal Access Token from Azure DevOps');
+    log('  (Marketplace → Publish scope), then rerun the release script.');
+    rl.close();
+    process.exit(1);
+  }
 }
 
 function capture(cmd, cwd = ROOT) {
@@ -186,6 +208,10 @@ async function main() {
     setVersion(CORE_DIR, newCoreVersion);
     ok(`Version set to ${newCoreVersion}`);
 
+    info('Checking npm auth…');
+    const npmUser = checkNpmAuth();
+    ok(`Logged in as ${npmUser}`);
+
     info('Publishing to npm…');
     run('npm publish --access public', CORE_DIR);
     ok(`bell-lang@${newCoreVersion} published`);
@@ -206,6 +232,10 @@ async function main() {
     info('Packaging extension…');
     run('vsce package --no-dependencies', VSCODE_DIR);
     ok('Extension packaged');
+
+    info('Checking vsce auth…');
+    checkVsceAuth();
+    ok('vsce authenticated');
 
     info('Publishing to VS Code Marketplace…');
     run('vsce publish --no-dependencies', VSCODE_DIR);
