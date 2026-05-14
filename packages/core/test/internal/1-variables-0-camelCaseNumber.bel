@@ -1,7 +1,7 @@
 
 # a valid camel case variable set to a number
 
-var testVariable = 10
+testVariable = 10
 
 log testVariable
 

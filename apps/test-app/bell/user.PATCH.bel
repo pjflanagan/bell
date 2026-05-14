@@ -1,8 +1,9 @@
-var id = "1"
+id = "1"
 url `http://localhost:3000/users/{id}`
 body {
   "name": "Alice Updated"
 }
+other 4
 param id
 
 PATCH

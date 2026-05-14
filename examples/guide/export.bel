@@ -10,8 +10,8 @@ body {
 POST
 
 # Save values from the response
-var token = response.body.json.token
-var userId = response.body.json.userId
+token = response.body.json.token
+userId = response.body.json.userId
 
 # export makes these variables available to files that run this one
 export token, userId

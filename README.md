@@ -79,8 +79,8 @@ request "./createPost.POST.bel"
 ### Variables
 
 ```bel
-var name = "Alice"
-var greeting = `Hello, {name}!`
+name = "Alice"
+greeting = `Hello, {name}!`
 ```
 
 ### Requests
@@ -128,7 +128,7 @@ require token                           # pre-condition guard (place before a re
 
 ```bel
 # Prompt the user for input
-var username = input("Enter your username")
+username = input("Enter your username")
 
 # Warn before a destructive action
 warn "This will delete all records. Continue?"

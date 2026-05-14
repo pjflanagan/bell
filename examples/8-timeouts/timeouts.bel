@@ -1,5 +1,5 @@
-var urlWithLongResponseTime = "https://httpbin.org/delay/3"
-var urlToCheckStatus = "https://httpbin.org/get"
+urlWithLongResponseTime = "https://httpbin.org/delay/3"
+urlToCheckStatus = "https://httpbin.org/get"
 
 url urlWithLongResponseTime
 

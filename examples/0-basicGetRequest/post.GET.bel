@@ -1,6 +1,6 @@
 
 # define a variable
-var id = 123456
+id = 123456
 
 # setup a request by defining a url and a param
 url "https://httpbin.org/get"

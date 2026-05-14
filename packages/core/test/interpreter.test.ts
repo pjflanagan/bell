@@ -45,7 +45,7 @@ describe('Bell Interpreter', () => {
   });
 
   it('should handle variable assignments', async () => {
-    const visitor = await runCode(`var foo = "bar"`);
+    const visitor = await runCode(`foo = "bar"`);
     expect((visitor as any).variables.get('foo')).to.equal('bar');
   });
 
@@ -107,13 +107,13 @@ describe('Bell Interpreter', () => {
 
   it('should collect input from user', async () => {
     const prompter = makePrompter({ val: 'typed value' });
-    const visitor = await runCode(`var result = input("Enter a value")`, prompter);
+    const visitor = await runCode(`result = input("Enter a value")`, prompter);
     expect((visitor as any).variables.get('result')).to.equal('typed value');
   });
 
   it('should pass default value to prompter when input has ? default', async () => {
     const prompter = makePrompter({ val: 'default123' });
-    const visitor = await runCode(`var result = input("Enter ID" ? "default123")`, prompter);
+    const visitor = await runCode(`result = input("Enter ID" ? "default123")`, prompter);
     expect((visitor as any).variables.get('result')).to.equal('default123');
     const callArgs = prompter.prompt.firstCall.args[0][0];
     expect(callArgs.default).to.equal('default123');
@@ -137,7 +137,7 @@ describe('Bell Interpreter', () => {
       const visitor = await runCode(`
         url "http://example.com"
         POST
-        var token = response.body.token
+        token = response.body.token
       `);
       expect((visitor as any).variables.get('token')).to.equal('abc123');
     });
@@ -146,7 +146,7 @@ describe('Bell Interpreter', () => {
       const visitor = await runCode(`
         url "http://example.com"
         GET
-        var code = response.status
+        code = response.status
       `);
       expect((visitor as any).variables.get('code')).to.equal(200);
     });
@@ -157,7 +157,7 @@ describe('Bell Interpreter', () => {
         GET
         url "http://example.com"
         GET
-        var first = response.[0].status
+        first = response.[0].status
       `);
       expect((visitor as any).variables.get('first')).to.equal(200);
     });
@@ -189,7 +189,7 @@ describe('Bell Interpreter', () => {
 
     it('should throw on undefined variable in string interpolation', async () => {
       try {
-        await runCode(`var x = "hello {missing}"`);
+        await runCode(`x = "hello {missing}"`);
         expect.fail('should have thrown');
       } catch (err: any) {
         expect(err.message).to.include('Undefined variable in string interpolation');
@@ -199,7 +199,7 @@ describe('Bell Interpreter', () => {
 
     it('should throw on unclosed interpolation brace', async () => {
       try {
-        await runCode(`var x = "hello {unclosed"`);
+        await runCode(`x = "hello {unclosed"`);
         expect.fail('should have thrown');
       } catch (err: any) {
         expect(err.message).to.include('Unclosed interpolation brace');
@@ -208,7 +208,7 @@ describe('Bell Interpreter', () => {
 
     it('should throw a SyntaxError on malformed source', async () => {
       try {
-        await runCode(`var x = "unclosed string`);
+        await runCode(`x = "unclosed string`);
         expect.fail('should have thrown');
       } catch (err: any) {
         expect(err).to.be.instanceOf(SyntaxError);
@@ -330,7 +330,7 @@ describe('Bell Interpreter', () => {
 
     it('sets query params via param variable', async () => {
       await runCode(`
-        var token = "abc"
+        token = "abc"
         url "http://example.com"
         param token
         GET
@@ -393,7 +393,7 @@ describe('Bell Interpreter', () => {
       const visitor = await runCode(`
         url "http://example.com"
         GET
-        var code = response.status
+        code = response.status
       `);
       expect((visitor as any).variables.get('code')).to.equal(404);
     });
@@ -405,7 +405,7 @@ describe('Bell Interpreter', () => {
       const visitor = await runCode(`
         url "http://example.com"
         GET
-        var code = response.status
+        code = response.status
       `);
       expect((visitor as any).variables.get('code')).to.equal(401);
     });
@@ -417,7 +417,7 @@ describe('Bell Interpreter', () => {
       const visitor = await runCode(`
         url "http://example.com"
         GET
-        var code = response.status
+        code = response.status
       `);
       expect((visitor as any).variables.get('code')).to.equal(500);
     });
@@ -471,32 +471,32 @@ describe('Bell Interpreter', () => {
 
   describe('expressions: operators and data types', () => {
     it('evaluates object literal with identifier keys', async () => {
-      const visitor = await runCode(`var obj = { name: "Alice", age: 30 }`);
+      const visitor = await runCode(`obj = { name: "Alice", age: 30 }`);
       expect((visitor as any).variables.get('obj')).to.deep.equal({ name: 'Alice', age: 30 });
     });
 
     it('evaluates object literal with string keys', async () => {
-      const visitor = await runCode(`var obj = { "Content-Type": "application/json" }`);
+      const visitor = await runCode(`obj = { "Content-Type": "application/json" }`);
       expect((visitor as any).variables.get('obj')).to.deep.equal({ 'Content-Type': 'application/json' });
     });
 
     it('evaluates array literal', async () => {
-      const visitor = await runCode(`var arr = [1, "two", true]`);
+      const visitor = await runCode(`arr = [1, "two", true]`);
       expect((visitor as any).variables.get('arr')).to.deep.equal([1, 'two', true]);
     });
 
     it('adds two numbers', async () => {
-      const visitor = await runCode(`var result = 3 + 4`);
+      const visitor = await runCode(`result = 3 + 4`);
       expect((visitor as any).variables.get('result')).to.equal(7);
     });
 
     it('concatenates strings with +', async () => {
-      const visitor = await runCode(`var result = "hello" + " world"`);
+      const visitor = await runCode(`result = "hello" + " world"`);
       expect((visitor as any).variables.get('result')).to.equal('hello world');
     });
 
     it('divides two numbers', async () => {
-      const visitor = await runCode(`var result = 10 / 4`);
+      const visitor = await runCode(`result = 10 / 4`);
       expect((visitor as any).variables.get('result')).to.equal(2.5);
     });
   });
@@ -565,7 +565,7 @@ describe('Bell Interpreter', () => {
   describe('export statement', () => {
     it('does not throw and is a no-op', async () => {
       const visitor = await runCode(`
-        var token = "abc123"
+        token = "abc123"
         export token
       `);
       expect((visitor as any).variables.get('token')).to.equal('abc123');
@@ -661,7 +661,7 @@ describe('Bell Interpreter', () => {
   describe('warn call expression', () => {
     it('prompts and returns the original value', async () => {
       const prompter = makePrompter({ confirm: true });
-      const visitor = await runCode(`var result = warn "Are you sure?"`, prompter);
+      const visitor = await runCode(`result = warn "Are you sure?"`, prompter);
       expect((visitor as any).variables.get('result')).to.equal('Are you sure?');
     });
   });

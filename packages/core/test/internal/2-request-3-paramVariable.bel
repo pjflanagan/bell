@@ -1,8 +1,8 @@
 
 url "https://subdomain.domain.com:1234/page"
 
-var paramName = "query"
-var paramValue = 30
+paramName = "query"
+paramValue = 30
 param paramName paramValue
 
 GET

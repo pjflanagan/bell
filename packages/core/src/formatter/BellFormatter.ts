@@ -171,7 +171,7 @@ function formatStatement(stmt: StatementContext): FormattedItem | null {
     return {
       kind: 'variable',
       comments: [],
-      text: `var ${vd.identifier().text} = ${formatExpr(vd.expression())}`,
+      text: `${vd.identifier().text} = ${formatExpr(vd.expression())}`,
     };
   }
 

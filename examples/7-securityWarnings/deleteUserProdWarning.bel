@@ -1,9 +1,9 @@
 
 # warn will prompt the user to validate before sending each request
 # that contains the prodUrl variable
-var prodUrl = warn "httpbin.org"
+prodUrl = warn "httpbin.org"
 
-var id = 1234
+id = 1234
 
 url "https://{prodUrl}/delete?id={id}"
 

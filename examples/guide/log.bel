@@ -6,7 +6,7 @@ log response.status
 log response.body.args.name
 
 # Log a variable
-var count = 42
+count = 42
 log count
 
 # Log the current URL

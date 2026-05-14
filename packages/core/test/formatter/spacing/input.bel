@@ -1,7 +1,7 @@
 url "http://localhost/login"
 body { "user": "admin", "pass": "secret" }
 POST
-var token = response.body.token
+token = response.body.token
 url "http://localhost/posts"
 header "Authorization" `Bearer {token}`
 GET

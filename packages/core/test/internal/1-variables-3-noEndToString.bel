@@ -1,7 +1,7 @@
 
 # an invalid string
 
-var testInvalidString = "invalid'
+testInvalidString = "invalid'
 
 log "error"
 

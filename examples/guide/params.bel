@@ -6,7 +6,7 @@ param "query"    "Sushi"
 param "location" "NY"
 
 # param can also use a variable directly: ?userId=<value>
-var userId = "abc123"
+userId = "abc123"
 param userId
 
 GET
