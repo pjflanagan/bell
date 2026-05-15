@@ -1,0 +1,22 @@
+{
+  "openapi": "3.0.0",
+  "info": { "title": "Test API", "version": "1.0.0" },
+  "paths": {
+    "/users": {
+      "get": {
+        "tags": ["Users"],
+        "operationId": "listUsers",
+        "summary": "List users",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/posts": {
+      "get": {
+        "tags": ["Posts"],
+        "operationId": "listPosts",
+        "summary": "List posts",
+        "responses": { "200": { "description": "OK" } }
+      }
+    }
+  }
+}

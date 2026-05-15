@@ -49,7 +49,7 @@ export default defineConfig({
           { text: 'Getting Started', link: '/guide/getting-started' },
           { text: 'Syntax', link: '/guide/syntax' },
           { text: 'CLI', link: '/guide/cli' },
-          { text: 'Migrate from Postman', link: '/guide/migrate' },
+          { text: 'Converting to Bell', link: '/guide/migrate' },
           { text: 'Examples', link: '/guide/examples' },
           { text: 'AI Skill', link: '/guide/ai-skill' }
         ]

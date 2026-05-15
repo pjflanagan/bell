@@ -1,0 +1,7 @@
+### List posts
+
+url "https://your-api.com/posts"
+
+GET
+
+expect response.status === 200

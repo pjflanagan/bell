@@ -1,0 +1,11 @@
+### Create article
+
+url "https://your-api.com/articles"
+
+body {
+  "title": "example"
+}
+
+POST
+
+expect response.status === 201

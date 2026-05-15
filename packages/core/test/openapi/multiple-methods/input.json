@@ -1,0 +1,30 @@
+{
+  "openapi": "3.0.0",
+  "info": { "title": "Test API", "version": "1.0.0" },
+  "paths": {
+    "/articles": {
+      "get": {
+        "operationId": "listArticles",
+        "summary": "List articles",
+        "responses": { "200": { "description": "OK" } }
+      },
+      "post": {
+        "operationId": "createArticle",
+        "summary": "Create article",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "title": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": { "201": { "description": "Created" } }
+      }
+    }
+  }
+}

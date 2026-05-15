@@ -1,0 +1,11 @@
+### Get a user
+
+userId = "example"
+
+url "https://your-api.com/users/{userId}"
+
+param "include" "profile"
+
+GET
+
+expect response.status === 200

@@ -18,6 +18,7 @@ import * as path from 'path';
 import chalk from 'chalk';
 import { runSource } from './interpreter/run';
 import { convertPostmanToBell } from './converters/postman';
+import { convertOpenAPIToBell } from './converters/openapi';
 import { formatBellFile } from './formatter/BellFormatter';
 import { startRepl } from './repl/BellRepl';
 import { BELL_SKILL } from './skill/bellSkill';
@@ -32,26 +33,56 @@ program
   .version(require('../../package.json').version)
   .option('-c <code>', 'Execute Bell code directly (use \\n for newlines)');
 
+function runPostmanConvert(postmanJson: string, options: { output: string }) {
+  const postmanPath = path.resolve(postmanJson);
+  if (!fs.existsSync(postmanPath)) {
+    console.error(chalk.red(`Error: Postman collection file not found: ${postmanPath}`));
+    process.exit(1);
+  }
+
+  try {
+    console.log(chalk.blue(`🔄 Converting Postman collection: ${chalk.bold(path.basename(postmanPath))}...`));
+    convertPostmanToBell(postmanPath, path.resolve(options.output));
+    console.log(chalk.green(`\n✔ Conversion complete! Files saved to: ${chalk.bold(options.output)}`));
+  } catch (err: any) {
+    console.error(chalk.red(`\n✖ Error during conversion:`));
+    console.error(chalk.red(err.message));
+    process.exit(1);
+  }
+}
+
 program
-  .command('convert')
+  .command('postman')
   .description('Convert a Postman collection to Bell files')
   .argument('<postman-json>', 'Path to the exported Postman collection JSON')
   .option('-o, --output <dir>', 'Output directory for the .bel files', './bell')
-  .action((postmanJson, options) => {
-    const postmanPath = path.resolve(postmanJson);
-    if (!fs.existsSync(postmanPath)) {
-      console.error(chalk.red(`Error: Postman collection file not found: ${postmanPath}`));
+  .action(runPostmanConvert);
+
+// Hidden alias for backward compatibility
+program
+  .command('convert', { hidden: true })
+  .argument('<postman-json>')
+  .option('-o, --output <dir>', '', './bell')
+  .action(runPostmanConvert);
+
+program
+  .command('openapi')
+  .description('Convert an OpenAPI 3.x spec (JSON or YAML) to Bell files')
+  .argument('<openapi-file>', 'Path to the OpenAPI spec file (.json, .yaml, or .yml)')
+  .option('-o, --output <dir>', 'Output directory for the .bel files', './bell')
+  .action((openApiFile, options) => {
+    const openApiPath = path.resolve(openApiFile);
+    if (!fs.existsSync(openApiPath)) {
+      console.error(chalk.red(`Error: OpenAPI spec file not found: ${openApiPath}`));
       process.exit(1);
     }
 
     try {
-      console.log(chalk.blue(`🔄 Converting Postman collection: ${chalk.bold(path.basename(postmanPath))}...`));
-      convertPostmanToBell(postmanPath, path.resolve(options.output));
-      console.log(chalk.green(`
-✔ Conversion complete! Files saved to: ${chalk.bold(options.output)}`));
+      console.log(chalk.blue(`🔄 Converting OpenAPI spec: ${chalk.bold(path.basename(openApiPath))}...`));
+      convertOpenAPIToBell(openApiPath, path.resolve(options.output));
+      console.log(chalk.green(`\n✔ Conversion complete! Files saved to: ${chalk.bold(options.output)}`));
     } catch (err: any) {
-      console.error(chalk.red(`
-✖ Error during conversion:`));
+      console.error(chalk.red(`\n✖ Error during conversion:`));
       console.error(chalk.red(err.message));
       process.exit(1);
     }
@@ -260,7 +291,7 @@ if (cFlagIdx !== -1 && cFlagIdx + 1 < process.argv.length) {
   startRepl();
 } else {
   // Python-style: `bell <file.bel> [options]` — direct file invocation
-  const knownSubcommands = new Set(['run', 'convert', 'format', 'init', 'skill', 'help']);
+  const knownSubcommands = new Set(['run', 'postman', 'convert', 'openapi', 'format', 'init', 'skill', 'help']);
   const firstArg = process.argv[2];
   if (firstArg && !firstArg.startsWith('-') && !knownSubcommands.has(firstArg) && firstArg.endsWith('.bel')) {
     // Rewrite argv so commander sees it as `bell run <file> [rest...]`
